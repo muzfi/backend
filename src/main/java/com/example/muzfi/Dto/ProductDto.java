@@ -1,15 +1,9 @@
-package com.example.muzfi.Entity;
+package com.example.muzfi.Dto;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "products")
-public class ProductEntity {
+import jakarta.persistence.*;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class ProductDto {
     private String name;
     private String category;
     private String description;
@@ -17,14 +11,6 @@ public class ProductEntity {
     private Integer seller_id;
 
     // Getters and setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
