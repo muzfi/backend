@@ -1,6 +1,5 @@
 package com.example.muzfi.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,22 +10,20 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-//TODO: Remove
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
-@Table(name = "posts")
-public class Post {
-
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
     private Integer id;
 
-    private Integer user_id;
-    private String content;
-    private Integer likes;
-    private Integer shares;
+    private String text;
+
+    private Integer userID;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 
     //TODO: update with user date and time
     private LocalDateTime createdDateTime = LocalDateTime.now();
