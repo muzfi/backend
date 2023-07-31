@@ -7,9 +7,9 @@ import java.util.Optional;
 public interface PostService {
     Iterable<Post> getAllPosts();
 
-    Optional<Post> getPost(Integer id);
+    Optional<Post> getPost(String id);
 
     Post savePost(Post post);
 
-    void deletePost(Integer id);
+    void deletePost(String id);
 }

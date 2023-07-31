@@ -2,7 +2,6 @@ package com.example.muzfi.Services;
 
 import com.example.muzfi.Model.Comment;
 import com.example.muzfi.Repository.CommentRepository;
-import com.example.muzfi.Repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +12,13 @@ import java.util.Optional;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
+
+    private final CommentRepository commentRepository;
 
     @Autowired
-    private PostRepository postRepository;
+    public CommentServiceImpl(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
 
     @Override
     public Optional<List<Comment>> getAllComments() {
@@ -25,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<List<Comment>> getCommentsByPostId(Integer postId) {
+    public Optional<List<Comment>> getCommentsByPostId(String postId) {
         return Optional.ofNullable(commentRepository.findAllByPostId(postId));
     }
 
@@ -35,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment updateComment(Integer commentId, Comment updatedComment) {
+    public Comment updateComment(String commentId, Comment updatedComment) {
         Comment existingComment = commentRepository.findById(commentId).orElse(null);
         if (existingComment != null) {
             existingComment.setText(updatedComment.getText());
@@ -48,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Integer commentId) {
+    public void deleteComment(String commentId) {
         commentRepository.deleteById(commentId);
     }
 }

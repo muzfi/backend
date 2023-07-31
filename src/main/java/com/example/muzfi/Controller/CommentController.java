@@ -1,11 +1,11 @@
 package com.example.muzfi.Controller;
 
 import com.example.muzfi.Model.Comment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.muzfi.Services.CommentService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +13,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
+    private final CommentService commentService;
 
     @Autowired
-    private CommentService commentService;
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllComments() {
@@ -33,7 +36,7 @@ public class CommentController {
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<?> getCommentsByPostId(@PathVariable("postId") Integer postId) {
+    public ResponseEntity<?> getCommentsByPostId(@PathVariable("postId") String postId) {
         try {
             Optional<List<Comment>> comments = commentService.getCommentsByPostId(postId);
 
@@ -58,7 +61,7 @@ public class CommentController {
     }
 
     @PutMapping("/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable("commentId") Integer commentId, @RequestBody Comment comment) {
+    public ResponseEntity<?> updateComment(@PathVariable("commentId") String commentId, @RequestBody Comment comment) {
         try {
             Comment updatedComment = commentService.updateComment(commentId, comment);
             if (updatedComment != null) {
@@ -72,7 +75,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Integer commentId) {
+    public ResponseEntity<?> deleteComment(@PathVariable String commentId) {
         try {
             commentService.deleteComment(commentId);
             return ResponseEntity.noContent().build();

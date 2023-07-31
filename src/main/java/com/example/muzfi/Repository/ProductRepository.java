@@ -1,7 +1,7 @@
 package com.example.muzfi.Repository;
 
 import com.example.muzfi.Model.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends MongoRepository<Product, String> {
 }

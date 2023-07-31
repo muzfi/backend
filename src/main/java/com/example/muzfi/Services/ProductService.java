@@ -7,9 +7,9 @@ import java.util.Optional;
 public interface ProductService {
     Iterable<Product> getAllProducts();
 
-    Optional<Product> getProduct(Integer id);
+    Optional<Product> getProduct(String id);
 
     Product saveProduct(Product product);
 
-    void deleteProduct(Integer id);
+    void deleteProduct(String id);
 }
