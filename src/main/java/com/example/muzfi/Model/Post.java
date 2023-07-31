@@ -1,27 +1,20 @@
 package com.example.muzfi.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-//TODO: Remove
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
-@Entity
-@Table(name = "posts")
+@Getter
+@Setter
+@Document(collection = "posts")
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
-    private Integer id;
+    private String id;
 
     private Integer user_id;
     private String content;

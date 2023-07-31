@@ -1,8 +1,6 @@
 package com.example.muzfi.Dto;
 
 
-import jakarta.persistence.*;
-
 public class ProductDto {
     private String name;
     private String category;
