@@ -1,21 +1,19 @@
 package com.example.muzfi.Model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "products")
+@Getter
+@Setter
+@Document(collection = "products")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
 
     private String name;
     private String category;

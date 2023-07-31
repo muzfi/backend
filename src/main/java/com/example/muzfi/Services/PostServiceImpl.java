@@ -19,7 +19,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<Post> getPost(Integer id) {
+    public Optional<Post> getPost(String id) {
         return postRepository.findById(id);
     }
 
@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Integer id) {
+    public void deletePost(String id) {
         postRepository.deleteById(id);
     }
 }
