@@ -1,6 +1,6 @@
 package com.example.muzfi.Services;
 
-import com.example.muzfi.Model.Post;
+import com.example.muzfi.Model.Post.Post;
 
 import java.util.Optional;
 

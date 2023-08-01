@@ -35,21 +35,6 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/post/{postId}")
-    public ResponseEntity<?> getCommentsByPostId(@PathVariable("postId") String postId) {
-        try {
-            Optional<List<Comment>> comments = commentService.getCommentsByPostId(postId);
-
-            if (comments.isPresent()) {
-                return new ResponseEntity<>(comments, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("No Comments Available", HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody Comment comment) {
         try {

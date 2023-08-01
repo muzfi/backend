@@ -25,10 +25,6 @@ public class CommentServiceImpl implements CommentService {
         return Optional.of(commentRepository.findAll());
     }
 
-    @Override
-    public Optional<List<Comment>> getCommentsByPostId(String postId) {
-        return Optional.ofNullable(commentRepository.findAllByPostId(postId));
-    }
 
     @Override
     public Comment createComment(Comment comment) {

@@ -1,6 +1,6 @@
 package com.example.muzfi.Controller;
 
-import com.example.muzfi.Model.Post;
+import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

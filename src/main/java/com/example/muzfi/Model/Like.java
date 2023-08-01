@@ -7,22 +7,13 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Document(collection = "comments")
-public class Comment {
+@Document(collection = "likes")
+public class Like {
     @Id
     private String id;
-
-    private String text;
-
     private String userId;
-
-    //TODO: update with user date and time
-    private LocalDateTime createdDateTime = LocalDateTime.now();
-    private LocalDateTime updatedDateTime;
 }
