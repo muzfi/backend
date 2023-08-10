@@ -1,44 +1,18 @@
 package com.example.muzfi.Controller;
 
-import com.example.muzfi.Model.User;
-import com.example.muzfi.Services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 public class HomeController {
-    private final UserService userService;
-
-    @Autowired
-    public HomeController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/")
     public String home(@AuthenticationPrincipal OidcUser user) {
         try {
-            String userOktaId = user.getAttribute("sub");
 
-            Optional<User> loggedInUser = userService.getUserByOktaId(userOktaId);
-
-//            if (loggedInUser.isEmpty()) {
-//                User newUser = new User();
-//                newUser.setOktaId(userOktaId);
-//                newUser.setEmail(user.getEmail());
-//                newUser.setFirstName(user.getGivenName());
-//                newUser.setLastName(user.getFamilyName());
-//                newUser.setBirthDate(LocalDate.parse(user.getBirthdate()));
-//
-//                userService.createUser(newUser);
-//            }
-
-            //TODO: Redirect to web application
-//            return "Welcome, " + user.getFullName() + "!";
+            //TODO: Redirect to web application and remove below return string
 
             return "User Name: " + user.getName() + "<br/>" +
                     "User Authorities: " + user.getAuthorities() + "<br/>" +

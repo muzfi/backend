@@ -31,6 +31,27 @@ public class OktaRestClient {
         this.headers = headers;
     }
 
+    public ResponseEntity<?> getOktaUserById(String userOktaId) {
+        try {
+            final String uri = "/api/v1/users/" + userOktaId;
+
+            headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+            headers.set("Authorization", "SSWS " + apiKey);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
+
+            if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+                return responseEntity;
+            } else {
+                return new ResponseEntity<>("No Okta user data found", HttpStatus.NOT_FOUND);
+            }
+
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     // Okta groups defined for user roles
     // Get okta group by its group name which is equal to user role
