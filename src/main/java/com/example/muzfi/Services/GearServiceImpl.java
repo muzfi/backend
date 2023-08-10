@@ -1,10 +1,12 @@
 package com.example.muzfi.Services;
 
 import com.example.muzfi.Model.Gear;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class GearServiceImpl implements GearService{
     @Override
     public Optional<List<Gear>> getAllGears() {

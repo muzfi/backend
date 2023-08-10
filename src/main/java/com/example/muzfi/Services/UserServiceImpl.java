@@ -1,6 +1,7 @@
 package com.example.muzfi.Services;
 
 import com.example.muzfi.Model.User;
+import com.example.muzfi.enums.UserRole;
 import com.example.muzfi.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,16 @@ public class UserServiceImpl implements UserService {
             existingUser.setBirthDate(user.getBirthDate());
             existingUser.setDescription(user.getDescription());
 
+            return userRepository.save(existingUser);
+        }
+        return null;
+    }
+
+    @Override
+    public User updateUserRole(String userId, List<UserRole> userRoles) {
+        User existingUser = userRepository.findById(userId).orElse(null);
+        if (existingUser != null) {
+            existingUser.setRole(userRoles);
             return userRepository.save(existingUser);
         }
         return null;

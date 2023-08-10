@@ -2,6 +2,7 @@ package com.example.muzfi.Util;
 
 import com.example.muzfi.Dto.OktaProfileAttributesDto;
 import com.example.muzfi.Dto.OktaProfileDto;
+import com.example.muzfi.enums.UserRole;
 import com.example.muzfi.Services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Component;
 import com.example.muzfi.Model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -38,16 +41,17 @@ public class OktaLoginSuccessListener implements ApplicationListener<Authenticat
         updateLoggedInUser(event.getAuthentication());
     }
 
-    private void updateLoggedInUser(Authentication authentication){
+    private void updateLoggedInUser(Authentication authentication) {
         try {
-            System.out.println(authentication);
 
             if (authentication != null && authentication.getPrincipal() instanceof OidcUser oidcUser) {
 
                 String userOktaId = oidcUser.getAttribute("sub");
+                ArrayList userGroups = oidcUser.getAttribute("groups");
+
                 ResponseEntity<?> response = oktaRestClient.getOktaUserById(userOktaId);
 
-                if (response.getStatusCode().equals(HttpStatus.OK)){
+                if (response.getStatusCode().equals(HttpStatus.OK)) {
                     System.out.println(response.getBody());
 
                     String jsonResponse = Objects.requireNonNull(response.getBody()).toString();
@@ -60,6 +64,13 @@ public class OktaLoginSuccessListener implements ApplicationListener<Authenticat
                     String lastName = oktaProfileAttributes.getLastName();
                     String email = oktaProfileAttributes.getEmail();
 
+                    List<UserRole> roles = new ArrayList<>();
+
+                    for (Object group : userGroups) {
+                        UserRole userRole = UserRole.valueOf(group.toString());
+                        roles.add(userRole);
+                    }
+
                     Optional<User> loggedInUser = userService.getUserByOktaId(userOktaId);
 
                     if (loggedInUser.isEmpty()) {
@@ -68,14 +79,17 @@ public class OktaLoginSuccessListener implements ApplicationListener<Authenticat
                         newUser.setEmail(email);
                         newUser.setFirstName(firstName);
                         newUser.setLastName(lastName);
+                        newUser.setRole(roles);
 
                         userService.createUser(newUser);
+                    } else {
+                        userService.updateUserRole(loggedInUser.get().getId(), roles);
                     }
                 }
             }
 
         } catch (Exception ex) {
-            logger.severe("An error occurred when updating logged in user data: " + ex.getMessage());
+            logger.severe("An error occurred when updating logged in user data - Error Details: " + ex.getMessage());
         }
     }
 }

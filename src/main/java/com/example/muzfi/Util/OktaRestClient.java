@@ -1,5 +1,6 @@
 package com.example.muzfi.Util;
 
+import com.example.muzfi.enums.UserRole;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -171,6 +173,37 @@ public class OktaRestClient {
             }
 
             return groupId;
+        } catch (Exception e) {
+            logger.severe("An error occurred: " + e.getMessage());
+            return null;
+        }
+    }
+
+    //get groupName list from group json response: Return only groups which are related to user roles
+    public List<String> getGroupNames(String jsonResponse) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<String> groupNames = new ArrayList<>();
+
+            JsonNode jsonNode = objectMapper.readTree(jsonResponse);
+
+            for (JsonNode item : jsonNode) {
+                JsonNode profileNode = item.get("profile");
+                if (profileNode != null) {
+                    String name = profileNode.get("name").asText();
+                    if (name.equals(UserRole.Muzfi_Admin.toString())) {
+                        groupNames.add(UserRole.Muzfi_Admin.toString());
+                    }
+                    if (name.equals(UserRole.Muzfi_Member.toString())) {
+                        groupNames.add(UserRole.Muzfi_Member.toString());
+                    }
+                    if (name.equals(UserRole.Muzfi_Elite.toString())) {
+                        groupNames.add(UserRole.Muzfi_Elite.toString());
+                    }
+                }
+            }
+
+            return groupNames;
         } catch (Exception e) {
             logger.severe("An error occurred: " + e.getMessage());
             return null;
