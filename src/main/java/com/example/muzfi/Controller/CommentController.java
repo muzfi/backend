@@ -4,6 +4,7 @@ import com.example.muzfi.Model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.example.muzfi.Services.CommentService;
 
@@ -20,6 +21,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
     @GetMapping
     public ResponseEntity<?> getAllComments() {
         try {
@@ -35,6 +37,7 @@ public class CommentController {
         }
     }
 
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
     @GetMapping("/post/{postId}")
     public ResponseEntity<?> getCommentsByPostId(@PathVariable("postId") String postId) {
         try {
@@ -50,6 +53,7 @@ public class CommentController {
         }
     }
 
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody Comment comment) {
         try {
@@ -60,6 +64,7 @@ public class CommentController {
         }
     }
 
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
     @PutMapping("/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable("commentId") String commentId, @RequestBody Comment comment) {
         try {
@@ -74,6 +79,7 @@ public class CommentController {
         }
     }
 
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable String commentId) {
         try {
