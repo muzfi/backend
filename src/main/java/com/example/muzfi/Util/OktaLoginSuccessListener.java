@@ -2,8 +2,8 @@ package com.example.muzfi.Util;
 
 import com.example.muzfi.Dto.OktaProfileAttributesDto;
 import com.example.muzfi.Dto.OktaProfileDto;
-import com.example.muzfi.enums.UserRole;
-import com.example.muzfi.Services.UserService;
+import com.example.muzfi.Enums.UserRole;
+import com.example.muzfi.Services.User.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;

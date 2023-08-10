@@ -1,4 +1,4 @@
-package com.example.muzfi.enums;
+package com.example.muzfi.Enums;
 
 public enum UserRole {
     Muzfi_Member("Member"),

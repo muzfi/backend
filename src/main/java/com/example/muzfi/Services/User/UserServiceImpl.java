@@ -1,7 +1,7 @@
-package com.example.muzfi.Services;
+package com.example.muzfi.Services.User;
 
 import com.example.muzfi.Model.User;
-import com.example.muzfi.enums.UserRole;
+import com.example.muzfi.Enums.UserRole;
 import com.example.muzfi.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

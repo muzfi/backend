@@ -1,8 +1,9 @@
 package com.example.muzfi.Services;
 
 import com.example.muzfi.Model.User;
-import com.example.muzfi.enums.RoleEditAction;
-import com.example.muzfi.enums.UserRole;
+import com.example.muzfi.Enums.RoleEditAction;
+import com.example.muzfi.Enums.UserRole;
+import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.Util.OktaRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

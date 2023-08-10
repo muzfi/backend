@@ -1,7 +1,7 @@
-package com.example.muzfi.Controller;
+package com.example.muzfi.Controller.User;
 
 import com.example.muzfi.Model.User;
-import com.example.muzfi.Services.UserService;
+import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +35,11 @@ public class UserController {
         }
     }
 
+    //TODO: Remove later: For testing purposes
     @GetMapping("/okta/{userId}")
-    public ResponseEntity<?> getAUserByOktaId(@PathVariable("userId") String userId) {
+    public ResponseEntity<?> getAUserByOktaId(@PathVariable("userId") String oktaUserId) {
         try {
-            Optional<User> user = userService.getUserByOktaId(userId);
+            Optional<User> user = userService.getUserByOktaId(oktaUserId);
 
             if (user.isPresent()) {
                 return new ResponseEntity<>(user, HttpStatus.OK);

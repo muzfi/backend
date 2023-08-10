@@ -1,6 +1,6 @@
 package com.example.muzfi.Model;
 
-import com.example.muzfi.enums.UserRole;
+import com.example.muzfi.Enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -39,4 +40,16 @@ public class User {
     private String location;
 
     private String profilePicUri;
+
+    private List<User> followers;
+
+    private List<User> followings;
+
+    private int muzPoints;
+
+    private List<User> blockedUsers;
+
+    private LocalDateTime createdDateTime = LocalDateTime.now();
+
+    private LocalDateTime lastUpdatedDateTime;
 }

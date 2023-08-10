@@ -1,6 +1,6 @@
 package com.example.muzfi.Util;
 
-import com.example.muzfi.enums.UserRole;
+import com.example.muzfi.Enums.UserRole;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
