@@ -73,7 +73,7 @@ public class AuthController {
             return new ResponseEntity<>("toElite", HttpStatus.OK);
 
         } catch (Exception ex) {
-            return new ResponseEntity<>(ex.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -91,7 +91,7 @@ public class AuthController {
             return new ResponseEntity<>("removeElite", HttpStatus.OK);
 
         } catch (Exception ex) {
-            return new ResponseEntity<>(ex.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

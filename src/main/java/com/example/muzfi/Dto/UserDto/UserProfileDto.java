@@ -1,4 +1,4 @@
-package com.example.muzfi.Dto;
+package com.example.muzfi.Dto.UserDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +40,10 @@ public class UserProfileDto {
     private double sellerRatings;
 
     private double buyerRatings;
+
+    private Boolean isFollowed;
+
+    private Boolean isBlocked;
 
     private LocalDateTime createdDateTime;
 

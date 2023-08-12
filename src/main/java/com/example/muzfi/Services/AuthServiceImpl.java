@@ -33,6 +33,44 @@ public class AuthServiceImpl implements AuthService {
         this.userService = userService;
     }
 
+    // Check if received user id owned by logged-in user
+    @Override
+    public boolean isLoggedInUser(String userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.isAuthenticated()) {
+            OAuth2User user = (OAuth2User) authentication.getPrincipal();
+
+            String loggedUserOktaId = user.getAttribute("sub");
+            String requestedUserOktaId = userService.getOktaIdByUserId(userId).get();
+
+            if (loggedUserOktaId.equals(requestedUserOktaId)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    // get logged-in user
+    @Override
+    public User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.isAuthenticated()) {
+            OAuth2User user = (OAuth2User) authentication.getPrincipal();
+
+            String loggedUserOktaId = user.getAttribute("sub");
+            User requestedUser = userService.getUserByOktaId(loggedUserOktaId).get();
+
+            return requestedUser;
+        } else {
+            return null;
+        }
+    }
+
     // Use this method to change user role to "Muzfi_Elite"
     @Override
     public void userRoleToElite(String userOktaId) {
@@ -40,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
 
         updateUserRoleInDB(userOktaId, response);
 
-        updateAuthenticationAuthorities(UserRole.Muzfi_Elite, RoleEditAction.ADD);
+        updateSystemAuthenticationAuthorities(UserRole.Muzfi_Elite, RoleEditAction.ADD);
     }
 
     // Use this method remove the user role from "Muzfi_Elite"
@@ -50,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
 
         updateUserRoleInDB(userOktaId, response);
 
-        updateAuthenticationAuthorities(UserRole.Muzfi_Elite, RoleEditAction.REMOVE);
+        updateSystemAuthenticationAuthorities(UserRole.Muzfi_Elite, RoleEditAction.REMOVE);
     }
 
     // Role updates are added to the database
@@ -74,8 +112,8 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    // Update User Authorities without logout operation
-    private void updateAuthenticationAuthorities(UserRole role, RoleEditAction action) {
+    // UpdateUser Authorities saved in server without performing logout operation
+    private void updateSystemAuthenticationAuthorities(UserRole role, RoleEditAction action) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth instanceof OAuth2AuthenticationToken oauthToken) {

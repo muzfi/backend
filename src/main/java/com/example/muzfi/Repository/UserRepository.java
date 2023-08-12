@@ -8,8 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
-    User findUserByOktaId(String oktaId);
+    Optional<User> findUserByOktaId(String oktaId);
 
     @Override
     Optional<User> findById(String id);
+
 }
