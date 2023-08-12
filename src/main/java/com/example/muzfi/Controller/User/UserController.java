@@ -1,10 +1,12 @@
 package com.example.muzfi.Controller.User;
 
 import com.example.muzfi.Model.User;
+import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +17,12 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
 
+    private final AuthService authService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @GetMapping
@@ -31,7 +36,7 @@ public class UserController {
                 return new ResponseEntity<>("No Users Available", HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -47,22 +52,95 @@ public class UserController {
                 return new ResponseEntity<>("No User Available", HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
-    @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable("userId") String userId, @RequestBody User user) {
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @GetMapping("/{loggedInUserId}/follow/{followingUserId}")
+    public ResponseEntity<?> followUser(@PathVariable("followingUserId") String followingUserId, @PathVariable(name = "loggedInUserId") String loggedInUserId) {
         try {
-            User updatedUser = userService.updateUser(userId, user);
-            if (updatedUser != null) {
-                return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+            boolean isLoggedInUser = authService.isLoggedInUser(loggedInUserId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<String> follow = userService.followUser(loggedInUserId, followingUserId);
+
+            if (follow.isPresent()) {
+                return new ResponseEntity<>(follow.get(), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("No User Found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("User following action failed", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @GetMapping("/{loggedInUserId}/unfollow/{unFollowingUserId}")
+    public ResponseEntity<?> unfollowUser(@PathVariable("unFollowingUserId") String unFollowingUserId, @PathVariable(name = "loggedInUserId") String loggedInUserId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(loggedInUserId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<String> unFollow = userService.unFollowUser(loggedInUserId, unFollowingUserId);
+
+            if (unFollow.isPresent()) {
+                return new ResponseEntity<>(unFollow.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User unfollowing action failed", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @GetMapping("/{loggedInUserId}/block/{blockUserId}")
+    public ResponseEntity<?> blockUser(@PathVariable("blockUserId") String blockUserId, @PathVariable(name = "loggedInUserId") String loggedInUserId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(loggedInUserId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<String> block = userService.blockUser(loggedInUserId, blockUserId);
+
+            if (block.isPresent()) {
+                return new ResponseEntity<>(block.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User blocking action failed", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @GetMapping("/{loggedInUserId}/unblock/{unBlockUserId}")
+    public ResponseEntity<?> unBlockUser(@PathVariable("unBlockUserId") String unBlockUserId, @PathVariable(name = "loggedInUserId") String loggedInUserId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(loggedInUserId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<String> unblock = userService.unBlockUser(loggedInUserId, unBlockUserId);
+
+            if (unblock.isPresent()) {
+                return new ResponseEntity<>(unblock.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User unblocking action failed", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

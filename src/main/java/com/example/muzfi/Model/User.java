@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,13 +42,15 @@ public class User {
 
     private String profilePicUri;
 
-    private List<User> followers;
+    private Set<String> followersUserIds;
 
-    private List<User> followings;
+    private Set<String> followingsUserIds;
 
     private int muzPoints;
 
-    private List<User> blockedUsers;
+    private Set<String> blockedUserIds;
+
+    private Set<String> blockedByUserIds;
 
     private LocalDateTime createdDateTime = LocalDateTime.now();
 

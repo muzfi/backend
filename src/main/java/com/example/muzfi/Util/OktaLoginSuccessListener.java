@@ -52,7 +52,6 @@ public class OktaLoginSuccessListener implements ApplicationListener<Authenticat
                 ResponseEntity<?> response = oktaRestClient.getOktaUserById(userOktaId);
 
                 if (response.getStatusCode().equals(HttpStatus.OK)) {
-                    System.out.println(response.getBody());
 
                     String jsonResponse = Objects.requireNonNull(response.getBody()).toString();
                     ObjectMapper objectMapper = new ObjectMapper();
