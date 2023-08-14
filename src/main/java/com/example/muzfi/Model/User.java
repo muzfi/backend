@@ -52,6 +52,7 @@ public class User {
 
     private Set<String> blockedByUserIds;
 
+    //TODO: update with user date and time
     private LocalDateTime createdDateTime = LocalDateTime.now();
 
     private LocalDateTime lastUpdatedDateTime;

@@ -1,0 +1,20 @@
+package com.example.muzfi.Model.Post;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Document(collection = "polls")
+public class Poll extends Post {
+    private List<PollOption> pollOptions;
+    private LocalDateTime pollDeadline;
+}
