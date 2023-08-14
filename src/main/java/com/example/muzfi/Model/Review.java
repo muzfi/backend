@@ -1,5 +1,6 @@
 package com.example.muzfi.Model;
 
+import com.example.muzfi.Model.Post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -23,4 +23,5 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 ).build();
     }
+    //TODO: Edit secure endpoints
 }
