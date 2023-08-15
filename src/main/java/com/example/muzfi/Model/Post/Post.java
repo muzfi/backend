@@ -23,12 +23,6 @@ public class Post {
 
     private String authorId;
 
-    private String postTitle;
-
-    private String postSubTitle;
-
-    private String postTextContent;
-
     private PostType postType;
 
     private String postTypeId;
@@ -43,8 +37,7 @@ public class Post {
 
     private Boolean isEnablePostReplyNotification;
 
-    //TODO: update with user date and time
-    private LocalDateTime createdDateTime = LocalDateTime.now();
+    private LocalDateTime createdDateTime;
 
     private LocalDateTime updatedDateTime;
 }

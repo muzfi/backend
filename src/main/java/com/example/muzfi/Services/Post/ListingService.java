@@ -1,6 +1,6 @@
 package com.example.muzfi.Services.Post;
 
-import com.example.muzfi.Dto.PostDto.ListingCreateCreateDto;
+import com.example.muzfi.Dto.PostDto.ListingCreateDto;
 import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
 
 import java.util.List;
@@ -11,5 +11,5 @@ public interface ListingService {
 
     Optional<ListingDetailsDto> getListingById(String listingId);
 
-    Optional<?> createListing(ListingCreateCreateDto listingDto);
+    Optional<?> createListing(ListingCreateDto listingDto);
 }

@@ -1,12 +1,11 @@
 package com.example.muzfi.Dto.PostDto;
 
-import com.example.muzfi.Model.Comment;
-import com.example.muzfi.Model.Like;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,21 +13,25 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class PostDetailsDto {
+public class ListingFeedDto {
 
     private String id;
 
-    private PostAuthorDto author;
+    private String title;
 
-    private String type;
+    private String subTitle;
 
-    private Object postContent;
+    private String description;
 
-    private Integer likes;
+    private List<String> images;
 
-    private Integer comments;
+    private BigDecimal price;
 
-    private Integer shares;
+    private int bidsCount;
+
+    private LocalDateTime deadline;
+
+    private List<String> tags;
 
     private LocalDateTime createdDateTime;
 

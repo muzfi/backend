@@ -1,7 +1,8 @@
 package com.example.muzfi.Services.Post;
 
-import com.example.muzfi.Dto.PostDto.ListingCreateCreateDto;
+import com.example.muzfi.Dto.PostDto.ListingCreateDto;
 import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
+import com.example.muzfi.Dto.PostDto.PostAuthorDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Enums.PostType;
 import com.example.muzfi.Manager.ListingManager;
@@ -11,6 +12,7 @@ import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Model.Post.ProductShippingDetails;
 import com.example.muzfi.Repository.ListingRepository;
 import com.example.muzfi.Repository.PostRepository;
+import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,14 +27,17 @@ public class ListingServiceImpl implements ListingService {
 
     private final ListingRepository listingRepository;
 
+    private final UserService userService;
+
     private final PostManager postManager;
 
     private final ListingManager listingManager;
 
     @Autowired
-    public ListingServiceImpl(PostRepository postRepository, ListingRepository listingRepository, PostManager postManager, ListingManager listingManager) {
+    public ListingServiceImpl(PostRepository postRepository, ListingRepository listingRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
         this.postRepository = postRepository;
         this.listingRepository = listingRepository;
+        this.userService = userService;
         this.postManager = postManager;
         this.listingManager = listingManager;
     }
@@ -69,13 +74,13 @@ public class ListingServiceImpl implements ListingService {
     }
 
     @Override
-    public Optional<PostDetailsDto> createListing(ListingCreateCreateDto listingDto) {
+    public Optional<PostDetailsDto> createListing(ListingCreateDto listingDto) {
         //create post
         Post newPost = new Post();
         newPost.setAuthorId(listingDto.getAuthorId());
-        newPost.setPostTitle(listingDto.getListingTitle());
         newPost.setPostType(PostType.PROD_SALE);
         newPost.setIsEnablePostReplyNotification(listingDto.getIsEnablePostReplyNotification());
+        newPost.setCreatedDateTime(listingDto.getCreatedDateTime());
 
         //shipping details
         if (listingDto.getShippingDetails() != null) {
@@ -92,19 +97,24 @@ public class ListingServiceImpl implements ListingService {
         newListing.setBrand(listingDto.getBrand());
         newListing.setModel(listingDto.getModel());
         newListing.setYear(listingDto.getYear());
+        newListing.setShippingDetails(listingDto.getShippingDetails());
         newListing.setFinish(listingDto.getFinish());
-        newListing.setTitle(listingDto.getListingTitle());
+        newListing.setTitle(listingDto.getTitle());
+        newListing.setSubTitle(listingDto.getSubTitle());
+        newListing.setDescription(listingDto.getDescription());
         newListing.setIsHandMade(listingDto.getIsHandMade());
         newListing.setImages(listingDto.getImages());
+        newListing.setCreatedDateTime(listingDto.getCreatedDateTime());
         newListing.setCondition(listingDto.getCondition());
         newListing.setConditionDescription(listingDto.getConditionDescription());
         newListing.setYouTubeLink(listingDto.getYouTubeLink());
-        newListing.setShippingDetails(listingDto.getShippingDetails());
         newListing.setDeliverMethod(listingDto.getDeliverMethod());
         newListing.setPrice(listingDto.getPrice());
         newListing.setIs3PercentFromFinalSellingPrice(listingDto.getIs3PercentFromFinalSellingPrice());
         newListing.setIsAcceptOffers(listingDto.getIsAcceptOffers());
         newListing.setBumpRate(listingDto.getBumpRate());
+        newListing.setTags(listingDto.getTags());
+        newListing.setDeadline(listingDto.getDeadline());
 
         //save post and listing
         Post post = postRepository.save(newPost);
@@ -118,7 +128,8 @@ public class ListingServiceImpl implements ListingService {
         Listing listingUpdated = listingRepository.save(listing);
 
         //return created post
-        PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, listingUpdated);
+        Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
+        PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, listingUpdated, authorOptional.get());
 
         return Optional.ofNullable(postDetailsDto);
     }

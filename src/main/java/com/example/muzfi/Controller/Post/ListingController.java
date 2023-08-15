@@ -1,6 +1,6 @@
 package com.example.muzfi.Controller.Post;
 
-import com.example.muzfi.Dto.PostDto.ListingCreateCreateDto;
+import com.example.muzfi.Dto.PostDto.ListingCreateDto;
 import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.Post.ListingService;
@@ -60,7 +60,7 @@ public class ListingController {
 
     @PreAuthorize("hasAuthority('Muzfi_Member')")
     @PostMapping
-    public ResponseEntity<?> createListing(@RequestBody ListingCreateCreateDto listingDto) {
+    public ResponseEntity<?> createListing(@RequestBody ListingCreateDto listingDto) {
         try {
             String loggedInUserId = listingDto.getAuthorId();
 

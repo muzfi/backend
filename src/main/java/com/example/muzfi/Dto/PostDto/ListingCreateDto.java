@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class ListingCreateCreateDto extends PostCreateDto {
+public class ListingCreateDto extends PostCreateDto {
 
     private String brand;
 
@@ -23,8 +24,6 @@ public class ListingCreateCreateDto extends PostCreateDto {
     private String year;
 
     private String finish;
-
-    private String listingTitle;
 
     private Boolean isHandMade;
 
@@ -47,4 +46,6 @@ public class ListingCreateCreateDto extends PostCreateDto {
     private Boolean isAcceptOffers;
 
     private BigDecimal bumpRate;
+
+    private LocalDateTime deadline;
 }

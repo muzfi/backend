@@ -1,6 +1,7 @@
 package com.example.muzfi.Services.Post;
 
-import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
+import com.example.muzfi.Dto.PostDto.ListingFeedDto;
+import com.example.muzfi.Dto.PostDto.PostAuthorDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Enums.PostType;
 import com.example.muzfi.Manager.ListingManager;
@@ -9,6 +10,7 @@ import com.example.muzfi.Model.Post.Listing;
 import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Repository.ListingRepository;
 import com.example.muzfi.Repository.PostRepository;
+import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +25,18 @@ public class PostServiceImpl implements PostService {
 
     private final ListingRepository listingRepository;
 
+    private final UserService userService;
+
     private final PostManager postManager;
 
     private final ListingManager listingManager;
 
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, PostManager postManager, ListingManager listingManager) {
+    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
         this.postRepository = postRepository;
         this.listingRepository = listingRepository;
+        this.userService = userService;
         this.postManager = postManager;
         this.listingManager = listingManager;
     }
@@ -44,9 +49,11 @@ public class PostServiceImpl implements PostService {
 
         for (Post post : posts) {
             Object postTypeData = getPostTypeData(post);
+            Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
 
-            if (postTypeData != null) {
-                PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData);
+            if (postTypeData != null && authorOptional.isPresent()) {
+                PostAuthorDto author = authorOptional.get();
+                PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData, author);
                 postList.add(postDetailsDto);
             }
         }
@@ -67,9 +74,11 @@ public class PostServiceImpl implements PostService {
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
             Object postTypeData = getPostTypeData(post);
+            Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
 
-            if (postTypeData != null) {
-                PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData);
+            if (postTypeData != null && authorOptional.isPresent()) {
+                PostAuthorDto author = authorOptional.get();
+                PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData, author);
 
                 return Optional.of(postDetailsDto);
             } else {
@@ -99,9 +108,9 @@ public class PostServiceImpl implements PostService {
 
             if (listingOptional.isPresent()) {
                 Listing listing = listingOptional.get();
-                ListingDetailsDto listingDetailsDto = listingManager.getListingDetailsDto(listing);
+                ListingFeedDto listingFeedDto = listingManager.getListingFeedDto(listing);
 
-                postTypeData = listingDetailsDto;
+                postTypeData = listingFeedDto;
             } else {
                 return null;
             }
