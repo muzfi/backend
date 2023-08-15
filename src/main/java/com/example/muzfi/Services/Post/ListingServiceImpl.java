@@ -1,8 +1,11 @@
 package com.example.muzfi.Services.Post;
 
 import com.example.muzfi.Dto.PostDto.ListingCreateCreateDto;
+import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Enums.PostType;
+import com.example.muzfi.Manager.ListingManager;
+import com.example.muzfi.Manager.PostManager;
 import com.example.muzfi.Model.Post.Listing;
 import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Model.Post.ProductShippingDetails;
@@ -11,6 +14,8 @@ import com.example.muzfi.Repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -20,13 +25,47 @@ public class ListingServiceImpl implements ListingService {
 
     private final ListingRepository listingRepository;
 
-    private final PostService postService;
+    private final PostManager postManager;
+
+    private final ListingManager listingManager;
 
     @Autowired
-    public ListingServiceImpl(PostRepository postRepository, ListingRepository listingRepository, PostService postService) {
+    public ListingServiceImpl(PostRepository postRepository, ListingRepository listingRepository, PostManager postManager, ListingManager listingManager) {
         this.postRepository = postRepository;
         this.listingRepository = listingRepository;
-        this.postService = postService;
+        this.postManager = postManager;
+        this.listingManager = listingManager;
+    }
+
+    @Override
+    public Optional<List<ListingDetailsDto>> getAllListings() {
+        List<Listing> listings = listingRepository.findAll();
+        List<ListingDetailsDto> listingList = new ArrayList<>();
+
+        for (Listing listing : listings) {
+            ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
+            listingList.add(dto);
+        }
+
+        if (listingList.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(listingList);
+    }
+
+    @Override
+    public Optional<ListingDetailsDto> getListingById(String listingId) {
+        Optional<Listing> listingOptional = listingRepository.findById(listingId);
+
+        if (listingOptional.isPresent()) {
+            Listing listing = listingOptional.get();
+            ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
+
+            return Optional.of(dto);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -75,12 +114,13 @@ public class ListingServiceImpl implements ListingService {
         post.setPostTypeId(listing.getId());
         listing.setPostId(post.getId());
 
-        postRepository.save(post);
-        listingRepository.save(listing);
+        Post postUpdated = postRepository.save(post);
+        Listing listingUpdated = listingRepository.save(listing);
 
         //return created post
-        Optional<PostDetailsDto> postOptional = postService.getPostById(post.getId());
+        PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, listingUpdated);
 
-        return postOptional;
+        return Optional.ofNullable(postDetailsDto);
     }
+
 }
