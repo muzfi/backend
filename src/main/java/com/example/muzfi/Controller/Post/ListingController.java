@@ -1,6 +1,7 @@
 package com.example.muzfi.Controller.Post;
 
-import com.example.muzfi.Dto.PostDto.ListingCreateCreateDto;
+import com.example.muzfi.Dto.PostDto.ListingCreateDto;
+import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.Post.ListingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,9 +27,40 @@ public class ListingController {
         this.listingService = listingService;
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllListings() {
+        try {
+            Optional<List<ListingDetailsDto>> listingList = listingService.getAllListings();
+
+            if (listingList.isPresent()) {
+                return new ResponseEntity<>(listingList.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot retrieve listings", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @GetMapping("/{listingId}")
+    public ResponseEntity<?> getListingById(@PathVariable("listingId") String listingId) {
+        try {
+            Optional<ListingDetailsDto> listing = listingService.getListingById(listingId);
+
+            if (listing.isPresent()) {
+                return new ResponseEntity<>(listing.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot retrieve listing", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PreAuthorize("hasAuthority('Muzfi_Member')")
     @PostMapping
-    public ResponseEntity<?> createListing(@RequestBody ListingCreateCreateDto listingDto) {
+    public ResponseEntity<?> createListing(@RequestBody ListingCreateDto listingDto) {
         try {
             String loggedInUserId = listingDto.getAuthorId();
 

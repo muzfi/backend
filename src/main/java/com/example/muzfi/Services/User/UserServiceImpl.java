@@ -1,5 +1,6 @@
 package com.example.muzfi.Services.User;
 
+import com.example.muzfi.Dto.PostDto.PostAuthorDto;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Enums.UserRole;
 import com.example.muzfi.Repository.UserRepository;
@@ -160,6 +161,36 @@ public class UserServiceImpl implements UserService {
             userRepository.save(unBlockedUser);
 
             return Optional.of(unBlockedUser.getFirstName() + " is unblocked");
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    //Retrieve post author data by author id
+    @Override
+    public Optional<PostAuthorDto> getPostAuthor(String authorId) {
+
+        Optional<User> userOptional = userRepository.findById(authorId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            PostAuthorDto authorDto = new PostAuthorDto();
+
+            authorDto.setId(user.getId());
+            authorDto.setUsername(user.getUserName());
+            authorDto.setAvatar(user.getProfilePicUri());
+            authorDto.setName(user.getFirstName() + " " + user.getLastName());
+            authorDto.setLocation(user.getLocation());
+            authorDto.setMuzPoints(user.getMuzPoints());
+
+            //TODO: Set ratings
+
+            //TODO: Set review count
+
+            //TODO: Set seller ratings
+
+            return Optional.of(authorDto);
+
         } else {
             return Optional.empty();
         }

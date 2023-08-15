@@ -33,6 +33,10 @@ public class ListingDetailsDto {
 
     private String title;
 
+    private String subTitle;
+
+    private String description;
+
     private Boolean isHandMade;
 
     private List<String> images;
@@ -54,6 +58,12 @@ public class ListingDetailsDto {
     private Boolean isAcceptOffers;
 
     private BigDecimal bumpRate;
+
+    private int bidsCount;
+
+    private LocalDateTime deadline;
+
+    private List<String> tags;
 
     private LocalDateTime createdDateTime;
 

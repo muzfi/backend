@@ -1,5 +1,6 @@
 package com.example.muzfi.Services.User;
 
+import com.example.muzfi.Dto.PostDto.PostAuthorDto;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Enums.UserRole;
 
@@ -24,4 +25,6 @@ public interface UserService {
     Optional<String> blockUser(String loggedInUserId, String blockUserId);
 
     Optional<String> unBlockUser(String loggedInUserId, String unBlockUserId);
+
+    Optional<PostAuthorDto> getPostAuthor(String authorId);
 }

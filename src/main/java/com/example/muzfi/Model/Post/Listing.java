@@ -39,6 +39,10 @@ public class Listing {
     @NotNull
     private String title;
 
+    private String subTitle;
+
+    private String description;
+
     private Boolean isHandMade;
 
     @NotNull
@@ -65,8 +69,13 @@ public class Listing {
 
     private BigDecimal bumpRate;
 
-    //TODO: update with user date and time
-    private LocalDateTime createdDateTime = LocalDateTime.now();
+    private int bidsCount;
+
+    private LocalDateTime deadline;
+
+    private List<String> tags;
+
+    private LocalDateTime createdDateTime;
 
     private LocalDateTime updatedDateTime;
 }

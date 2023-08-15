@@ -1,12 +1,16 @@
 package com.example.muzfi.Services.Post;
 
-import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
+import com.example.muzfi.Dto.PostDto.ListingFeedDto;
+import com.example.muzfi.Dto.PostDto.PostAuthorDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Enums.PostType;
+import com.example.muzfi.Manager.ListingManager;
+import com.example.muzfi.Manager.PostManager;
 import com.example.muzfi.Model.Post.Listing;
 import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Repository.ListingRepository;
 import com.example.muzfi.Repository.PostRepository;
+import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +25,20 @@ public class PostServiceImpl implements PostService {
 
     private final ListingRepository listingRepository;
 
+    private final UserService userService;
+
+    private final PostManager postManager;
+
+    private final ListingManager listingManager;
+
+
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository) {
+    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
         this.postRepository = postRepository;
         this.listingRepository = listingRepository;
+        this.userService = userService;
+        this.postManager = postManager;
+        this.listingManager = listingManager;
     }
 
     //Retrieve all posts
@@ -35,9 +49,11 @@ public class PostServiceImpl implements PostService {
 
         for (Post post : posts) {
             Object postTypeData = getPostTypeData(post);
+            Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
 
-            if (postTypeData != null) {
-                PostDetailsDto postDetailsDto = getPostDetailsDto(post, postTypeData);
+            if (postTypeData != null && authorOptional.isPresent()) {
+                PostAuthorDto author = authorOptional.get();
+                PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData, author);
                 postList.add(postDetailsDto);
             }
         }
@@ -58,9 +74,11 @@ public class PostServiceImpl implements PostService {
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
             Object postTypeData = getPostTypeData(post);
+            Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
 
-            if (postTypeData != null) {
-                PostDetailsDto postDetailsDto = getPostDetailsDto(post, postTypeData);
+            if (postTypeData != null && authorOptional.isPresent()) {
+                PostAuthorDto author = authorOptional.get();
+                PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData, author);
 
                 return Optional.of(postDetailsDto);
             } else {
@@ -90,31 +108,9 @@ public class PostServiceImpl implements PostService {
 
             if (listingOptional.isPresent()) {
                 Listing listing = listingOptional.get();
-                ListingDetailsDto listingDetailsDto = new ListingDetailsDto();
+                ListingFeedDto listingFeedDto = listingManager.getListingFeedDto(listing);
 
-                listingDetailsDto.setId(listing.getId());
-                listingDetailsDto.setPostId(listing.getPostId());
-                listingDetailsDto.setAuthorId(listing.getAuthorId());
-                listingDetailsDto.setBrand(listing.getBrand());
-                listingDetailsDto.setModel(listing.getModel());
-                listingDetailsDto.setYear(listing.getYear());
-                listingDetailsDto.setFinish(listing.getFinish());
-                listingDetailsDto.setTitle(listing.getTitle());
-                listingDetailsDto.setIsHandMade(listing.getIsHandMade());
-                listingDetailsDto.setImages(listing.getImages());
-                listingDetailsDto.setCondition(listing.getCondition());
-                listingDetailsDto.setConditionDescription(listing.getConditionDescription());
-                listingDetailsDto.setYouTubeLink(listing.getYouTubeLink());
-                listingDetailsDto.setDeliverMethod(listing.getDeliverMethod());
-                listingDetailsDto.setShippingDetails(listing.getShippingDetails());
-                listingDetailsDto.setPrice(listing.getPrice());
-                listingDetailsDto.setIs3PercentFromFinalSellingPrice(listing.getIs3PercentFromFinalSellingPrice());
-                listingDetailsDto.setIsAcceptOffers(listing.getIsAcceptOffers());
-                listingDetailsDto.setBumpRate(listing.getBumpRate());
-                listingDetailsDto.setCreatedDateTime(listing.getCreatedDateTime());
-                listingDetailsDto.setUpdatedDateTime(listing.getUpdatedDateTime());
-
-                postTypeData = listingDetailsDto;
+                postTypeData = listingFeedDto;
             } else {
                 return null;
             }
@@ -133,25 +129,5 @@ public class PostServiceImpl implements PostService {
         }
 
         return postTypeData;
-    }
-
-    //Creates PostDetailsDto including post details and postType details
-    private PostDetailsDto getPostDetailsDto(Post post, Object postTypeData) {
-        PostDetailsDto postDetailsDto = new PostDetailsDto();
-
-        postDetailsDto.setId(post.getId());
-        postDetailsDto.setAuthorId(post.getAuthorId());
-        postDetailsDto.setPostTitle(post.getPostTitle());
-        postDetailsDto.setPostSubTitle(post.getPostSubTitle());
-        postDetailsDto.setPostTextContent(post.getPostTextContent());
-        postDetailsDto.setPostType(post.getPostType().toString());
-        postDetailsDto.setPostTypeId(post.getPostTypeId());
-        postDetailsDto.setPostTypeData(postTypeData);
-        postDetailsDto.setLikes(post.getLikes());
-        postDetailsDto.setComments(post.getComments());
-        postDetailsDto.setShares(post.getShares());
-        postDetailsDto.setCreatedDateTime(post.getCreatedDateTime());
-        postDetailsDto.setUpdatedDateTime(post.getUpdatedDateTime());
-        return postDetailsDto;
     }
 }
