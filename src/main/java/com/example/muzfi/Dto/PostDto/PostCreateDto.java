@@ -27,4 +27,6 @@ public class PostCreateDto {
     private List<String> tags;
 
     private LocalDateTime createdDateTime;
+
+    private Boolean isDraft;
 }

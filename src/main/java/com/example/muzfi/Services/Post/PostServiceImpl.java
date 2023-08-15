@@ -8,8 +8,10 @@ import com.example.muzfi.Manager.ListingManager;
 import com.example.muzfi.Manager.PostManager;
 import com.example.muzfi.Model.Post.Listing;
 import com.example.muzfi.Model.Post.Post;
+import com.example.muzfi.Model.Post.Topic;
 import com.example.muzfi.Repository.ListingRepository;
 import com.example.muzfi.Repository.PostRepository;
+import com.example.muzfi.Repository.TopicRepository;
 import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ public class PostServiceImpl implements PostService {
 
     private final ListingRepository listingRepository;
 
+    private final TopicRepository topicRepository;
+
     private final UserService userService;
 
     private final PostManager postManager;
@@ -33,9 +37,10 @@ public class PostServiceImpl implements PostService {
 
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
+    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, TopicRepository topicRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
         this.postRepository = postRepository;
         this.listingRepository = listingRepository;
+        this.topicRepository = topicRepository;
         this.userService = userService;
         this.postManager = postManager;
         this.listingManager = listingManager;
@@ -124,7 +129,15 @@ public class PostServiceImpl implements PostService {
 
         } else if (post.getPostType().equals(PostType.PROD_TOPIC)) {
 
-            //TODO: Implementation for the topic
+            Optional<Topic> topicOptional = topicRepository.findById(post.getPostTypeId());
+
+            if (topicOptional.isPresent()) {
+                Topic topic = topicOptional.get();
+
+                postTypeData = topic;
+            } else {
+                return null;
+            }
 
         }
 

@@ -37,6 +37,8 @@ public class Post {
 
     private Boolean isEnablePostReplyNotification;
 
+    private Boolean isDraft;
+
     private LocalDateTime createdDateTime;
 
     private LocalDateTime updatedDateTime;
