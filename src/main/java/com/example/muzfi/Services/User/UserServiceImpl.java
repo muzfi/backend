@@ -37,6 +37,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> getUserById(String userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        return optionalUser;
+    }
+
+    @Override
     public Optional<String> getOktaIdByUserId(String userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
 
