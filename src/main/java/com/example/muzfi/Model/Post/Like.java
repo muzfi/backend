@@ -1,4 +1,4 @@
-package com.example.muzfi.Model;
+package com.example.muzfi.Model.Post;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Like {
     @Id
     private String id;
+
+    private String postId;
 
     private String userId;
 }

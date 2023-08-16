@@ -2,7 +2,6 @@ package com.example.muzfi.Model.Post;
 
 import com.example.muzfi.Enums.PostType;
 import com.example.muzfi.Model.Comment;
-import com.example.muzfi.Model.Like;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -26,9 +25,6 @@ public class Post {
     private PostType postType;
 
     private String postTypeId;
-
-    @DBRef
-    private List<Like> likes;
 
     @DBRef
     private List<Comment> comments;

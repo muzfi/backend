@@ -29,6 +29,8 @@ public class PostDetailsDto {
 
     private Boolean isDraft;
 
+    private Boolean isLiked;
+
     private LocalDateTime createdDateTime;
 
     private LocalDateTime updatedDateTime;

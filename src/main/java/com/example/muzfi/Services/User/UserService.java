@@ -14,6 +14,8 @@ public interface UserService {
 
     Optional<User> getUserByOktaId(String oktaId);
 
+    Optional<User> getUserById(String userId);
+
     Optional<String> getOktaIdByUserId(String userId);
 
     User updateUserRole(String userId, List<UserRole> userRoles);
