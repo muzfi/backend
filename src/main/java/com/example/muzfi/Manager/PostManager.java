@@ -5,6 +5,7 @@ import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Services.AuthService;
+import com.example.muzfi.Services.Post.CommentService;
 import com.example.muzfi.Services.Post.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,11 +18,14 @@ public class PostManager {
 
     private final LikeService likeService;
 
+    private final CommentService commentService;
+
     private final AuthService authService;
 
     @Autowired
-    public PostManager(LikeService likeService, AuthService authService) {
+    public PostManager(LikeService likeService, CommentService commentService, AuthService authService) {
         this.likeService = likeService;
+        this.commentService = commentService;
         this.authService = authService;
     }
 
@@ -37,6 +41,7 @@ public class PostManager {
         postDetailsDto.setCreatedDateTime(post.getCreatedDateTime());
         postDetailsDto.setUpdatedDateTime(post.getUpdatedDateTime());
         postDetailsDto.setIsDraft(post.getIsDraft());
+        postDetailsDto.setLikes(0);
 
         //set like count and isLiked
         Optional<List<String>> likedUserIdsOptional = likeService.getLikedUserIdsByPostId(post.getId());
@@ -46,8 +51,8 @@ public class PostManager {
 
             int likedUsersCount = likedUserIds.size();
             postDetailsDto.setLikes(likedUsersCount);
-            User loggedInUser;
 
+            User loggedInUser;
             try {
                 loggedInUser = authService.getLoggedInUser();
             } catch (Exception ex) {
@@ -64,7 +69,9 @@ public class PostManager {
             }
         }
 
-        //TODO: Set comment count
+        //Set comment count
+        Optional<Integer> commentCountOpt = commentService.getPostCommentCount(post.getId());
+        commentCountOpt.ifPresent(postDetailsDto::setComments);
 
         return postDetailsDto;
     }
