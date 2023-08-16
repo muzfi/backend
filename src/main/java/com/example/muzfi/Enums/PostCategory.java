@@ -1,6 +1,6 @@
 package com.example.muzfi.Enums;
 
-public enum TopicCategory {
+public enum PostCategory {
     OC,
     SPOILER,
     NSFW,

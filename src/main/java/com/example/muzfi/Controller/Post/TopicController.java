@@ -37,12 +37,12 @@ public class TopicController {
                 return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
             }
 
-            Optional<?> listing = topicService.createTopic(topicDto);
+            Optional<?> topic = topicService.createTopic(topicDto);
 
-            if (listing.isPresent()) {
-                return new ResponseEntity<>(listing.get(), HttpStatus.OK);
+            if (topic.isPresent()) {
+                return new ResponseEntity<>(topic.get(), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Creat listing failed", HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>("Creat topic failed", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

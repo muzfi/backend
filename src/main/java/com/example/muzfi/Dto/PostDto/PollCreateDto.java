@@ -1,22 +1,22 @@
 package com.example.muzfi.Dto.PostDto;
 
 import com.example.muzfi.Enums.PostCategory;
-import com.example.muzfi.Enums.TopicType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class TopicCreateDto extends PostCreateDto{
+public class PollCreateDto extends PostCreateDto {
+    private List<String> options;
 
-    private TopicType topicType;
+    private LocalDateTime deadline;
 
-    private List<PostCategory> postCategory;
-
+    private List<PostCategory> postCategories;
 }

@@ -52,7 +52,7 @@ public class TopicServiceImpl implements TopicService{
         newTopic.setTitle(topicDto.getTitle());
         newTopic.setTopicType(topicDto.getTopicType());
         newTopic.setText(topicDto.getDescription());
-        newTopic.setTopicCategory(topicDto.getTopicCategory());
+        newTopic.setPostCategory(topicDto.getPostCategory());
         newTopic.setTags(topicDto.getTags());
         newTopic.setCreatedDateTime(topicDto.getCreatedDateTime());
         newTopic.setUpdatedDateTime(topicDto.getCreatedDateTime());

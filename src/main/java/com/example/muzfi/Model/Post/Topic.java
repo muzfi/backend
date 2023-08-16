@@ -1,6 +1,6 @@
 package com.example.muzfi.Model.Post;
 
-import com.example.muzfi.Enums.TopicCategory;
+import com.example.muzfi.Enums.PostCategory;
 import com.example.muzfi.Enums.TopicType;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class Topic {
 
     private String text;
 
-    private List<TopicCategory> topicCategory;
+    private List<PostCategory> postCategory;
 
     private List<String> tags;
 

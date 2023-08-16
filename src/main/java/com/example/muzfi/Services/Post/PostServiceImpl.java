@@ -7,9 +7,11 @@ import com.example.muzfi.Enums.PostType;
 import com.example.muzfi.Manager.ListingManager;
 import com.example.muzfi.Manager.PostManager;
 import com.example.muzfi.Model.Post.Listing;
+import com.example.muzfi.Model.Post.Poll;
 import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Model.Post.Topic;
 import com.example.muzfi.Repository.ListingRepository;
+import com.example.muzfi.Repository.PollRepository;
 import com.example.muzfi.Repository.PostRepository;
 import com.example.muzfi.Repository.TopicRepository;
 import com.example.muzfi.Services.User.UserService;
@@ -29,6 +31,8 @@ public class PostServiceImpl implements PostService {
 
     private final TopicRepository topicRepository;
 
+    private final PollRepository pollRepository;
+
     private final UserService userService;
 
     private final PostManager postManager;
@@ -37,10 +41,11 @@ public class PostServiceImpl implements PostService {
 
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, TopicRepository topicRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
+    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, TopicRepository topicRepository, PollRepository pollRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
         this.postRepository = postRepository;
         this.listingRepository = listingRepository;
         this.topicRepository = topicRepository;
+        this.pollRepository = pollRepository;
         this.userService = userService;
         this.postManager = postManager;
         this.listingManager = listingManager;
@@ -125,7 +130,15 @@ public class PostServiceImpl implements PostService {
 
         } else if (post.getPostType().equals(PostType.PROD_POLL)) {
 
-            //TODO: Implementation for the poll
+            Optional<Poll> pollOptional = pollRepository.findById(post.getPostTypeId());
+
+            if (pollOptional.isPresent()) {
+                Poll poll = pollOptional.get();
+
+                postTypeData = poll;
+            } else {
+                return null;
+            }
 
         } else if (post.getPostType().equals(PostType.PROD_TOPIC)) {
 
