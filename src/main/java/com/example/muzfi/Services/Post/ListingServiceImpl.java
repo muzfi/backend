@@ -81,6 +81,8 @@ public class ListingServiceImpl implements ListingService {
         newPost.setPostType(PostType.PROD_SALE);
         newPost.setIsEnablePostReplyNotification(listingDto.getIsEnablePostReplyNotification());
         newPost.setCreatedDateTime(listingDto.getCreatedDateTime());
+        newPost.setUpdatedDateTime(listingDto.getCreatedDateTime());
+        newPost.setIsDraft(listingDto.getIsDraft());
 
         //shipping details
         if (listingDto.getShippingDetails() != null) {
@@ -105,6 +107,7 @@ public class ListingServiceImpl implements ListingService {
         newListing.setIsHandMade(listingDto.getIsHandMade());
         newListing.setImages(listingDto.getImages());
         newListing.setCreatedDateTime(listingDto.getCreatedDateTime());
+        newListing.setUpdatedDateTime(listingDto.getCreatedDateTime());
         newListing.setCondition(listingDto.getCondition());
         newListing.setConditionDescription(listingDto.getConditionDescription());
         newListing.setYouTubeLink(listingDto.getYouTubeLink());

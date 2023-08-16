@@ -11,5 +11,6 @@ import lombok.Setter;
 @Setter
 public class PollOption {
     private String optionText;
-    private int voteCount;
+
+    private Integer voteCount;
 }

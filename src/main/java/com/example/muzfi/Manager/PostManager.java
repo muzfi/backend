@@ -19,6 +19,7 @@ public class PostManager {
         postDetailsDto.setShares(post.getShares());
         postDetailsDto.setCreatedDateTime(post.getCreatedDateTime());
         postDetailsDto.setUpdatedDateTime(post.getUpdatedDateTime());
+        postDetailsDto.setIsDraft(post.getIsDraft());
 
         //TODO: Set like count
 
