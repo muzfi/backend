@@ -1,14 +1,11 @@
 package com.example.muzfi.Model.Post;
 
 import com.example.muzfi.Enums.PostType;
-import com.example.muzfi.Model.Comment;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,9 +22,6 @@ public class Post {
     private PostType postType;
 
     private String postTypeId;
-
-    @DBRef
-    private List<Comment> comments;
 
     private Integer shares;
 

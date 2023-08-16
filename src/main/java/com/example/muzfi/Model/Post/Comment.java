@@ -1,4 +1,4 @@
-package com.example.muzfi.Model;
+package com.example.muzfi.Model.Post;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,11 +19,17 @@ public class Comment {
     @Id
     private String id;
 
-    private String text;
+    private String postId;
 
     private String userId;
 
-    //TODO: update with user date and time
-    private LocalDateTime createdDateTime = LocalDateTime.now();
+    private String text;
+
+    private List<String> replyCommentIds;
+
+    private Boolean isParentComment;
+
+    private LocalDateTime createdDateTime;
+
     private LocalDateTime updatedDateTime;
 }
