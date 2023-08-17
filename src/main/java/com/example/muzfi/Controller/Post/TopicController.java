@@ -1,6 +1,8 @@
 package com.example.muzfi.Controller.Post;
 
+import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Dto.PostDto.TopicCreateDto;
+import com.example.muzfi.Dto.PostDto.TopicUpdateDto;
 import com.example.muzfi.Model.Post.Topic;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.Post.TopicService;
@@ -74,6 +76,34 @@ public class TopicController {
                 return new ResponseEntity<>(topic.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Cannot retrieve topic", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @PutMapping
+    public ResponseEntity<?> updateTopic(@RequestBody TopicUpdateDto topicUpdateDto) {
+        try {
+            Optional<Topic> topicOptional = topicService.getTopicById(topicUpdateDto.getId());
+
+            if (topicOptional.isEmpty()) {
+                return new ResponseEntity<>("No existing topic found", HttpStatus.NOT_FOUND);
+            }
+
+            boolean isLoggedInUser = authService.isLoggedInUser(topicOptional.get().getAuthorId());
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<PostDetailsDto> postUpdated = topicService.updateTopic(topicUpdateDto);
+
+            if (postUpdated.isPresent()) {
+                return new ResponseEntity<>(postUpdated.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Update topic failed", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
