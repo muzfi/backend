@@ -25,6 +25,7 @@ public class Gear {
     private List<String> cons;
     private Specs specs;
     private List<PriceTrend> priceTrends;
+    private String category;
 }
 
 // You'll also need to define Review, Rating, Specs, PriceTrend classes.

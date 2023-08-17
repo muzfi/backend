@@ -85,5 +85,21 @@ public class GearController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchGears(
+            @RequestParam(name = "term", required = false) String searchTerm,
+            @RequestParam(name = "category", required = false) String category) {
+        try {
+            List<Gear> results = gearService.searchGears(searchTerm, category);
+            if (results != null && !results.isEmpty()) {
+                return new ResponseEntity<>(results, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No Gears Found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // You can continue to add other endpoints to handle specific requirements such as managing reviews, ratings, etc.
 }

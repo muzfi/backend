@@ -14,5 +14,8 @@ public interface GearService {
 
     Gear updateGear(String gearId, Gear gear);
 
+    List<Gear> searchGears(String searchTerm, String category);
+
+
     void deleteGear(String gearId);
 }
