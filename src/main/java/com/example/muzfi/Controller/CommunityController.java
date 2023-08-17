@@ -24,12 +24,7 @@ public class CommunityController {
     @PostMapping
     public ResponseEntity<CommunityDto> createCommunity(@RequestBody CommunityDto communityDto) {
         try {
-            CommunityDto createdCommunity = communityService.createCommunity(
-                    communityDto.getName(),
-                    communityDto.getTitle(),
-                    communityDto.getCreatorId(),
-                    communityDto.getAbout()
-            );
+            CommunityDto createdCommunity = communityService.createCommunity(communityDto);
             return new ResponseEntity<>(createdCommunity, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,6 +58,18 @@ public class CommunityController {
         try {
             communityService.addUserToCommunity(communityName, userId);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{communityName}/similar")
+    public ResponseEntity<List<CommunityDto>> getSimilarCommunities(@PathVariable String communityName) {
+        try {
+            List<CommunityDto> similarCommunities = communityService.getSimilarCommunities(communityName);
+            return new ResponseEntity<>(similarCommunities, HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
