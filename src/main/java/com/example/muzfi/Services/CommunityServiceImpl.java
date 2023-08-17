@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +26,31 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public CommunityDto createCommunity(String name, String title, String creatorId, String about) {
-        Community community = communityRepository.save(new Community(name, title, creatorId, about));
+    public CommunityDto createCommunity(CommunityDto communityDto) {
+        Community community = new Community(
+                communityDto.getName(),
+                communityDto.getTitle(),
+                communityDto.getCreatorId(),
+                LocalDateTime.now(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                communityDto.getAbout(),
+                communityDto.getSub(),
+                communityDto.getType(),
+                communityDto.getGenre(),
+                communityDto.isJoinable(),
+                communityDto.isCreatable(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                communityDto.getRules(),
+                0,
+                0,
+                new ArrayList<>()
+        );
+
+        community = communityRepository.save(community);
         return mapToCommunityDto(community);
     }
-
     @Override
     public List<CommunityDto> getAllCommunities() {
         return communityRepository.findAll().stream()
@@ -65,5 +87,25 @@ public class CommunityServiceImpl implements CommunityService {
         dto.setSubscriberCount(community.getSubscriberIds().size());
         dto.setPostCount(community.getPostIds().size());
         return dto;
+    }
+
+    @Override
+    public List<CommunityDto> getSimilarCommunities(String communityName) {
+        Community community = communityRepository.findByName(communityName);
+        if (community == null) {
+            throw new NotFoundException("Community not found with name: " + communityName);
+        }
+
+        List<Community> similarCommunities = communityRepository.findByTypeAndGenre(
+                community.getType(),
+                community.getGenre()
+        );
+
+        List<CommunityDto> similarCommunityDtos = similarCommunities.stream()
+                .filter(c -> !c.getName().equals(community.getName()))
+                .map(this::mapToCommunityDto)
+                .collect(Collectors.toList());
+
+        return similarCommunityDtos;
     }
 }

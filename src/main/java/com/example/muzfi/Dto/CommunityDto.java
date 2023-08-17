@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,4 +20,14 @@ public class CommunityDto {
     private String about;
     private int subscriberCount;
     private int postCount;
+    private String sub;
+    private String type;
+    private String genre;
+    private boolean joinable;
+    private boolean creatable;
+    private List<String> reviews;
+    private List<String> similarCommunityIds;
+    private String rules;
+    private int rankedSize;
+    private List<String> moderators;
 }
