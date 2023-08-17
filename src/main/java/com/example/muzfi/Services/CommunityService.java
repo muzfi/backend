@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface CommunityService {
 
-    CommunityDto createCommunity(String name, String title, String creatorId, String about);
+    CommunityDto createCommunity(CommunityDto communityDto);
 
     List<CommunityDto> getAllCommunities();
 
     CommunityDto getCommunityByName(String name);
 
     void addUserToCommunity(String communityName, String userId);
+
+    List<CommunityDto> getSimilarCommunities(String communityName);
 }
