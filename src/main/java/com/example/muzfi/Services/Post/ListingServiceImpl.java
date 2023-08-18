@@ -1,21 +1,18 @@
 package com.example.muzfi.Services.Post;
 
-import com.example.muzfi.Dto.PostDto.ListingCreateDto;
-import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
-import com.example.muzfi.Dto.PostDto.PostAuthorDto;
-import com.example.muzfi.Dto.PostDto.PostDetailsDto;
+import com.example.muzfi.Dto.PostDto.*;
 import com.example.muzfi.Enums.PostType;
 import com.example.muzfi.Manager.ListingManager;
 import com.example.muzfi.Manager.PostManager;
 import com.example.muzfi.Model.Post.Listing;
 import com.example.muzfi.Model.Post.Post;
-import com.example.muzfi.Model.Post.ProductShippingDetails;
 import com.example.muzfi.Repository.ListingRepository;
 import com.example.muzfi.Repository.PostRepository;
 import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,15 +81,6 @@ public class ListingServiceImpl implements ListingService {
         newPost.setUpdatedDateTime(listingDto.getCreatedDateTime());
         newPost.setIsDraft(listingDto.getIsDraft());
 
-        //shipping details
-        if (listingDto.getShippingDetails() != null) {
-            ProductShippingDetails shippingDetails = new ProductShippingDetails();
-            shippingDetails.setRate(listingDto.getShippingDetails().getRate());
-            shippingDetails.setIsFreeShipping(listingDto.getShippingDetails().getIsFreeShipping());
-            shippingDetails.setIsFlatShippingRateForRegion(listingDto.getShippingDetails().getIsFlatShippingRateForRegion());
-            shippingDetails.setIsCombineShippingRate(listingDto.getShippingDetails().getIsCombineShippingRate());
-        }
-
         //create listing
         Listing newListing = new Listing();
         newListing.setAuthorId(listingDto.getAuthorId());
@@ -131,10 +119,58 @@ public class ListingServiceImpl implements ListingService {
         Listing listingUpdated = listingRepository.save(listing);
 
         //return created post
+        ListingDetailsDto listingDetailsDto = listingManager.getListingDetailsDto(listingUpdated);
         Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
-        PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, listingUpdated, authorOptional.get());
+        PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, listingDetailsDto, authorOptional.get());
 
         return Optional.ofNullable(postDetailsDto);
+    }
+
+    @Override
+    public Optional<PostDetailsDto> updateListing(ListingUpdateDto updateDto) {
+        Optional<Listing> listingOpt = listingRepository.findById(updateDto.getId());
+        Optional<Post> postOpt = postRepository.findById(updateDto.getPostId());
+
+        if (listingOpt.isEmpty() || postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Listing listing = listingOpt.get();
+        Post post = postOpt.get();
+
+        //set listing
+        listing.setBrand(updateDto.getBrand());
+        listing.setModel(updateDto.getModel());
+        listing.setYear(updateDto.getYear());
+        listing.setFinish(updateDto.getFinish());
+        listing.setTitle(updateDto.getTitle());
+        listing.setSubTitle(updateDto.getSubTitle());
+        listing.setDescription(updateDto.getDescription());
+        listing.setIsHandMade(updateDto.getIsHandMade());
+        listing.setImages(updateDto.getImages());
+        listing.setCondition(updateDto.getCondition());
+        listing.setConditionDescription(updateDto.getConditionDescription());
+        listing.setYouTubeLink(updateDto.getYouTubeLink());
+        listing.setDeliverMethod(updateDto.getDeliverMethod());
+        listing.setShippingDetails(updateDto.getShippingDetails());
+        listing.setPrice(updateDto.getPrice());
+        listing.setIs3PercentFromFinalSellingPrice(updateDto.getIs3PercentFromFinalSellingPrice());
+        listing.setIsAcceptOffers(updateDto.getIsAcceptOffers());
+        listing.setBumpRate(updateDto.getBumpRate());
+        listing.setDeadline(updateDto.getDeadline());
+        listing.setTags(updateDto.getTags());
+        listing.setUpdatedDateTime(LocalDateTime.now());
+
+        post.setUpdatedDateTime(LocalDateTime.now());
+
+        Post postUpdated = postRepository.save(post);
+        Listing listingUpdated = listingRepository.save(listing);
+
+        ListingDetailsDto listingDetailsDto = listingManager.getListingDetailsDto(listingUpdated);
+        Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
+        PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, listingDetailsDto, authorOptional.get());
+
+        return Optional.of(postDetailsDto);
     }
 
 }
