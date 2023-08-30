@@ -12,7 +12,7 @@ public interface PostService {
 
     Optional<PostDetailsDto> getPostById(String id);
 
-    Post savePost(Post post);
+    Optional<List<PostDetailsDto>> getPostsByUserId(String userId);
 
     void deletePost(String id);
 }

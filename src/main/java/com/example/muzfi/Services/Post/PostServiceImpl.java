@@ -99,9 +99,31 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    //Retrieve posts by user id
     @Override
-    public Post savePost(Post post) {
-        return postRepository.save(post);
+    public Optional<List<PostDetailsDto>> getPostsByUserId(String userId) {
+
+        List<Post> postList = postRepository.findAllByAuthorId(userId);
+        Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(userId);
+
+        List<PostDetailsDto> postDetailsDtoList =  new ArrayList<>();
+
+        if (!postList.isEmpty() && authorOptional.isPresent()) {
+            PostAuthorDto author = authorOptional.get();
+
+            for(Post post: postList) {
+                Object postTypeData = getPostTypeData(post);
+
+                if (postTypeData != null ) {
+                    PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData, author);
+                    postDetailsDtoList.add(postDetailsDto);
+                }
+            }
+
+            return Optional.of(postDetailsDtoList);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

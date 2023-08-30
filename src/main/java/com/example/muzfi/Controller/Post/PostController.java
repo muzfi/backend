@@ -62,6 +62,21 @@ public class PostController {
         }
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getPostsByUserId(@PathVariable("userId") String userId) {
+        try {
+            Optional<List<PostDetailsDto>> posts = postService.getPostsByUserId(userId);
+
+            if (posts.isPresent()) {
+                return new ResponseEntity<>(posts.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("There is no posts to show", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PreAuthorize("hasAuthority('Muzfi_Member')")
     @GetMapping("/{postId}/like/{userId}")
     public ResponseEntity<?> addLike(@PathVariable("postId") String postId, @PathVariable("userId") String userId) {
