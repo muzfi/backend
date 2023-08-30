@@ -3,7 +3,9 @@ package com.example.muzfi.Util;
 import com.example.muzfi.Dto.OktaProfileAttributesDto;
 import com.example.muzfi.Dto.OktaProfileDto;
 import com.example.muzfi.Enums.UserRole;
+import com.example.muzfi.Model.UserSetting;
 import com.example.muzfi.Services.User.UserService;
+import com.example.muzfi.Services.User.UserSettingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -28,12 +30,15 @@ public class OktaLoginSuccessListener implements ApplicationListener<Authenticat
 
     private final UserService userService;
 
+    private final UserSettingService userSettingService;
+
     private final Logger logger = Logger.getLogger(OktaRestClient.class.getName());
 
     @Autowired
-    public OktaLoginSuccessListener(OktaRestClient oktaRestClient, UserService userService) {
+    public OktaLoginSuccessListener(OktaRestClient oktaRestClient, UserService userService, UserSettingService userSettingService) {
         this.oktaRestClient = oktaRestClient;
         this.userService = userService;
+        this.userSettingService = userSettingService;
     }
 
     @Override
@@ -80,7 +85,12 @@ public class OktaLoginSuccessListener implements ApplicationListener<Authenticat
                         newUser.setLastName(lastName);
                         newUser.setRole(roles);
 
-                        userService.createUser(newUser);
+                        User userCreated = userService.createUser(newUser);
+
+                        UserSetting setting = new UserSetting();
+                        setting.setUserId(userCreated.getId());
+
+                        userSettingService.createUserSetting(setting);
                     } else {
                         userService.updateUserRole(loggedInUser.get().getId(), roles);
                     }

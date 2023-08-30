@@ -20,7 +20,5 @@ public class UserProfileUpdateDto {
 
     private LocalDate birthDate;
 
-    private String location;
-
     private String profilePicUri;
 }
