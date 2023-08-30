@@ -1,5 +1,6 @@
 package com.example.muzfi.Dto.UserDto;
 
+import com.example.muzfi.Enums.UserGender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class UserProfileDto {
     private String firstName;
 
     private String lastName;
+
+    private UserGender gender;
 
     private String description;
 

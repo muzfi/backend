@@ -1,5 +1,6 @@
 package com.example.muzfi.Model;
 
+import com.example.muzfi.Enums.UserGender;
 import com.example.muzfi.Enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,8 @@ public class User {
     private String firstName;
 
     private String lastName;
+
+    private UserGender gender = UserGender.NONE;
 
     private List<UserRole> role;
 

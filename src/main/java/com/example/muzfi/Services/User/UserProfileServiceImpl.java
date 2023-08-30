@@ -2,6 +2,7 @@ package com.example.muzfi.Services.User;
 
 import com.example.muzfi.Dto.UserDto.UserProfileDto;
 import com.example.muzfi.Dto.UserDto.UserProfileUpdateDto;
+import com.example.muzfi.Enums.UserGender;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Repository.UserRepository;
 import com.example.muzfi.Services.AuthService;
@@ -46,13 +47,15 @@ public class UserProfileServiceImpl implements UserProfileService {
             if (loggedInUser != null) {
 
                 // if logged in got blockedBy selected user profile owner, does not return the profile
-                for (String blockedById : loggedInUser.getBlockedByUserIds()) {
-                    if (blockedById.equals(userId)) return Optional.empty();
+                if (loggedInUser.getBlockedByUserIds() != null) {
+                    for (String blockedById : loggedInUser.getBlockedByUserIds()) {
+                        if (blockedById.equals(userId)) return Optional.empty();
+                    }
                 }
 
                 //isFollowed
                 Set<String> followersList = user.getFollowersUserIds();
-                if (!followersList.isEmpty()) {
+                if (followersList != null && !followersList.isEmpty()) {
                     for (String followerId : followersList) {
                         if (followerId.equals(loggedInUser.getId())) isFollowed = true;
                     }
@@ -61,7 +64,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
                 //isBlocked
                 Set<String> blockedByList = user.getBlockedByUserIds();
-                if (!blockedByList.isEmpty()) {
+                if (blockedByList != null && !blockedByList.isEmpty()) {
                     for (String blockedId : blockedByList) {
                         if (blockedId.equals(loggedInUser.getId())) isBlocked = true;
                     }
@@ -90,6 +93,7 @@ public class UserProfileServiceImpl implements UserProfileService {
             userProfileDto.setEmail(user.getEmail());
             userProfileDto.setFirstName(user.getFirstName());
             userProfileDto.setLastName(user.getLastName());
+            userProfileDto.setGender(user.getGender());
             userProfileDto.setDescription(user.getDescription());
             userProfileDto.setLocation(user.getLocation());
             userProfileDto.setProfileUrl(user.getProfilePicUri());
@@ -152,6 +156,26 @@ public class UserProfileServiceImpl implements UserProfileService {
             Optional<UserProfileDto> response = getUserProfileByUserId(userId);
 
             return response;
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<UserProfileDto> updateUserGender(String userid, UserGender gender) {
+        Optional<User> userOptional = userRepository.findById(userid);
+
+        if (userOptional.isPresent()) {
+            User existingUser = userOptional.get();
+            existingUser.setGender(gender);
+            existingUser.setLastUpdatedDateTime(LocalDateTime.now());
+
+            userRepository.save(existingUser);
+
+            Optional<UserProfileDto> response = getUserProfileByUserId(userid);
+
+            return response;
+
         } else {
             return Optional.empty();
         }

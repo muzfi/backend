@@ -2,6 +2,7 @@ package com.example.muzfi.Controller.User;
 
 import com.example.muzfi.Dto.UserDto.UserProfileDto;
 import com.example.muzfi.Dto.UserDto.UserProfileUpdateDto;
+import com.example.muzfi.Enums.UserGender;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.User.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,29 @@ public class UserProfileController {
             }
 
             Optional<UserProfileDto> updatedUserProfile = userProfileService.updateUserProfile(userId, updatedDetails);
+
+            if (updatedUserProfile.isPresent()) {
+                return new ResponseEntity<>(updatedUserProfile, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User profile update failed", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // update logged in  user gender
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @PutMapping("/my/gender/{userId}")
+    public ResponseEntity<?> updateLoggedInUserGender(@PathVariable("userId") String userId, @RequestParam(name = "gender") UserGender gender) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You cannot update this user profile.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<UserProfileDto> updatedUserProfile = userProfileService.updateUserGender(userId, gender);
 
             if (updatedUserProfile.isPresent()) {
                 return new ResponseEntity<>(updatedUserProfile, HttpStatus.OK);
