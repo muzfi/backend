@@ -43,6 +43,12 @@ public class User {
 
     private String location;
 
+    private String country;
+
+    private String state;
+
+    private String city;
+
     private String profilePicUri;
 
     private Set<String> followersUserIds;
