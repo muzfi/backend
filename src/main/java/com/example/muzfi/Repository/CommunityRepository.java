@@ -10,4 +10,8 @@ import java.util.List;
 public interface CommunityRepository extends MongoRepository<Community, String> {
     Community findByName(String name);
     List<Community> findByTypeAndGenre(String type, String genre);
+
+    List<Community> findByNameContainingIgnoreCase(String name);
+
+    List<Community> findByTitleContainingIgnoreCase(String name);
 }
