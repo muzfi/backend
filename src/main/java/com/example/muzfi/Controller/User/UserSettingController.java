@@ -1,5 +1,6 @@
 package com.example.muzfi.Controller.User;
 
+import com.example.muzfi.Dto.UserDto.AdvanceProfileSettingsUpdateDto;
 import com.example.muzfi.Model.UserSetting;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.User.UserSettingService;
@@ -76,6 +77,40 @@ public class UserSettingController {
 
             UserSetting existingSetting = settingOptional.get();
             existingSetting.setContentLang(lang);
+
+            Optional<UserSetting> updatedSetting = userSettingService.updateUserSetting(existingSetting);
+
+            if (updatedSetting.isPresent()) {
+                return new ResponseEntity<>(updatedSetting, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User profile setting update failed", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // update logged-in  user advance profile settings
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @PutMapping("/advance-profile-settings/{userId}")
+    public ResponseEntity<?> updateLoggedInUserIsAllowToFollow(@PathVariable("userId") String userId, @RequestBody AdvanceProfileSettingsUpdateDto settings) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You cannot update this user profile.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<UserSetting> settingOptional = userSettingService.getUserSettingByUserId(userId);
+
+            if (settingOptional.isEmpty()) {
+                return new ResponseEntity<>("User profile setting not found", HttpStatus.NOT_FOUND);
+            }
+
+            UserSetting existingSetting = settingOptional.get();
+            existingSetting.setIsAllowToFollow(settings.getIsAllowToFollow());
+            existingSetting.setIsContentVisible(settings.getIsContentVisible());
+            existingSetting.setIsActiveInCommunityVisible(settings.getIsActiveInCommunityVisible());
 
             Optional<UserSetting> updatedSetting = userSettingService.updateUserSetting(existingSetting);
 

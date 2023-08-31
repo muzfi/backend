@@ -91,6 +91,7 @@ public class UserProfileServiceImpl implements UserProfileService {
             userProfileDto.setEmail(user.getEmail());
             userProfileDto.setFirstName(user.getFirstName());
             userProfileDto.setLastName(user.getLastName());
+            userProfileDto.setDisplayName(user.getDisplayName());
             userProfileDto.setGender(user.getGender());
             userProfileDto.setDescription(user.getDescription());
             userProfileDto.setLocation(user.getLocation());
@@ -98,6 +99,8 @@ public class UserProfileServiceImpl implements UserProfileService {
             userProfileDto.setState(user.getState());
             userProfileDto.setCity(user.getCity());
             userProfileDto.setProfileUrl(user.getProfilePicUri());
+            userProfileDto.setBannerImageUrl(user.getBannerImageUri());
+            userProfileDto.setSocialLinks(user.getSocialLinks());
             userProfileDto.setNoOfPosts(noOfPosts);
             userProfileDto.setNoOfGears(noOfGears);
             userProfileDto.setNoOfSales(noOfSales);
@@ -127,6 +130,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
             existingUser.setFirstName(user.getFirstName());
             existingUser.setLastName(user.getLastName());
+            existingUser.setDisplayName(user.getDisplayName());
             existingUser.setBirthDate(user.getBirthDate());
             existingUser.setDescription(user.getDescription());
             existingUser.setLocation(user.getLocation());
@@ -134,6 +138,8 @@ public class UserProfileServiceImpl implements UserProfileService {
             existingUser.setCountry(user.getCountry());
             existingUser.setState(user.getState());
             existingUser.setProfilePicUri(user.getProfilePicUri());
+            existingUser.setBannerImageUri(user.getBannerImageUri());
+            existingUser.setSocialLinks(user.getSocialLinks());
             existingUser.setGender(user.getGender());
             existingUser.setLastUpdatedDateTime(LocalDateTime.now());
 

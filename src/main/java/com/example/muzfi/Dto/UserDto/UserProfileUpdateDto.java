@@ -16,9 +16,9 @@ public class UserProfileUpdateDto {
 
     private String lastName;
 
+    private String displayName;
+
     private String description;
 
     private LocalDate birthDate;
-
-    private String profilePicUri;
 }
