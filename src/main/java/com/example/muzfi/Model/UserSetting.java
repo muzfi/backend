@@ -24,6 +24,12 @@ public class UserSetting {
 
     private String contentLang;
 
+    private Boolean isAllowToFollow;
+
+    private Boolean isContentVisible;
+
+    private Boolean isActiveInCommunityVisible;
+
     //TODO: update with user date and time
     private LocalDateTime createdDateTime;
 

@@ -3,6 +3,7 @@ package com.example.muzfi.Util;
 import com.example.muzfi.Dto.OktaProfileAttributesDto;
 import com.example.muzfi.Dto.OktaProfileDto;
 import com.example.muzfi.Enums.UserRole;
+import com.example.muzfi.Model.User;
 import com.example.muzfi.Model.UserSetting;
 import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.Services.User.UserSettingService;
@@ -15,7 +16,6 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Component;
-import com.example.muzfi.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +89,9 @@ public class OktaLoginSuccessListener implements ApplicationListener<Authenticat
 
                         UserSetting setting = new UserSetting();
                         setting.setUserId(userCreated.getId());
+                        setting.setIsAllowToFollow(true);
+                        setting.setIsContentVisible(true);
+                        setting.setIsActiveInCommunityVisible(true);
 
                         userSettingService.createUserSetting(setting);
                     } else {

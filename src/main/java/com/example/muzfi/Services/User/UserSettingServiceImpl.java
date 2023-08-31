@@ -36,6 +36,9 @@ public class UserSettingServiceImpl implements UserSettingService {
             UserSetting existingUserSetting = userSettingOptional.get();
             existingUserSetting.setDisplayLang(setting.getDisplayLang());
             existingUserSetting.setContentLang(setting.getContentLang());
+            existingUserSetting.setIsAllowToFollow(setting.getIsAllowToFollow());
+            existingUserSetting.setIsContentVisible(setting.getIsContentVisible());
+            existingUserSetting.setIsActiveInCommunityVisible(setting.getIsActiveInCommunityVisible());
             existingUserSetting.setLastUpdatedDateTime(LocalDateTime.now());
 
             UserSetting updatedSetting = userSettingRepository.save(existingUserSetting);

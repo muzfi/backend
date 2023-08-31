@@ -33,6 +33,8 @@ public class User {
 
     private String lastName;
 
+    private String displayName;
+
     private UserGender gender = UserGender.NONE;
 
     private List<UserRole> role;
@@ -50,6 +52,10 @@ public class User {
     private String city;
 
     private String profilePicUri;
+
+    private String bannerImageUri;
+
+    private List<SocialLink> socialLinks;
 
     private Set<String> followersUserIds;
 
