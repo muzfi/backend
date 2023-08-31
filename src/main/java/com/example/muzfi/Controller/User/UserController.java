@@ -1,5 +1,6 @@
 package com.example.muzfi.Controller.User;
 
+import com.example.muzfi.Dto.UserDto.UserBasicDto;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.User.UserService;
@@ -48,6 +49,21 @@ public class UserController {
 
             if (user.isPresent()) {
                 return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No User Available", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/by-ids")
+    public ResponseEntity<?> getUsersByIdList(@RequestBody List<String> ids) {
+        try {
+            Optional<List<UserBasicDto>> users = userService.getUsersByIds(ids);
+
+            if (users.isPresent()) {
+                return new ResponseEntity<>(users, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("No User Available", HttpStatus.NOT_FOUND);
             }
