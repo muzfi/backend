@@ -39,6 +39,7 @@ public class UserSettingServiceImpl implements UserSettingService {
             existingUserSetting.setIsAllowToFollow(setting.getIsAllowToFollow());
             existingUserSetting.setIsContentVisible(setting.getIsContentVisible());
             existingUserSetting.setIsActiveInCommunityVisible(setting.getIsActiveInCommunityVisible());
+            existingUserSetting.setIsShowsUpInSearchResults(setting.getIsShowsUpInSearchResults());
             existingUserSetting.setLastUpdatedDateTime(LocalDateTime.now());
 
             UserSetting updatedSetting = userSettingRepository.save(existingUserSetting);

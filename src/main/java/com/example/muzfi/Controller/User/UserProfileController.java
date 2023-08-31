@@ -1,5 +1,6 @@
 package com.example.muzfi.Controller.User;
 
+import com.example.muzfi.Dto.UserDto.UserBasicDto;
 import com.example.muzfi.Dto.UserDto.UserProfileDto;
 import com.example.muzfi.Dto.UserDto.UserProfileLocationUpdateDto;
 import com.example.muzfi.Dto.UserDto.UserProfileUpdateDto;
@@ -43,6 +44,29 @@ public class UserProfileController {
 
             if (userProfile.isPresent()) {
                 return new ResponseEntity<>(userProfile, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No User Profile Available", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // get logged-in user blocked users list
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @GetMapping("/blocked-users/{userId}")
+    public ResponseEntity<?> getBlockedUsers(@PathVariable("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You cannot update this user profile.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<List<UserBasicDto>> blockedUsers = userService.getBlockedUsersByUser(userId);
+
+            if (blockedUsers.isPresent()) {
+                return new ResponseEntity<>(blockedUsers, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("No User Profile Available", HttpStatus.NO_CONTENT);
             }

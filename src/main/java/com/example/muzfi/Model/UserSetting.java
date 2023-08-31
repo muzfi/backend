@@ -30,6 +30,8 @@ public class UserSetting {
 
     private Boolean isActiveInCommunityVisible;
 
+    private Boolean isShowsUpInSearchResults;
+
     //TODO: update with user date and time
     private LocalDateTime createdDateTime;
 

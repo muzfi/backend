@@ -1,8 +1,9 @@
 package com.example.muzfi.Services.User;
 
 import com.example.muzfi.Dto.PostDto.PostAuthorDto;
-import com.example.muzfi.Model.User;
+import com.example.muzfi.Dto.UserDto.UserBasicDto;
 import com.example.muzfi.Enums.UserRole;
+import com.example.muzfi.Model.User;
 import com.example.muzfi.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,64 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findById(userId);
 
         return optionalUser;
+    }
+
+    @Override
+    public Optional<List<UserBasicDto>> getUsersByIds(List<String> userIds) {
+        List<User> userList = userRepository.findAllById(userIds);
+
+        if (userList.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<UserBasicDto> dtoList = new ArrayList<>();
+
+        for (User user : userList) {
+            UserBasicDto userDto = new UserBasicDto();
+            userDto.setUserName(user.getUserName());
+            userDto.setFirstName(user.getFirstName());
+            userDto.setLastName(user.getLastName());
+            userDto.setDisplayName(user.getDisplayName());
+            userDto.setId(user.getId());
+            userDto.setProfileUrl(user.getProfilePicUri());
+
+            dtoList.add(userDto);
+        }
+
+        return Optional.of(dtoList);
+    }
+
+    @Override
+    public Optional<List<UserBasicDto>> getBlockedUsersByUser(String userId) {
+
+        Optional<User> loggedInUserOpt = userRepository.findById(userId);
+
+        if (loggedInUserOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        User loggedInUser = loggedInUserOpt.get();
+        List<User> userList = userRepository.findAllById(loggedInUser.getBlockedUserIds());
+
+        if (userList.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<UserBasicDto> dtoList = new ArrayList<>();
+
+        for (User user : userList) {
+            UserBasicDto userDto = new UserBasicDto();
+            userDto.setUserName(user.getUserName());
+            userDto.setFirstName(user.getFirstName());
+            userDto.setLastName(user.getLastName());
+            userDto.setDisplayName(user.getDisplayName());
+            userDto.setId(user.getId());
+            userDto.setProfileUrl(user.getProfilePicUri());
+
+            dtoList.add(userDto);
+        }
+
+        return Optional.of(dtoList);
     }
 
     @Override
