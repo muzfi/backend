@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,6 +92,7 @@ public class TopicServiceImpl implements TopicService {
         }
     }
 
+    //Get user topics - Filtered out draft topics
     @Override
     public Optional<List<Topic>> getTopicsByUserId(String userId) {
         List<Topic> topics = topicRepository.findAllByAuthorId(userId);
@@ -99,7 +101,50 @@ public class TopicServiceImpl implements TopicService {
             return Optional.empty();
         }
 
-        return Optional.of(topics);
+        List<Topic> topicList = new ArrayList<>();
+
+        for (Topic topic : topics) {
+            Optional<Post> postOpt = postRepository.findById(topic.getPostId());
+
+            if (postOpt.isPresent()) {
+                Post post = postOpt.get();
+
+                if (post.getIsDraft() == null || post.getIsDraft().equals(false)) {
+                    topicList.add(topic);
+                }
+
+                topicList.add(topic);
+            }
+        }
+
+        return Optional.of(topicList);
+    }
+
+
+    //Get user draft topics
+    @Override
+    public Optional<List<Topic>> getDraftTopicsByUserId(String userId) {
+        List<Topic> topics = topicRepository.findAllByAuthorId(userId);
+
+        if (topics.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Topic> topicList = new ArrayList<>();
+
+        for (Topic topic : topics) {
+            Optional<Post> postOpt = postRepository.findById(topic.getPostId());
+
+            if (postOpt.isPresent()) {
+                Post post = postOpt.get();
+
+                if (post.getIsDraft() != null && post.getIsDraft().equals(true)) {
+                    topicList.add(topic);
+                }
+            }
+        }
+
+        return Optional.of(topicList);
     }
 
 
@@ -133,6 +178,7 @@ public class TopicServiceImpl implements TopicService {
         return Optional.of(postDetailsDto);
     }
 
+    //Get topics - Filtered out draft topics
     @Override
     public Optional<List<Topic>> getAllTopics() {
         List<Topic> topics = topicRepository.findAll();
@@ -141,6 +187,20 @@ public class TopicServiceImpl implements TopicService {
             return Optional.empty();
         }
 
-        return Optional.of(topics);
+        List<Topic> topicList = new ArrayList<>();
+
+        for (Topic topic : topics) {
+            Optional<Post> postOpt = postRepository.findById(topic.getPostId());
+
+            if (postOpt.isPresent()) {
+                Post post = postOpt.get();
+
+                if (post.getIsDraft() == null || post.getIsDraft().equals(false)) {
+                    topicList.add(topic);
+                }
+            }
+        }
+
+        return Optional.of(topicList);
     }
 }

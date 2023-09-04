@@ -105,6 +105,7 @@ public class PollServiceImpl implements PollService {
         }
     }
 
+    //Get user polls - filtered out drafted polls
     @Override
     public Optional<List<PollDetailsDto>> getPollsByUserId(String userId) {
         List<Poll> polls = pollRepository.findAllByAuthorId(userId);
@@ -113,8 +114,16 @@ public class PollServiceImpl implements PollService {
             List<PollDetailsDto> pollDtoList = new ArrayList<>();
 
             for (Poll poll : polls) {
-                PollDetailsDto pollDetailsDto = postManager.getPollDetailsDto(poll);
-                pollDtoList.add(pollDetailsDto);
+                Optional<Post> postOpt = postRepository.findById(poll.getPostId());
+
+                if (postOpt.isPresent()) {
+                    Post post = postOpt.get();
+
+                    if (post.getIsDraft() == null || post.getIsDraft().equals(false)) {
+                        PollDetailsDto pollDetailsDto = postManager.getPollDetailsDto(poll);
+                        pollDtoList.add(pollDetailsDto);
+                    }
+                }
             }
 
             return Optional.of(pollDtoList);
@@ -123,6 +132,7 @@ public class PollServiceImpl implements PollService {
         }
     }
 
+    //Get polls - filtered out drafted polls
     @Override
     public Optional<List<PollDetailsDto>> getAllPolls() {
         List<Poll> polls = pollRepository.findAll();
@@ -133,11 +143,46 @@ public class PollServiceImpl implements PollService {
 
         List<PollDetailsDto> pollDetailsDtoList = new ArrayList<>();
         for (Poll poll : polls) {
-            PollDetailsDto pollDetailsDto = postManager.getPollDetailsDto(poll);
-            pollDetailsDtoList.add(pollDetailsDto);
+            Optional<Post> postOpt = postRepository.findById(poll.getPostId());
+
+            if (postOpt.isPresent()) {
+                Post post = postOpt.get();
+
+                if (post.getIsDraft() == null || post.getIsDraft().equals(false)) {
+                    PollDetailsDto pollDetailsDto = postManager.getPollDetailsDto(poll);
+                    pollDetailsDtoList.add(pollDetailsDto);
+                }
+            }
         }
 
         return Optional.of(pollDetailsDtoList);
+    }
+
+    //Get user drafted polls
+    @Override
+    public Optional<List<PollDetailsDto>> getDraftPollsByUserId(String userId) {
+        List<Poll> polls = pollRepository.findAllByAuthorId(userId);
+
+        if (!polls.isEmpty()) {
+            List<PollDetailsDto> pollDtoList = new ArrayList<>();
+
+            for (Poll poll : polls) {
+                Optional<Post> postOpt = postRepository.findById(poll.getPostId());
+
+                if (postOpt.isPresent()) {
+                    Post post = postOpt.get();
+
+                    if (post.getIsDraft() != null && post.getIsDraft().equals(true)) {
+                        PollDetailsDto pollDetailsDto = postManager.getPollDetailsDto(poll);
+                        pollDtoList.add(pollDetailsDto);
+                    }
+                }
+            }
+
+            return Optional.of(pollDtoList);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

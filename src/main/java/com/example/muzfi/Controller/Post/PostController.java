@@ -78,6 +78,51 @@ public class PostController {
     }
 
     @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @GetMapping("/user/draft/{userId}")
+    public ResponseEntity<?> getDraftPostsByUserId(@PathVariable("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to retrieve this posts.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<List<PostDetailsDto>> posts = postService.getDraftPostsByUserId(userId);
+
+            if (posts.isPresent()) {
+                return new ResponseEntity<>(posts.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("There is no draft posts to show", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @PutMapping("/user/publish-draft/{postId}")
+    public ResponseEntity<?> publishDraftPost(@PathVariable("postId") String postId, @RequestParam("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<PostDetailsDto> posts = postService.publishDraftPost(postId);
+
+            if (posts.isPresent()) {
+                return new ResponseEntity<>(posts.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Publishing draft post failed", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
     @GetMapping("/{postId}/like/{userId}")
     public ResponseEntity<?> addLike(@PathVariable("postId") String postId, @PathVariable("userId") String userId) {
         try {

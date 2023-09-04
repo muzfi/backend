@@ -15,6 +15,8 @@ public interface ListingService {
 
     Optional<List<ListingDetailsDto>> getListingsByUserId(String userId);
 
+    Optional<List<ListingDetailsDto>> getDraftListingsByUserId(String userId);
+
     Optional<?> createListing(ListingCreateDto listingDto);
 
     Optional<PostDetailsDto> updateListing(ListingUpdateDto updateDto);

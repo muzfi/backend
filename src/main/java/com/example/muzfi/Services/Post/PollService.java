@@ -17,6 +17,8 @@ public interface PollService {
 
     Optional<List<PollDetailsDto>> getAllPolls();
 
+    Optional<List<PollDetailsDto>> getDraftPollsByUserId(String userId);
+
     Optional<String> vote(String pollOptionId, String userId);
 
     Optional<String> removeVote(String pollOptionId, String userId);

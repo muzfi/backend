@@ -39,14 +39,23 @@ public class ListingServiceImpl implements ListingService {
         this.listingManager = listingManager;
     }
 
+    //get listings - filtered draft listings
     @Override
     public Optional<List<ListingDetailsDto>> getAllListings() {
         List<Listing> listings = listingRepository.findAll();
         List<ListingDetailsDto> listingList = new ArrayList<>();
 
         for (Listing listing : listings) {
-            ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
-            listingList.add(dto);
+            Optional<Post> postOpt = postRepository.findById(listing.getPostId());
+
+            if (postOpt.isPresent()) {
+                Post post = postOpt.get();
+
+                if (post.getIsDraft() == null || post.getIsDraft().equals(false)) {
+                    ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
+                    listingList.add(dto);
+                }
+            }
         }
 
         if (listingList.isEmpty()) {
@@ -70,6 +79,7 @@ public class ListingServiceImpl implements ListingService {
         }
     }
 
+    //Get user listings - filtered draft listings
     @Override
     public Optional<List<ListingDetailsDto>> getListingsByUserId(String userId) {
         List<Listing> listings = listingRepository.findAllByAuthorId(userId);
@@ -78,8 +88,43 @@ public class ListingServiceImpl implements ListingService {
             List<ListingDetailsDto> listingDtoList = new ArrayList<>();
 
             for (Listing listing : listings) {
-                ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
-                listingDtoList.add(dto);
+                Optional<Post> postOpt = postRepository.findById(listing.getPostId());
+
+                if (postOpt.isPresent()) {
+                    Post post = postOpt.get();
+
+                    if (post.getIsDraft() == null || post.getIsDraft().equals(false)) {
+                        ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
+                        listingDtoList.add(dto);
+                    }
+                }
+            }
+
+            return Optional.of(listingDtoList);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    //Get draft user listings
+    @Override
+    public Optional<List<ListingDetailsDto>> getDraftListingsByUserId(String userId) {
+        List<Listing> listings = listingRepository.findAllByAuthorId(userId);
+
+        if (!listings.isEmpty()) {
+            List<ListingDetailsDto> listingDtoList = new ArrayList<>();
+
+            for (Listing listing : listings) {
+                Optional<Post> postOpt = postRepository.findById(listing.getPostId());
+
+                if (postOpt.isPresent()) {
+                    Post post = postOpt.get();
+
+                    if (post.getIsDraft() != null && post.getIsDraft().equals(true)) {
+                        ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
+                        listingDtoList.add(dto);
+                    }
+                }
             }
 
             return Optional.of(listingDtoList);
