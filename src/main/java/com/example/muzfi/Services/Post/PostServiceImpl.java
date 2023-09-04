@@ -51,15 +51,22 @@ public class PostServiceImpl implements PostService {
         this.listingManager = listingManager;
     }
 
-    //Retrieve all posts
+    //Retrieve all posts - not draft
     @Override
     public Optional<List<PostDetailsDto>> getAllPosts() {
         List<Post> posts = postRepository.findAll();
         List<PostDetailsDto> postList = new ArrayList<>();
 
         for (Post post : posts) {
+            //Filter out draft posts
+            if (post.getIsDraft() != null && post.getIsDraft().equals(true)) {
+                continue;
+            }
+
             Object postTypeData = getPostTypeData(post);
+            System.out.println(post.getAuthorId());
             Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
+            System.out.println(post.getAuthorId());
 
             if (postTypeData != null && authorOptional.isPresent()) {
                 PostAuthorDto author = authorOptional.get();
@@ -99,22 +106,27 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    //Retrieve posts by user id
+    //Retrieve posts by user id - not draft
     @Override
     public Optional<List<PostDetailsDto>> getPostsByUserId(String userId) {
 
         List<Post> postList = postRepository.findAllByAuthorId(userId);
         Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(userId);
 
-        List<PostDetailsDto> postDetailsDtoList =  new ArrayList<>();
+        List<PostDetailsDto> postDetailsDtoList = new ArrayList<>();
 
         if (!postList.isEmpty() && authorOptional.isPresent()) {
             PostAuthorDto author = authorOptional.get();
 
-            for(Post post: postList) {
+            for (Post post : postList) {
+                //Filter out draft posts
+                if (post.getIsDraft() != null && post.getIsDraft().equals(true)) {
+                    continue;
+                }
+
                 Object postTypeData = getPostTypeData(post);
 
-                if (postTypeData != null ) {
+                if (postTypeData != null) {
                     PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData, author);
                     postDetailsDtoList.add(postDetailsDto);
                 }
@@ -124,6 +136,62 @@ public class PostServiceImpl implements PostService {
         } else {
             return Optional.empty();
         }
+    }
+
+
+    //Retrieve posts by user id - draft post
+    @Override
+    public Optional<List<PostDetailsDto>> getDraftPostsByUserId(String userId) {
+
+        List<Post> postList = postRepository.findAllByAuthorIdAndIsDraft(userId, true);
+        Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(userId);
+
+        List<PostDetailsDto> postDetailsDtoList = new ArrayList<>();
+
+        if (!postList.isEmpty() && authorOptional.isPresent()) {
+            PostAuthorDto author = authorOptional.get();
+
+            for (Post post : postList) {
+
+                Object postTypeData = getPostTypeData(post);
+
+                if (postTypeData != null) {
+                    PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData, author);
+                    postDetailsDtoList.add(postDetailsDto);
+                }
+            }
+
+            return Optional.of(postDetailsDtoList);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    //Publish drafted posts
+    @Override
+    public Optional<PostDetailsDto> publishDraftPost(String postId) {
+
+        Optional<Post> postOpt = postRepository.findById(postId);
+
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Post existingPost = postOpt.get();
+        existingPost.setIsDraft(false);
+
+        Post updatedPost = postRepository.save(existingPost);
+
+        Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(updatedPost.getAuthorId());
+        PostDetailsDto postDetailsDto = new PostDetailsDto();
+
+        if (authorOptional.isPresent()) {
+            PostAuthorDto author = authorOptional.get();
+            Object postTypeData = getPostTypeData(updatedPost);
+            postDetailsDto = postManager.getPostDetailsDto(updatedPost, postTypeData, author);
+        }
+
+        return Optional.of(postDetailsDto);
     }
 
     @Override

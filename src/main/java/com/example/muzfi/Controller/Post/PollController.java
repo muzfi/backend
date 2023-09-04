@@ -67,7 +67,7 @@ public class PollController {
         }
     }
 
-    @GetMapping("user/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<?> getAllPollsByUserId(@PathVariable("userId") String userId) {
         try {
             Optional<List<PollDetailsDto>> pollList = pollService.getPollsByUserId(userId);
@@ -76,6 +76,28 @@ public class PollController {
                 return new ResponseEntity<>(pollList.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Cannot retrieve polls", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @GetMapping("/user/draft/{userId}")
+    public ResponseEntity<?> getDraftPollsByUserId(@PathVariable("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to retrieve this posts.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<List<PollDetailsDto>> pollList = pollService.getDraftPollsByUserId(userId);
+
+            if (pollList.isPresent()) {
+                return new ResponseEntity<>(pollList.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot retrieve draft polls", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

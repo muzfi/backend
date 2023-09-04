@@ -15,6 +15,8 @@ public interface TopicService {
 
     Optional<List<Topic>> getTopicsByUserId(String userId);
 
+    Optional<List<Topic>> getDraftTopicsByUserId(String userId);
+
     Optional<PostDetailsDto> updateTopic(TopicUpdateDto updateDto);
 
     Optional<List<Topic>> getAllTopics();

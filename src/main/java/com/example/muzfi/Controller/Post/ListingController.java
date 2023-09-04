@@ -44,7 +44,7 @@ public class ListingController {
         }
     }
 
-    @GetMapping("user/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<?> getAllListingsByUserId(@PathVariable("userId") String userId) {
         try {
             Optional<List<ListingDetailsDto>> listingList = listingService.getListingsByUserId(userId);
@@ -53,6 +53,27 @@ public class ListingController {
                 return new ResponseEntity<>(listingList.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Cannot retrieve listings", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/user/draft/{userId}")
+    public ResponseEntity<?> getAllDraftListingsByUserId(@PathVariable("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to retrieve this posts.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<List<ListingDetailsDto>> listingList = listingService.getDraftListingsByUserId(userId);
+
+            if (listingList.isPresent()) {
+                return new ResponseEntity<>(listingList.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot retrieve draft listings", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
