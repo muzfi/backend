@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface TopicRepository extends MongoRepository<Topic, String> {
+    List<Topic> findAllByAuthorId(String userId);
 
     List<Topic> findByTitleContainingIgnoreCase(String name);
 }

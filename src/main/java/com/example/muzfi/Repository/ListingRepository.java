@@ -9,4 +9,6 @@ public interface ListingRepository extends MongoRepository<Listing, String> {
     List<Listing> findByTitleContainingIgnoreCase(String name);
 
     List<Listing> findBySubTitleContainingIgnoreCase(String name);
+
+    List<Listing> findAllByAuthorId(String userId);
 }

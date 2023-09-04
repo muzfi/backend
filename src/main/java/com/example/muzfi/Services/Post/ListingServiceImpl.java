@@ -71,6 +71,24 @@ public class ListingServiceImpl implements ListingService {
     }
 
     @Override
+    public Optional<List<ListingDetailsDto>> getListingsByUserId(String userId) {
+        List<Listing> listings = listingRepository.findAllByAuthorId(userId);
+
+        if (!listings.isEmpty()) {
+            List<ListingDetailsDto> listingDtoList = new ArrayList<>();
+
+            for (Listing listing : listings) {
+                ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
+                listingDtoList.add(dto);
+            }
+
+            return Optional.of(listingDtoList);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<PostDetailsDto> createListing(ListingCreateDto listingDto) {
         //create post
         Post newPost = new Post();

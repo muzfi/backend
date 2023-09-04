@@ -13,6 +13,8 @@ public interface ListingService {
 
     Optional<ListingDetailsDto> getListingById(String listingId);
 
+    Optional<List<ListingDetailsDto>> getListingsByUserId(String userId);
+
     Optional<?> createListing(ListingCreateDto listingDto);
 
     Optional<PostDetailsDto> updateListing(ListingUpdateDto updateDto);

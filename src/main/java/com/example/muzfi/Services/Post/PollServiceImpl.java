@@ -106,6 +106,24 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
+    public Optional<List<PollDetailsDto>> getPollsByUserId(String userId) {
+        List<Poll> polls = pollRepository.findAllByAuthorId(userId);
+
+        if (!polls.isEmpty()) {
+            List<PollDetailsDto> pollDtoList = new ArrayList<>();
+
+            for (Poll poll : polls) {
+                PollDetailsDto pollDetailsDto = postManager.getPollDetailsDto(poll);
+                pollDtoList.add(pollDetailsDto);
+            }
+
+            return Optional.of(pollDtoList);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<List<PollDetailsDto>> getAllPolls() {
         List<Poll> polls = pollRepository.findAll();
 

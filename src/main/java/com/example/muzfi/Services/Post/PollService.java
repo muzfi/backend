@@ -13,6 +13,8 @@ public interface PollService {
 
     Optional<PollDetailsDto> getPollById(String pollId);
 
+    Optional<List<PollDetailsDto>> getPollsByUserId(String userId);
+
     Optional<List<PollDetailsDto>> getAllPolls();
 
     Optional<String> vote(String pollOptionId, String userId);

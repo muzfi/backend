@@ -82,6 +82,21 @@ public class TopicController {
         }
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getTopicByUserId(@PathVariable("userId") String userId) {
+        try {
+            Optional<List<Topic>> topics = topicService.getTopicsByUserId(userId);
+
+            if (topics.isPresent()) {
+                return new ResponseEntity<>(topics.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot retrieve topics", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PreAuthorize("hasAuthority('Muzfi_Member')")
     @PutMapping
     public ResponseEntity<?> updateTopic(@RequestBody TopicUpdateDto topicUpdateDto) {
