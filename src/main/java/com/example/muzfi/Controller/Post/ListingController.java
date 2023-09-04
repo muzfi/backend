@@ -44,6 +44,21 @@ public class ListingController {
         }
     }
 
+    @GetMapping("user/{userId}")
+    public ResponseEntity<?> getAllListingsByUserId(@PathVariable("userId") String userId) {
+        try {
+            Optional<List<ListingDetailsDto>> listingList = listingService.getListingsByUserId(userId);
+
+            if (listingList.isPresent()) {
+                return new ResponseEntity<>(listingList.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot retrieve listings", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @GetMapping("/{listingId}")
     public ResponseEntity<?> getListingById(@PathVariable("listingId") String listingId) {

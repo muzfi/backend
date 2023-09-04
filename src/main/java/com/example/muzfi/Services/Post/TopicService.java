@@ -13,6 +13,8 @@ public interface TopicService {
 
     Optional<Topic> getTopicById(String topicId);
 
+    Optional<List<Topic>> getTopicsByUserId(String userId);
+
     Optional<PostDetailsDto> updateTopic(TopicUpdateDto updateDto);
 
     Optional<List<Topic>> getAllTopics();

@@ -67,6 +67,21 @@ public class PollController {
         }
     }
 
+    @GetMapping("user/{userId}")
+    public ResponseEntity<?> getAllPollsByUserId(@PathVariable("userId") String userId) {
+        try {
+            Optional<List<PollDetailsDto>> pollList = pollService.getPollsByUserId(userId);
+
+            if (pollList.isPresent()) {
+                return new ResponseEntity<>(pollList.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot retrieve polls", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @GetMapping("/{pollId}")
     public ResponseEntity<?> getPollById(@PathVariable("pollId") String pollId) {

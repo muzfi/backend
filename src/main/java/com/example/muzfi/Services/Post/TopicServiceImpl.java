@@ -92,6 +92,18 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public Optional<List<Topic>> getTopicsByUserId(String userId) {
+        List<Topic> topics = topicRepository.findAllByAuthorId(userId);
+
+        if (topics.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(topics);
+    }
+
+
+    @Override
     public Optional<PostDetailsDto> updateTopic(TopicUpdateDto updateDto) {
         Optional<Topic> topicOpt = topicRepository.findById(updateDto.getId());
         Optional<Post> postOpt = postRepository.findById(updateDto.getPostId());
