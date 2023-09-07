@@ -10,14 +10,14 @@ import com.example.muzfi.Repository.ListingRepository;
 import com.example.muzfi.Repository.PostRepository;
 import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class ListingServiceImpl implements ListingService {
 
     private final PostRepository postRepository;

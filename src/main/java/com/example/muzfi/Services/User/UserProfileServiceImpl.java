@@ -5,13 +5,13 @@ import com.example.muzfi.Model.User;
 import com.example.muzfi.Repository.UserRepository;
 import com.example.muzfi.Services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
-@Component
+@Service
 public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserRepository userRepository;
