@@ -12,5 +12,7 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
 
     List<Comment> findAllByPostIdAndIsParentComment(String postId, boolean isParentComment);
 
+    List<Comment> findAllByPostId(String postId);
+
     Optional<Integer> countAllByPostId(String postId);
 }

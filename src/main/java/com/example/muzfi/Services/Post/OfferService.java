@@ -18,4 +18,8 @@ public interface OfferService {
     Optional<Offer> updateOffer(OfferUpdateDto offerDto);
 
     Optional<String> deleteOffer(String offerId);
+
+    Optional<List<String>> getOfferIdsByListingId(String listingId);
+
+    void deleteOffersByIds(List<String> idList);
 }

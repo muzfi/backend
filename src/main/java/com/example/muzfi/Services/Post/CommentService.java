@@ -26,4 +26,8 @@ public interface CommentService {
     Optional<String> editComment(CommentUpdateDto updateDto);
 
     Optional<String> deleteComment(String commentId);
+
+    Optional<List<String>> getCommentIdsByPostId(String postId);
+
+    void deleteCommentsByIds(List<String> idList);
 }

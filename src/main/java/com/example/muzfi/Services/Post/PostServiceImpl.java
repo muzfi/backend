@@ -10,10 +10,7 @@ import com.example.muzfi.Model.Post.Listing;
 import com.example.muzfi.Model.Post.Poll;
 import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Model.Post.Topic;
-import com.example.muzfi.Repository.ListingRepository;
-import com.example.muzfi.Repository.PollRepository;
-import com.example.muzfi.Repository.PostRepository;
-import com.example.muzfi.Repository.TopicRepository;
+import com.example.muzfi.Repository.*;
 import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +30,15 @@ public class PostServiceImpl implements PostService {
 
     private final PollRepository pollRepository;
 
+    private final PollOptionRepository pollOptionRepository;
+
     private final UserService userService;
+
+    private final LikeService likeService;
+
+    private final CommentService commentService;
+
+    private final OfferService offerService;
 
     private final PostManager postManager;
 
@@ -41,12 +46,16 @@ public class PostServiceImpl implements PostService {
 
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, TopicRepository topicRepository, PollRepository pollRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
+    public PostServiceImpl(PostRepository postRepository, ListingRepository listingRepository, TopicRepository topicRepository, PollRepository pollRepository, PollOptionRepository pollOptionRepository, UserService userService, LikeService likeService, CommentService commentService, OfferService offerService, PostManager postManager, ListingManager listingManager) {
         this.postRepository = postRepository;
         this.listingRepository = listingRepository;
         this.topicRepository = topicRepository;
         this.pollRepository = pollRepository;
+        this.pollOptionRepository = pollOptionRepository;
         this.userService = userService;
+        this.likeService = likeService;
+        this.commentService = commentService;
+        this.offerService = offerService;
         this.postManager = postManager;
         this.listingManager = listingManager;
     }
@@ -194,9 +203,68 @@ public class PostServiceImpl implements PostService {
         return Optional.of(postDetailsDto);
     }
 
+    //delete post
     @Override
-    public void deletePost(String id) {
-        postRepository.deleteById(id);
+    public Optional<String> deletePost(String postId) {
+        Optional<Post> postOptional = postRepository.findById(postId);
+
+        if (postOptional.isPresent()) {
+            Post post = postOptional.get();
+
+            //Delete likes
+            Optional<List<String>> likeIdsOpt = likeService.getLikeIdsByPostId(postId);
+
+            if (likeIdsOpt.isPresent()) {
+                likeService.deleteLikesByIds(likeIdsOpt.get());
+            }
+
+            //Delete comments
+            Optional<List<String>> commentIdsOpt = commentService.getCommentIdsByPostId(postId);
+
+            if (commentIdsOpt.isPresent()) {
+                commentService.deleteCommentsByIds(commentIdsOpt.get());
+            }
+
+            //Delete post type data
+            if (post.getPostType().equals(PostType.PROD_SALE)) {
+
+                //Delete offers
+                Optional<List<String>> offerIdsOpt = offerService.getOfferIdsByListingId(post.getPostTypeId());
+
+                if (offerIdsOpt.isPresent()) {
+                    offerService.deleteOffersByIds(offerIdsOpt.get());
+                }
+
+                //Delete Listing
+                listingRepository.deleteById(post.getPostTypeId());
+            } else if (post.getPostType().equals(PostType.PROD_POLL)) {
+
+                //Delete poll options
+                Optional<Poll> pollOpt = pollRepository.findById(post.getPostTypeId());
+
+                if (pollOpt.isPresent()) {
+                    pollOptionRepository.deleteAllById(pollOpt.get().getPollOptionIds());
+                }
+
+                //Delete poll
+                pollRepository.deleteById(post.getPostTypeId());
+            } else if (post.getPostType().equals(PostType.PROD_TOPIC)) {
+
+                //Delete post
+                topicRepository.deleteById(post.getPostTypeId());
+            } else if (post.getPostType().equals(PostType.PROD_GEAR)) {
+
+                //TODO: Implementation for the gear
+
+            }
+
+            //Delete post
+            postRepository.deleteById(post.getId());
+
+            return Optional.of("Post Deleted Successfully");
+        }
+
+        return Optional.empty();
     }
 
     //Retrieve data for different post types - listings, gears, polls, topics
