@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,5 +104,27 @@ public class OfferServiceImpl implements OfferService {
         offerRepository.deleteById(offerId);
 
         return Optional.of("Offer Deleted Successfully");
+    }
+
+    @Override
+    public Optional<List<String>> getOfferIdsByListingId(String listingId) {
+        List<Offer> offers = offerRepository.findAllByListingId(listingId);
+
+        List<String> offerList = new ArrayList<>();
+
+        if (offers.isEmpty()) {
+            return Optional.empty();
+        }
+
+        for (Offer offer: offers) {
+            offerList.add(offer.getId());
+        }
+
+        return Optional.of(offerList);
+    }
+
+    @Override
+    public void deleteOffersByIds(List<String> idList) {
+        offerRepository.deleteAllById(idList);
     }
 }

@@ -181,9 +181,25 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable String id) {
-        postService.deletePost(id);
-        return ResponseEntity.ok().build();
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<?> deletePostById(@PathVariable("postId") String postId, @RequestParam("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<String> res = postService.deletePost(postId);
+
+            if (res.isPresent()) {
+                return new ResponseEntity<>(res.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot delete this post", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -186,4 +186,26 @@ public class CommentServiceImpl implements CommentService {
         }
         return Optional.empty();
     }
+
+    @Override
+    public Optional<List<String>> getCommentIdsByPostId(String postId) {
+        List<Comment> postComments = commentRepository.findAllByPostId(postId);
+
+        List<String>  commentList = new ArrayList<>();
+
+        if (postComments.isEmpty()) {
+            return Optional.empty();
+        }
+
+        for (Comment comment: postComments) {
+            commentList.add(comment.getId());
+        }
+
+        return Optional.of(commentList);
+    }
+
+    @Override
+    public void deleteCommentsByIds(List<String> idList) {
+        commentRepository.deleteAllById(idList);
+    }
 }

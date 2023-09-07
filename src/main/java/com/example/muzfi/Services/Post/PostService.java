@@ -17,5 +17,5 @@ public interface PostService {
 
     Optional<PostDetailsDto> publishDraftPost(String postId);
 
-    void deletePost(String id);
+    Optional<String> deletePost(String postId);
 }
