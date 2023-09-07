@@ -73,9 +73,7 @@ public class PostServiceImpl implements PostService {
             }
 
             Object postTypeData = getPostTypeData(post);
-            System.out.println(post.getAuthorId());
             Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
-            System.out.println(post.getAuthorId());
 
             if (postTypeData != null && authorOptional.isPresent()) {
                 PostAuthorDto author = authorOptional.get();
