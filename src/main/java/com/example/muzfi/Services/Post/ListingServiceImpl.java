@@ -140,8 +140,8 @@ public class ListingServiceImpl implements ListingService {
         newPost.setAuthorId(listingDto.getAuthorId());
         newPost.setPostType(PostType.PROD_SALE);
         newPost.setIsEnablePostReplyNotification(listingDto.getIsEnablePostReplyNotification());
-        newPost.setCreatedDateTime(listingDto.getCreatedDateTime());
-        newPost.setUpdatedDateTime(listingDto.getCreatedDateTime());
+        newPost.setCreatedDateTime(LocalDateTime.now());
+        newPost.setUpdatedDateTime(LocalDateTime.now());
         newPost.setIsDraft(listingDto.getIsDraft());
 
         //create listing
@@ -157,8 +157,8 @@ public class ListingServiceImpl implements ListingService {
         newListing.setDescription(listingDto.getDescription());
         newListing.setIsHandMade(listingDto.getIsHandMade());
         newListing.setImages(listingDto.getImages());
-        newListing.setCreatedDateTime(listingDto.getCreatedDateTime());
-        newListing.setUpdatedDateTime(listingDto.getCreatedDateTime());
+        newListing.setCreatedDateTime(LocalDateTime.now());
+        newListing.setUpdatedDateTime(LocalDateTime.now());
         newListing.setCondition(listingDto.getCondition());
         newListing.setConditionDescription(listingDto.getConditionDescription());
         newListing.setYouTubeLink(listingDto.getYouTubeLink());
@@ -234,6 +234,30 @@ public class ListingServiceImpl implements ListingService {
         PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, listingDetailsDto, authorOptional.get());
 
         return Optional.of(postDetailsDto);
+    }
+
+
+    //Including draft posts
+    @Override
+    public Optional<List<ListingDetailsDto>> getListingsCreatedByUserInCurrentMonth(String userId) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfMonth = now.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime startOfNextMonth = startOfMonth.plusMonths(1);
+
+        List<Listing> listings = listingRepository.findListingsCreatedByUserInCurrentMonth(userId, startOfMonth, startOfNextMonth);
+
+        if (!listings.isEmpty()) {
+            List<ListingDetailsDto> listingDtoList = new ArrayList<>();
+
+            for (Listing listing : listings) {
+                ListingDetailsDto dto = listingManager.getListingDetailsDto(listing);
+                listingDtoList.add(dto);
+            }
+
+            return Optional.of(listingDtoList);
+        } else {
+            return Optional.empty();
+        }
     }
 
 }
