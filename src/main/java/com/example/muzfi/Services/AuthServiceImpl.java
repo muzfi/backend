@@ -1,8 +1,8 @@
 package com.example.muzfi.Services;
 
-import com.example.muzfi.Model.User;
 import com.example.muzfi.Enums.RoleEditAction;
 import com.example.muzfi.Enums.UserRole;
+import com.example.muzfi.Model.User;
 import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.Util.OktaRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +49,33 @@ public class AuthServiceImpl implements AuthService {
             } else {
                 return false;
             }
+        } else {
+            return false;
+        }
+    }
+
+
+    // Check if logged-in user is an elite member
+    @Override
+    public boolean isElite() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.isAuthenticated()) {
+            return authentication.getAuthorities().stream()
+                    .anyMatch(role -> UserRole.Muzfi_Elite.toString().equals(role.getAuthority()));
+        } else {
+            return false;
+        }
+    }
+
+    // Check if logged-in user is an admin
+    @Override
+    public boolean isAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.isAuthenticated()) {
+            return authentication.getAuthorities().stream()
+                    .anyMatch(role -> UserRole.Muzfi_Admin.toString().equals(role.getAuthority()));
         } else {
             return false;
         }

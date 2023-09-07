@@ -20,4 +20,6 @@ public interface ListingService {
     Optional<?> createListing(ListingCreateDto listingDto);
 
     Optional<PostDetailsDto> updateListing(ListingUpdateDto updateDto);
+
+    Optional<List<ListingDetailsDto>> getListingsCreatedByUserInCurrentMonth(String userId);
 }

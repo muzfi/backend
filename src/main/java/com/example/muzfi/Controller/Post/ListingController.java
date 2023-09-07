@@ -108,6 +108,16 @@ public class ListingController {
                 return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
             }
 
+            boolean isElite = authService.isElite();
+
+            if (!isElite) {
+                Optional<List<ListingDetailsDto>> currentMonthListingsOpt = listingService.getListingsCreatedByUserInCurrentMonth(loggedInUserId);
+
+                if (currentMonthListingsOpt.isPresent() && currentMonthListingsOpt.get().size() > 5) {
+                    return new ResponseEntity<>("Unauthorized: You cannot post more than 5 listings(Including drafts) in a month for your current membership plan. Please upgrade your membership plan to post more.", HttpStatus.UNAUTHORIZED);
+                }
+            }
+
             Optional<?> listing = listingService.createListing(listingDto);
 
             if (listing.isPresent()) {
