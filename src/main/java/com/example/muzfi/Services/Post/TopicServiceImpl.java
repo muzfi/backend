@@ -3,6 +3,7 @@ package com.example.muzfi.Services.Post;
 import com.example.muzfi.Dto.PostDto.PostAuthorDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Dto.PostDto.TopicCreateDto;
+import com.example.muzfi.Dto.PostDto.TopicUpdateDto;
 import com.example.muzfi.Enums.PostType;
 import com.example.muzfi.Manager.PostManager;
 import com.example.muzfi.Model.Post.Post;
@@ -13,11 +14,13 @@ import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TopicServiceImpl implements TopicService{
+public class TopicServiceImpl implements TopicService {
 
     private final TopicRepository topicRepository;
 
@@ -89,6 +92,93 @@ public class TopicServiceImpl implements TopicService{
         }
     }
 
+    //Get user topics - Filtered out draft topics
+    @Override
+    public Optional<List<Topic>> getTopicsByUserId(String userId) {
+        List<Topic> topics = topicRepository.findAllByAuthorId(userId);
+
+        if (topics.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Topic> topicList = new ArrayList<>();
+
+        for (Topic topic : topics) {
+            Optional<Post> postOpt = postRepository.findById(topic.getPostId());
+
+            if (postOpt.isPresent()) {
+                Post post = postOpt.get();
+
+                if (post.getIsDraft() == null || post.getIsDraft().equals(false)) {
+                    topicList.add(topic);
+                }
+
+                topicList.add(topic);
+            }
+        }
+
+        return Optional.of(topicList);
+    }
+
+
+    //Get user draft topics
+    @Override
+    public Optional<List<Topic>> getDraftTopicsByUserId(String userId) {
+        List<Topic> topics = topicRepository.findAllByAuthorId(userId);
+
+        if (topics.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Topic> topicList = new ArrayList<>();
+
+        for (Topic topic : topics) {
+            Optional<Post> postOpt = postRepository.findById(topic.getPostId());
+
+            if (postOpt.isPresent()) {
+                Post post = postOpt.get();
+
+                if (post.getIsDraft() != null && post.getIsDraft().equals(true)) {
+                    topicList.add(topic);
+                }
+            }
+        }
+
+        return Optional.of(topicList);
+    }
+
+
+    @Override
+    public Optional<PostDetailsDto> updateTopic(TopicUpdateDto updateDto) {
+        Optional<Topic> topicOpt = topicRepository.findById(updateDto.getId());
+        Optional<Post> postOpt = postRepository.findById(updateDto.getPostId());
+
+        if (topicOpt.isEmpty() || postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Topic topic = topicOpt.get();
+        Post post = postOpt.get();
+
+        topic.setTitle(updateDto.getTitle());
+        topic.setTopicType(updateDto.getTopicType());
+        topic.setText(updateDto.getText());
+        topic.setPostCategory(updateDto.getPostCategory());
+        topic.setTags(updateDto.getTags());
+        topic.setUpdatedDateTime(LocalDateTime.now());
+
+        post.setUpdatedDateTime(LocalDateTime.now());
+
+        Post postUpdated = postRepository.save(post);
+        Topic topicUpdated = topicRepository.save(topic);
+
+        Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
+        PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, topicUpdated, authorOptional.get());
+
+        return Optional.of(postDetailsDto);
+    }
+
+    //Get topics - Filtered out draft topics
     @Override
     public Optional<List<Topic>> getAllTopics() {
         List<Topic> topics = topicRepository.findAll();
@@ -97,6 +187,20 @@ public class TopicServiceImpl implements TopicService{
             return Optional.empty();
         }
 
-        return Optional.of(topics);
+        List<Topic> topicList = new ArrayList<>();
+
+        for (Topic topic : topics) {
+            Optional<Post> postOpt = postRepository.findById(topic.getPostId());
+
+            if (postOpt.isPresent()) {
+                Post post = postOpt.get();
+
+                if (post.getIsDraft() == null || post.getIsDraft().equals(false)) {
+                    topicList.add(topic);
+                }
+            }
+        }
+
+        return Optional.of(topicList);
     }
 }

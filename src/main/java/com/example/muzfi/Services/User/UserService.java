@@ -1,8 +1,9 @@
 package com.example.muzfi.Services.User;
 
 import com.example.muzfi.Dto.PostDto.PostAuthorDto;
-import com.example.muzfi.Model.User;
+import com.example.muzfi.Dto.UserDto.UserBasicDto;
 import com.example.muzfi.Enums.UserRole;
+import com.example.muzfi.Model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,10 @@ public interface UserService {
     Optional<User> getUserByOktaId(String oktaId);
 
     Optional<User> getUserById(String userId);
+
+    Optional<List<UserBasicDto>> getUsersByIds(List<String> userIds);
+
+    Optional<List<UserBasicDto>> getBlockedUsersByUser(String userId);
 
     Optional<String> getOktaIdByUserId(String userId);
 

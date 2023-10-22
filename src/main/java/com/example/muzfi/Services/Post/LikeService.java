@@ -14,4 +14,8 @@ public interface LikeService {
     Optional<List<String>> getLikedUserIdsByPostId(String postId);
 
     Optional<List<LikedUserDto>> getLikedUsersByPostId(String postId);
+
+    Optional<List<String>> getLikeIdsByPostId(String postId);
+
+    void deleteLikesByIds(List<String> idList);
 }

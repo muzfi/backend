@@ -1,5 +1,6 @@
 package com.example.muzfi.Model;
 
+import com.example.muzfi.Enums.UserGender;
 import com.example.muzfi.Enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,10 @@ public class User {
 
     private String lastName;
 
+    private String displayName;
+
+    private UserGender gender = UserGender.NONE;
+
     private List<UserRole> role;
 
     private String description;
@@ -40,7 +45,17 @@ public class User {
 
     private String location;
 
+    private String country;
+
+    private String state;
+
+    private String city;
+
     private String profilePicUri;
+
+    private String bannerImageUri;
+
+    private List<SocialLink> socialLinks;
 
     private Set<String> followersUserIds;
 

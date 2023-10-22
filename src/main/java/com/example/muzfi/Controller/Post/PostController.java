@@ -62,6 +62,66 @@ public class PostController {
         }
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getPostsByUserId(@PathVariable("userId") String userId) {
+        try {
+            Optional<List<PostDetailsDto>> posts = postService.getPostsByUserId(userId);
+
+            if (posts.isPresent()) {
+                return new ResponseEntity<>(posts.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("There is no posts to show", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @GetMapping("/user/draft/{userId}")
+    public ResponseEntity<?> getDraftPostsByUserId(@PathVariable("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to retrieve this posts.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<List<PostDetailsDto>> posts = postService.getDraftPostsByUserId(userId);
+
+            if (posts.isPresent()) {
+                return new ResponseEntity<>(posts.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("There is no draft posts to show", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @PutMapping("/user/publish-draft/{postId}")
+    public ResponseEntity<?> publishDraftPost(@PathVariable("postId") String postId, @RequestParam("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<PostDetailsDto> posts = postService.publishDraftPost(postId);
+
+            if (posts.isPresent()) {
+                return new ResponseEntity<>(posts.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Publishing draft post failed", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @PreAuthorize("hasAuthority('Muzfi_Member')")
     @GetMapping("/{postId}/like/{userId}")
     public ResponseEntity<?> addLike(@PathVariable("postId") String postId, @PathVariable("userId") String userId) {
@@ -121,9 +181,25 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable String id) {
-        postService.deletePost(id);
-        return ResponseEntity.ok().build();
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<?> deletePostById(@PathVariable("postId") String postId, @RequestParam("userId") String userId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<String> res = postService.deletePost(postId);
+
+            if (res.isPresent()) {
+                return new ResponseEntity<>(res.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Cannot delete this post", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

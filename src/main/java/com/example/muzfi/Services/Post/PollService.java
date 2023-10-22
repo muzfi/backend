@@ -1,8 +1,9 @@
 package com.example.muzfi.Services.Post;
 
 import com.example.muzfi.Dto.PostDto.PollCreateDto;
+import com.example.muzfi.Dto.PostDto.PollDetailsDto;
+import com.example.muzfi.Dto.PostDto.PollUpdateDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
-import com.example.muzfi.Model.Post.Poll;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,21 @@ import java.util.Optional;
 public interface PollService {
     Optional<PostDetailsDto> createPoll(PollCreateDto pollDto);
 
-    Optional<Poll> getPollById(String pollId);
+    Optional<PollDetailsDto> getPollById(String pollId);
 
-    Optional<List<Poll>> getAllPolls();
+    Optional<List<PollDetailsDto>> getPollsByUserId(String userId);
+
+    Optional<List<PollDetailsDto>> getAllPolls();
+
+    Optional<List<PollDetailsDto>> getDraftPollsByUserId(String userId);
+
+    Optional<String> vote(String pollOptionId, String userId);
+
+    Optional<String> removeVote(String pollOptionId, String userId);
+
+    Optional<PostDetailsDto> updatePoll(PollUpdateDto updateDto);
+
+    Optional<PostDetailsDto> addPollOption(String optionText, String pollId);
+
+    Optional<PostDetailsDto> removePollOption(String optionId, String pollId);
 }

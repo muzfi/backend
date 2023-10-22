@@ -30,7 +30,7 @@ public class Poll {
 
     private String text;
 
-    private List<PollOption> pollOptions;
+    private List<String> pollOptionIds;
 
     private LocalDateTime pollDeadline;
 

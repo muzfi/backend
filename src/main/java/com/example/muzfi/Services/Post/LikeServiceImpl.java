@@ -90,4 +90,26 @@ public class LikeServiceImpl implements LikeService {
 
         return Optional.of(likedUsersList);
     }
+
+    @Override
+    public Optional<List<String>> getLikeIdsByPostId(String postId) {
+        List<Like> postLikes = likeRepository.findAllByPostId(postId);
+
+        List<String> likeList = new ArrayList<>();
+
+        if (postLikes.isEmpty()) {
+            return Optional.empty();
+        }
+
+        for (Like like : postLikes) {
+            likeList.add(like.getId());
+        }
+
+        return Optional.of(likeList);
+    }
+
+    @Override
+    public void deleteLikesByIds(List<String> idList) {
+        likeRepository.deleteAllById(idList);
+    }
 }
