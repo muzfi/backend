@@ -20,3 +20,4 @@ public class Wishlist {
     private String userId;
     private Set<String> listingIds;  // Represents IDs of the listings/items in the wishlist.
 }
+

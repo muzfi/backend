@@ -44,4 +44,22 @@ public class ProductController {
         List<Product> products = productService.getProductsByCondition(condition);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/byBrand/{brandId}")
+    public ResponseEntity<List<Product>> getProductsByBrand(@PathVariable String brandId) {
+        List<Product> products = productService.getProductsByBrand(brandId);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/byCategory/{category}")
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
+        List<Product> products = productService.getProductsByCategory(category);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/byPriceRange")
+    public ResponseEntity<List<Product>> getProductsByPriceRange(@RequestParam Double minPrice, @RequestParam Double maxPrice) {
+        List<Product> products = productService.getProductsByPriceRange(minPrice, maxPrice);
+        return ResponseEntity.ok(products);
+    }
 }

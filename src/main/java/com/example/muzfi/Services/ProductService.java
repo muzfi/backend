@@ -10,8 +10,15 @@ public interface ProductService {
     Iterable<Product> getAllProducts();
 
     Optional<Product> getProduct(String id);
+
     List<Product> getProductsByCondition(ProductCondition condition);
+
     List<Product> getProductsByBrand(String brandId);
+
+    List<Product> getProductsByCategory(String category);
+
+    List<Product> getProductsByPriceRange(Double minPrice, Double maxPrice);
+
     List<String> getTopBrands();
 
     Product saveProduct(Product product);

@@ -38,6 +38,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getProductsByCategory(String category) {
+        return productRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<Product> getProductsByPriceRange(Double minPrice, Double maxPrice) {
+        return productRepository.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    @Override
     public List<String> getTopBrands() {
         List<Product> products = productRepository.findAll();
         Map<String, Long> brandCountMap = products.stream()
@@ -48,6 +58,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
+
     @Override
     public Product saveProduct(Product product) {
         return productRepository.save(product);
