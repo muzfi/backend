@@ -76,4 +76,66 @@ public class CommunityController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // New Methods:
+
+    @PostMapping("/{communityName}/addModerator/{userId}")
+    public ResponseEntity<Void> addModerator(@PathVariable String communityName, @PathVariable String userId) {
+        try {
+            communityService.addModerator(communityName, userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{communityName}/removeModerator/{userId}")
+    public ResponseEntity<Void> removeModerator(@PathVariable String communityName, @PathVariable String userId) {
+        try {
+            communityService.removeModerator(communityName, userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{communityName}/addMember/{userId}")
+    public ResponseEntity<Void> addMember(@PathVariable String communityName, @PathVariable String userId) {
+        try {
+            communityService.addMember(communityName, userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{communityName}/removeMember/{userId}")
+    public ResponseEntity<Void> removeMember(@PathVariable String communityName, @PathVariable String userId) {
+        try {
+            communityService.removeMember(communityName, userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{communityName}/restrictMember/{userId}")
+    public ResponseEntity<Void> restrictMember(@PathVariable String communityName, @PathVariable String userId) {
+        try {
+            communityService.restrictMember(communityName, userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
