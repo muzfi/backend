@@ -1,7 +1,6 @@
 package com.example.muzfi.Services;
 
 import com.example.muzfi.Dto.CommunityDto;
-import com.example.muzfi.Model.Community;
 
 import java.util.List;
 
@@ -16,4 +15,15 @@ public interface CommunityService {
     void addUserToCommunity(String communityName, String userId);
 
     List<CommunityDto> getSimilarCommunities(String communityName);
+
+    void removeModerator(String communityName, String userId);
+
+    void addMember(String communityName, String userId);
+
+    void removeMember(String communityName, String userId);
+
+    void restrictMember(String communityName, String userId);
+
+    void addModerator(String communityName, String userId);
+
 }

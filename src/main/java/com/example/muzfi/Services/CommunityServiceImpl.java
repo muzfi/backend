@@ -108,4 +108,49 @@ public class CommunityServiceImpl implements CommunityService {
 
         return similarCommunityDtos;
     }
+
+    @Override
+    public void addModerator(String communityName, String userId) {
+        Community community = communityRepository.findByName(communityName);
+        if (community == null) {
+            throw new NotFoundException("Community not found with name: " + communityName);
+        }
+        community.getModerators().add(userId);
+        communityRepository.save(community);
+    }
+
+    @Override
+    public void removeModerator(String communityName, String userId) {
+        Community community = communityRepository.findByName(communityName);
+        if (community == null) {
+            throw new NotFoundException("Community not found with name: " + communityName);
+        }
+        community.getModerators().remove(userId);
+        communityRepository.save(community);
+    }
+
+    @Override
+    public void addMember(String communityName, String userId) {
+        Community community = communityRepository.findByName(communityName);
+        if (community == null) {
+            throw new NotFoundException("Community not found with name: " + communityName);
+        }
+        community.getSubscriberIds().add(userId);
+        communityRepository.save(community);
+    }
+
+    @Override
+    public void removeMember(String communityName, String userId) {
+        Community community = communityRepository.findByName(communityName);
+        if (community == null) {
+            throw new NotFoundException("Community not found with name: " + communityName);
+        }
+        community.getSubscriberIds().remove(userId);
+        communityRepository.save(community);
+    }
+
+    @Override
+    public void restrictMember(String communityName, String userId) {
+        // Implement logic to restrict a member in the community
+    }
 }
