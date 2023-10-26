@@ -1,6 +1,6 @@
-package com.ecommerce.shoppingmarket.controller;
+package com.example.muzfi.Controller;
 
-import com.ecommerce.shoppingmarket.model.Wishlist;
+import com.example.muzfi.Model.Wishlist;
 import com.ecommerce.shoppingmarket.service.wishlistservice.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
