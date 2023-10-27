@@ -11,4 +11,6 @@ public interface GearRepository extends MongoRepository<Gear, String> {
     // You can define custom queries here if needed
     List<Gear> findByNameContaining(String name);
     List<Gear> findByNameContainingAndCategory(String name, String category);
+
+    List<Gear> findByNameContainingIgnoreCase(String query);
 }

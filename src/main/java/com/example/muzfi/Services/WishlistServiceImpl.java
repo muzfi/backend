@@ -14,6 +14,11 @@ public class WishlistServiceImpl implements WishlistService {
     private WishlistRepository wishlistRepository;
 
     @Override
+    public void addItemToWishlist(Wishlist item) {
+
+    }
+
+    @Override
     public List<Wishlist> getWishlistsForUser(Integer userId) {
         return wishlistRepository.findAllByUserId(userId);
     }
@@ -39,5 +44,10 @@ public class WishlistServiceImpl implements WishlistService {
             wishlist.getListingIds().remove(itemId);
             wishlistRepository.save(wishlist);
         }
+    }
+
+    @Override
+    public List<Wishlist> getUserWishlist(String userId) {
+        return null;
     }
 }

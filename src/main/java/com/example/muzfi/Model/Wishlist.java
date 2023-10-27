@@ -19,5 +19,8 @@ public class Wishlist {
     private String id;
     private String userId;
     private Set<String> listingIds;  // Represents IDs of the listings/items in the wishlist.
+
+    public void setProductId(String id) {
+    }
 }
 

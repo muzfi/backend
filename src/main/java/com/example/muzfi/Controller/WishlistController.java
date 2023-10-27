@@ -1,7 +1,7 @@
 package com.example.muzfi.Controller;
 
 import com.example.muzfi.Model.Wishlist;
-import com.ecommerce.shoppingmarket.service.wishlistservice.WishlistService;
+import com.example.muzfi.Services.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

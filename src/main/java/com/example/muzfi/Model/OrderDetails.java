@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @Data
 @Builder
+@AllArgsConstructor
 public class OrderDetails {
     @Id
     private String OrderId;
@@ -24,14 +25,6 @@ public class OrderDetails {
     @DBRef
     private User user;
 
-    public OrderDetails(String orderFullName, String orderFullAddress, String orderContactNumber, String orderAlternateContactNumber, String orderStatus, double orderAmount, Product product, User user) {
-        OrderFullName = orderFullName;
-        OrderFullAddress = orderFullAddress;
-        this.orderContactNumber = orderContactNumber;
-        this.orderAlternateContactNumber = orderAlternateContactNumber;
-        this.orderStatus = orderStatus;
-        this.orderAmount = orderAmount;
-        this.product = product;
-        this.user = user;
+    public OrderDetails(String orderFullName, String orderFullAddress, String orderContactNumber, String orderAlternateContactNumber, String orderPlaced, double v, Product product, User user) {
     }
 }
