@@ -16,7 +16,8 @@ public class OrderDetailsController {
     private final OrderDetailService orderDetailService;
 
     @PostMapping("/placeOrder")
-    public void placeOrder(@RequestBody OrderInput orderInput) throws MessagingException {
+    public String placeOrder(@RequestBody OrderInput orderInput) throws MessagingException {
         orderDetailService.placeOrder(orderInput);
+        return "Order Placed";
     }
 }

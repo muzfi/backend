@@ -70,7 +70,8 @@ public class OrderDetailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setTo("umairwaseef812@gmail.com");
+        helper.setTo(orderInput.getOrderEmail());
+        helper.setFrom("umrmoh200@gmail.com");
         helper.setSubject("Order Confirmation");
         helper.setText("Thank you for your order!\n\n" + getOrderInfo(orderInput));
 
