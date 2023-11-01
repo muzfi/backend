@@ -2,6 +2,7 @@ package com.example.muzfi.Controller;
 
 import com.example.muzfi.Model.OrderInput;
 import com.example.muzfi.Services.OrderDetailService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +16,7 @@ public class OrderDetailsController {
     private final OrderDetailService orderDetailService;
 
     @PostMapping("/placeOrder")
-    public void placeOrder(@RequestBody OrderInput orderInput) {
+    public void placeOrder(@RequestBody OrderInput orderInput) throws MessagingException {
         orderDetailService.placeOrder(orderInput);
     }
 }
