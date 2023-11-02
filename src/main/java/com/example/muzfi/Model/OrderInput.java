@@ -11,5 +11,6 @@ public class OrderInput {
     private String OrderFullAddress;
     private String orderContactNumber;
     private String orderAlternateContactNumber;
+    private String orderEmail;
     private List<OrderProductQuantity> orderProductQuantityList;
 }
