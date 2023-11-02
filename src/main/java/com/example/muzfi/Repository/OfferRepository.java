@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+
 public interface OfferRepository extends MongoRepository<Offer, String> {
     List<Offer> findAllByListingId(String listingId);
 
