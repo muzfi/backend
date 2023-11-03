@@ -1,12 +1,13 @@
 package com.example.muzfi.Services;
 
 import com.example.muzfi.Dto.CommunityDto;
+import jakarta.mail.MessagingException;
 
 import java.util.List;
 
 public interface CommunityService {
 
-    CommunityDto createCommunity(CommunityDto communityDto);
+    CommunityDto createCommunity(CommunityDto communityDto) throws MessagingException;
 
     List<CommunityDto> getAllCommunities();
 

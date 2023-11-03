@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping("/api/communities")
 public class CommunityController {
 
+    @Autowired
     private final CommunityService communityService;
 
     @Autowired
@@ -21,7 +22,7 @@ public class CommunityController {
         this.communityService = communityService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<CommunityDto> createCommunity(@RequestBody CommunityDto communityDto) {
         try {
             CommunityDto createdCommunity = communityService.createCommunity(communityDto);
@@ -31,7 +32,7 @@ public class CommunityController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/allcommunity")
     public ResponseEntity<List<CommunityDto>> getAllCommunities() {
         try {
             List<CommunityDto> communities = communityService.getAllCommunities();

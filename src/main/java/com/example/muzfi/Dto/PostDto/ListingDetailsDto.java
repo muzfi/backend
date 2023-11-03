@@ -22,6 +22,7 @@ public class ListingDetailsDto {
     private String postId;
 
     private String authorId;
+    private String authorEmail;
 
     private String brand;
 

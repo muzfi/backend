@@ -4,6 +4,7 @@ import com.example.muzfi.Dto.PostDto.ListingDetailsDto;
 import com.example.muzfi.Dto.PostDto.OfferUpdateDto;
 import com.example.muzfi.Model.Post.Offer;
 import com.example.muzfi.Services.AuthService;
+import com.example.muzfi.Services.EmailConfirmationService.EmailNotification.EmailNotificationService;
 import com.example.muzfi.Services.Post.ListingService;
 import com.example.muzfi.Services.Post.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,19 @@ public class OfferController {
 
     private final ListingService listingService;
 
+    private final EmailNotificationService emailNotificationService;
+
     @Autowired
-    public OfferController(OfferService offerService, AuthService authService, ListingService listingService) {
+    public OfferController(OfferService offerService, AuthService authService, ListingService listingService,EmailNotificationService emailNotificationService) {
         this.offerService = offerService;
         this.authService = authService;
         this.listingService = listingService;
+        this.emailNotificationService = emailNotificationService;
     }
 
 
     @PreAuthorize("hasAuthority('Muzfi_Member')")
-    @PostMapping
+    @PostMapping("/createOffer")
     public ResponseEntity<?> createOffer(@RequestBody Offer offer) {
         try {
             String loggedInUserId = offer.getUserId();
@@ -53,12 +57,18 @@ public class OfferController {
             Optional<?> offerOpt = offerService.createOffer(offer);
 
             if (offerOpt.isPresent()) {
+                // Send a new offer notification email to the listing owner
+                ListingDetailsDto listing = listingOptional.get();
+                String listingOwnerEmail = listing.getAuthorEmail(); // Assuming you have a method to get the owner's email
+
+                emailNotificationService.sendNewOfferNotification(listingOwnerEmail, listing.getTitle());
+
                 return new ResponseEntity<>(offerOpt.get(), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Creat offer failed", HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>("Create offer failed", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
