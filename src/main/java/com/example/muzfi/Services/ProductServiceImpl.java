@@ -3,6 +3,8 @@ package com.example.muzfi.Services;
 import com.example.muzfi.Model.Product;
 import com.example.muzfi.Enums.ProductCondition;
 import com.example.muzfi.Repository.ProductRepository;
+import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private EmailConfirmationService emailConfirmationService;
 
     @Override
     public Iterable<Product> getAllProducts() {
@@ -61,7 +65,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product product) {
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        if ("active".equals(savedProduct.getStatus())) {
+            try {
+                emailConfirmationService.sendNewListingConfirmation(savedProduct.getSellerEmail(), savedProduct);
+            } catch (MessagingException e) {
+                // Handle the exception if email confirmation fails
+            }
+        }
+        return savedProduct;
     }
 
     @Override
