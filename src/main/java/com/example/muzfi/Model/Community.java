@@ -1,6 +1,7 @@
 package com.example.muzfi.Model;
 
 import lombok.*;
+import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -31,12 +32,14 @@ public class Community {
     private boolean creatable;
     private List<String> reviews;
     private List<String> similarCommunityIds;
-    private String rules;
+    private CommunityRule rules;
     private int subscriberCount;
     private int rankedSize;
     private List<String> moderators;
+    private String country;
+    private Binary communityImage;
 
-    public Community(String name, String title, String creatorId, LocalDateTime createdDateTime, List<String> subscriberIds, List<String> postIds, String about, String sub, String type, String genre, boolean joinable, boolean creatable, List<String> reviews, List<String> similarCommunityIds, String rules, int subscriberCount, int rankedSize, List<String> moderators) {
+    public Community(String name, String title, String creatorId, LocalDateTime createdDateTime, List<String> subscriberIds, List<String> postIds, String about, String sub, String type, String genre, boolean joinable, boolean creatable, List<String> reviews, List<String> similarCommunityIds, CommunityRule rules, int subscriberCount, int rankedSize, List<String> moderators, String country, Binary communityImage) {
         this.name = name;
         this.title = title;
         this.creatorId = creatorId;
@@ -55,5 +58,7 @@ public class Community {
         this.subscriberCount = subscriberCount;
         this.rankedSize = rankedSize;
         this.moderators = moderators;
+        this.country = country;
+        this.communityImage = communityImage;
     }
 }

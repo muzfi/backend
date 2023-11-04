@@ -22,7 +22,7 @@ public class MuzfiApplication {
     public static void main(String[] args) {
         SpringApplication.run(MuzfiApplication.class, args);
     }
-<<<<<<< HEAD
+
 //    @Bean
 //    public CommandLineRunner commandLineRunner(
 //            OrderDetailsRepository orderDetailsRepository
@@ -37,7 +37,7 @@ public class MuzfiApplication {
 //        };
 //    }
 //}
-=======
+
 
 }
->>>>>>> 3583037c2e1ea8d63489d36693e3ee68524ebbc6
+
