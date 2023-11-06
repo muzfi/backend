@@ -71,4 +71,10 @@ public class User {
     private LocalDateTime createdDateTime = LocalDateTime.now();
 
     private LocalDateTime lastUpdatedDateTime;
+
+    private boolean banned;
+    private String banReason;
+    private LocalDate banStartDate;
+    private LocalDate banEndDate;
+    private boolean approved;
 }
