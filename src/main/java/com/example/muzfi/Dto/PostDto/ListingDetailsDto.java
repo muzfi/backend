@@ -69,4 +69,6 @@ public class ListingDetailsDto {
     private LocalDateTime createdDateTime;
 
     private LocalDateTime updatedDateTime;
+
+    private String review;
 }
