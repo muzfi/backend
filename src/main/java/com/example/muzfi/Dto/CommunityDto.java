@@ -1,9 +1,11 @@
 package com.example.muzfi.Dto;
 
+import com.example.muzfi.Model.CommunityRule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.types.Binary;
 
 import java.util.List;
 
@@ -27,7 +29,9 @@ public class CommunityDto {
     private boolean creatable;
     private List<String> reviews;
     private List<String> similarCommunityIds;
-    private String rules;
+    private CommunityRule rules;
     private int rankedSize;
     private List<String> moderators;
+    private String country;
+    private Binary communityImage;
 }
