@@ -154,6 +154,8 @@ public class CommunityServiceImpl implements CommunityService {
         communityRepository.save(community);
     }
 
+
+
     @Override
     public void addMember(String communityName, String userId) {
         Community community = communityRepository.findByName(communityName);
