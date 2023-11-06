@@ -1,7 +1,9 @@
 package com.example.muzfi;
 import com.example.muzfi.Model.MyBill;
+import com.example.muzfi.Model.OrderDetails;
 import com.example.muzfi.Model.Purchase;
 import com.example.muzfi.Repository.MyBillRepository;
+import com.example.muzfi.Repository.OrderDetailsRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,4 +23,21 @@ public class MuzfiApplication {
         SpringApplication.run(MuzfiApplication.class, args);
     }
 
+//    @Bean
+//    public CommandLineRunner commandLineRunner(
+//            OrderDetailsRepository orderDetailsRepository
+//    ) {
+//        return args -> {
+//            var orderDetails = OrderDetails.builder()
+//                            .OrderId("avndjavjdfkk")
+//                                    .orderAmount(7849.0)
+//                                            .orderContactNumber("7845944893")
+//                                                    .build();
+//            orderDetailsRepository.insert(orderDetails);
+//        };
+//    }
+//}
+
+
 }
+

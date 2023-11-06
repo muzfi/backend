@@ -1,6 +1,7 @@
 package com.example.muzfi.Services;
 import com.example.muzfi.Dto.CommunityDto;
 import com.example.muzfi.Model.Community;
+import com.example.muzfi.Model.CommunitySettingsUpdate;
 import com.example.muzfi.Repository.CommunityRepository;
 import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.exception.NotFoundException;
@@ -45,7 +46,9 @@ public class CommunityServiceImpl implements CommunityService {
                 communityDto.getRules(),
                 0,
                 0,
-                new ArrayList<>()
+                new ArrayList<>(),
+                communityDto.getCountry(),
+                communityDto.getCommunityImage()
         );
 
         community = communityRepository.save(community);
@@ -120,6 +123,21 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public Community updateCommunity(String id, CommunitySettingsUpdate communitySettingsUpdate) {
+            Community existingCommunity = communityRepository.findById(id).orElse(null);
+            if (existingCommunity == null) {
+                return null;
+            }
+            existingCommunity.setName(communitySettingsUpdate.getCommunityName());
+            existingCommunity.setSub(communitySettingsUpdate.getSubCategory());
+            existingCommunity.setAbout(communitySettingsUpdate.getDescription());
+            existingCommunity.setCountry(communitySettingsUpdate.getCountry());
+            existingCommunity.setCommunityImage(communitySettingsUpdate.getCommunityImage());
+            existingCommunity.setType(communitySettingsUpdate.getPrivacy());
+            return communityRepository.save(existingCommunity);
+    }
+
+    @Override
     public void removeModerator(String communityName, String userId) {
         Community community = communityRepository.findByName(communityName);
         if (community == null) {
@@ -152,5 +170,12 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public void restrictMember(String communityName, String userId) {
         // Implement logic to restrict a member in the community
+    }
+
+
+
+    @Override
+    public void deleteCommunity(String id) {
+        communityRepository.deleteById(id);
     }
 }

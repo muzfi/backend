@@ -1,6 +1,8 @@
 package com.example.muzfi.Controller;
 
 import com.example.muzfi.Dto.CommunityDto;
+import com.example.muzfi.Model.Community;
+import com.example.muzfi.Model.CommunitySettingsUpdate;
 import com.example.muzfi.Services.CommunityService;
 import com.example.muzfi.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,5 +139,17 @@ public class CommunityController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PutMapping("/updateCommunity/{id}")
+    public ResponseEntity<Community> updateCommunity(@PathVariable String id, @RequestBody CommunitySettingsUpdate communitySettingsUpdate) {
+        Community updatedCommunity = communityService.updateCommunity(id, communitySettingsUpdate);
+        return new ResponseEntity<>(updatedCommunity, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteCommunity/{id}")
+    public ResponseEntity<Void> deleteCommunity(@PathVariable String id) {
+        communityService.deleteCommunity(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
