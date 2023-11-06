@@ -43,11 +43,15 @@ public class ListingUpdateDto {
 
     private String conditionDescription;
 
+    private boolean saleAsDescribe;
+
     private String youTubeLink;
 
     private List<DeliverMethod> deliverMethod;
 
     private ProductShippingDetails shippingDetails;
+
+    private Boolean offerShipping;
 
     private BigDecimal price;
 

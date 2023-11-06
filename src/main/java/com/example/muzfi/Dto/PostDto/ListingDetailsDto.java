@@ -22,6 +22,7 @@ public class ListingDetailsDto {
     private String postId;
 
     private String authorId;
+    private String authorEmail;
 
     private String brand;
 
@@ -68,4 +69,6 @@ public class ListingDetailsDto {
     private LocalDateTime createdDateTime;
 
     private LocalDateTime updatedDateTime;
+
+    private String review;
 }

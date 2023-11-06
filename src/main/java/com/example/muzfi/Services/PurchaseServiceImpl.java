@@ -4,6 +4,8 @@ import com.example.muzfi.Model.Purchase;
 import com.example.muzfi.Repository.ProductRepository;
 import com.example.muzfi.Repository.PurchaseRepository;
 import com.example.muzfi.Repository.UserRepository;
+import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
+import com.example.muzfi.Services.EmailConfirmationService.EmailNotification.EmailNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,19 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final PurchaseRepository purchaseRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final EmailNotificationService emailNotificationService;
 
 
     @Override
     public Purchase createPurchase(Purchase purchase) {
-        return purchaseRepository.save(purchase);
+        Purchase createdPurchase = purchaseRepository.save(purchase);
+
+        // Send an email notification for the sold item
+        String recipientEmail = createdPurchase.getUser().getEmail();
+        String itemName = createdPurchase.getProduct().getName();
+        emailNotificationService.sendItemSoldNotification(recipientEmail, itemName);
+
+        return createdPurchase;
     }
 
     @Override

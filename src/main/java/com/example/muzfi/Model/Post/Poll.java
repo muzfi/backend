@@ -42,4 +42,7 @@ public class Poll {
 
     private LocalDateTime updatedDateTime;
 
+    ///newly add
+    private String comments;
+
 }

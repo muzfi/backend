@@ -22,4 +22,7 @@ public class Product {
     private Integer seller_id;
     private ProductCondition condition;
     private String brandId;
+    private String sellerEmail;
+    private String status; // "active" for active listings
+
 }

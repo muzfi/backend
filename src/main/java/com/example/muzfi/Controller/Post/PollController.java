@@ -6,6 +6,8 @@ import com.example.muzfi.Dto.PostDto.PollUpdateDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.Post.PollService;
+import com.example.muzfi.response.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +31,8 @@ public class PollController {
     }
 
     @PreAuthorize("hasAuthority('Muzfi_Member')")
-    @PostMapping
-    public ResponseEntity<?> createPoll(@RequestBody PollCreateDto pollDto) {
+    @PostMapping("create-poll")
+    public ResponseEntity<?> createPoll(@Valid @RequestBody PollCreateDto pollDto) {
         try {
             String loggedInUserId = pollDto.getAuthorId();
 
@@ -48,7 +50,8 @@ public class PollController {
                 return new ResponseEntity<>("Creat poll failed", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            // Error response
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An unknown error occurred: " + ex.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

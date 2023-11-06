@@ -33,11 +33,19 @@ public class Topic {
 
     private String text;
 
+    private String Content;
+
+    private String links;
+
     private List<PostCategory> postCategory;
+
+    private String Community;
 
     private List<String> tags;
 
     private LocalDateTime createdDateTime;
 
     private LocalDateTime updatedDateTime;
+
+
 }

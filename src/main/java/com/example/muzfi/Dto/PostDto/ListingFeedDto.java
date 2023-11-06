@@ -1,5 +1,6 @@
 package com.example.muzfi.Dto.PostDto;
 
+import com.example.muzfi.Model.Post.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,11 +28,15 @@ public class ListingFeedDto {
 
     private BigDecimal price;
 
+    private String condition;
+
     private int bidsCount;
 
     private LocalDateTime deadline;
 
     private List<String> tags;
+
+    private Comment comment;
 
     private LocalDateTime createdDateTime;
 

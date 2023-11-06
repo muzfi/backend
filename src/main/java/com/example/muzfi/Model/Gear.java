@@ -19,6 +19,13 @@ public class Gear {
     private String id;
     private String name;
     private Double price;
+    private Boolean customGear;
+    private String brandName;
+    private String model;
+    private List<String>  photo;
+    private String description;
+    private String receiveMethod;
+    private String details;
     private List<Review> reviews;
     private List<Rating> ratings;
     private List<String> pros;

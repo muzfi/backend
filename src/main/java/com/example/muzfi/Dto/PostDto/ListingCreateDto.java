@@ -23,6 +23,8 @@ public class ListingCreateDto extends PostCreateDto {
 
     private String year;
 
+    private String title;
+
     private String finish;
 
     private Boolean isHandMade;
@@ -33,11 +35,15 @@ public class ListingCreateDto extends PostCreateDto {
 
     private String conditionDescription;
 
+    private boolean soaleAsDescribe;
+
     private String youTubeLink;
 
     private List<DeliverMethod> deliverMethod;
 
     private ProductShippingDetails shippingDetails;
+
+    private Boolean offerShipping;
 
     private BigDecimal price;
 
@@ -48,4 +54,7 @@ public class ListingCreateDto extends PostCreateDto {
     private BigDecimal bumpRate;
 
     private LocalDateTime deadline;
+
+    private String review;
+
 }

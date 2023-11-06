@@ -21,6 +21,8 @@ public class Offer {
 
     private String userId;
 
+    private String userEmail;
+
     private String listingId;
 
     private BigDecimal offerAmount;
