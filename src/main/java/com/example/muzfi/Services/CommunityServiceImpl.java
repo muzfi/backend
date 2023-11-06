@@ -3,8 +3,10 @@ import com.example.muzfi.Dto.CommunityDto;
 import com.example.muzfi.Model.Community;
 import com.example.muzfi.Model.CommunitySettingsUpdate;
 import com.example.muzfi.Repository.CommunityRepository;
+import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
 import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.exception.NotFoundException;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +21,17 @@ public class CommunityServiceImpl implements CommunityService {
 
     private final CommunityRepository communityRepository;
     private final UserService userService;
+    private final EmailConfirmationService emailConfirmationService;
 
     @Autowired
-    public CommunityServiceImpl(CommunityRepository communityRepository, UserService userService) {
+    public CommunityServiceImpl(CommunityRepository communityRepository, UserService userService, EmailConfirmationService emailConfirmationService) {
         this.communityRepository = communityRepository;
         this.userService = userService;
+        this.emailConfirmationService = emailConfirmationService;
     }
 
     @Override
-    public CommunityDto createCommunity(CommunityDto communityDto) {
+    public CommunityDto createCommunity(CommunityDto communityDto) throws MessagingException {
         Community community = new Community(
                 communityDto.getName(),
                 communityDto.getTitle(),
@@ -52,6 +56,9 @@ public class CommunityServiceImpl implements CommunityService {
         );
 
         community = communityRepository.save(community);
+        // Send the community created email confirmation
+        emailConfirmationService.sendCommunityCreatedConfirmation(communityDto.getCreatorId(), communityDto.getName());
+
         return mapToCommunityDto(community);
     }
     @Override

@@ -25,6 +25,7 @@ public class Listing {
     private String postId;
 
     private String authorId;
+    private String authorEmail;
 
     @NotNull
     private String brand;

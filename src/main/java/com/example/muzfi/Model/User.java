@@ -71,4 +71,5 @@ public class User {
     private LocalDateTime createdDateTime = LocalDateTime.now();
 
     private LocalDateTime lastUpdatedDateTime;
+
 }

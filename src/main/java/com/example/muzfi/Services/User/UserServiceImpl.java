@@ -5,6 +5,8 @@ import com.example.muzfi.Dto.UserDto.UserBasicDto;
 import com.example.muzfi.Enums.UserRole;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Repository.UserRepository;
+import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +16,16 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final EmailConfirmationService emailConfirmationService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, EmailConfirmationService emailConfirmationService) {
+
         this.userRepository = userRepository;
+        this.emailConfirmationService = emailConfirmationService;
     }
+
+
 
     @Override
     public Optional<List<User>> getAllUsers() {
@@ -261,4 +268,6 @@ public class UserServiceImpl implements UserService {
             return Optional.empty();
         }
     }
+
+
 }

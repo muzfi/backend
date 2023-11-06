@@ -13,7 +13,7 @@ import java.util.List;
 public class PurchaseController {
     private final PurchaseService purchaseService;
 
-    @PostMapping
+    @PostMapping("createPurchase")
     public Purchase createPurchase(@RequestBody Purchase purchase){
         return purchaseService.createPurchase(purchase);
     }

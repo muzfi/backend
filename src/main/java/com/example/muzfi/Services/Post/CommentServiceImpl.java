@@ -3,6 +3,8 @@ package com.example.muzfi.Services.Post;
 import com.example.muzfi.Dto.PostDto.*;
 import com.example.muzfi.Model.Post.Comment;
 import com.example.muzfi.Repository.CommentRepository;
+import com.example.muzfi.Services.EmailConfirmationService.EmailNotification.EmailNotificationService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +14,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class CommentServiceImpl implements CommentService {
 
 
     private final CommentRepository commentRepository;
 
+    private final EmailNotificationService emailNotificationService;
+
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, EmailNotificationService emailNotificationService) {
+
         this.commentRepository = commentRepository;
+        this.emailNotificationService = emailNotificationService;
     }
 
 
@@ -142,6 +149,10 @@ public class CommentServiceImpl implements CommentService {
             comment.setReplyCommentIds(replyIds);
 
             commentRepository.save(comment);
+
+            // Send email notification for the reply
+            emailNotificationService.sendEmailForCommentReply(replyDto.getRepliedToUserId(), replyDto.getUserId(), replyDto.getText());
+
 
             return getCommentDetailsById(comment.getId());
         }

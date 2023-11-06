@@ -17,8 +17,12 @@ public class CommentReplyDto {
     private String commentId;
 
     private String userId;
+    private String repliedToUserId;
+
 
     private String text;
 
     private LocalDateTime createdDateTime;
+
+
 }
