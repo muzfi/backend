@@ -28,8 +28,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/marketplace/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/profile/{userId}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/search/**").permitAll()
+<<<<<<< HEAD
                         .requestMatchers(HttpMethod.POST,"/api/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/listings/**").permitAll()
+=======
+                        //.requestMatchers(HttpMethod.PUT,"/api/community-rules/**").permitAll()
+>>>>>>> f249c5c71aa69c2109c3010c8a502707b4cbdabd
                         .anyRequest().authenticated()
                 ).build();
     }

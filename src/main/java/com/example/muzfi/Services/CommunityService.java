@@ -2,6 +2,8 @@ package com.example.muzfi.Services;
 
 import com.example.muzfi.Dto.CommunityDto;
 import jakarta.mail.MessagingException;
+import com.example.muzfi.Model.Community;
+import com.example.muzfi.Model.CommunitySettingsUpdate;
 
 import java.util.List;
 
@@ -26,5 +28,9 @@ public interface CommunityService {
     void restrictMember(String communityName, String userId);
 
     void addModerator(String communityName, String userId);
+
+    Community updateCommunity(String id, CommunitySettingsUpdate communitySettingsUpdate);
+
+    void deleteCommunity(String id);
 
 }
