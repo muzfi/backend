@@ -14,4 +14,6 @@ public interface CommunityRepository extends MongoRepository<Community, String> 
     List<Community> findByNameContainingIgnoreCase(String name);
 
     List<Community> findByTitleContainingIgnoreCase(String name);
+
+    List<Community> findByDescriptionContainingIgnoreCase(String query);
 }

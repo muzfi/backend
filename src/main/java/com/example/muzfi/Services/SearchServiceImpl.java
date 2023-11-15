@@ -2,16 +2,16 @@ package com.example.muzfi.Services;
 
 import com.example.muzfi.Dto.SearchResultDto;
 import com.example.muzfi.Enums.SearchType;
-import com.example.muzfi.Model.Community;
-import com.example.muzfi.Model.Gear;
+import com.example.muzfi.Model.*;
 import com.example.muzfi.Model.Post.Listing;
 import com.example.muzfi.Model.Post.Poll;
 import com.example.muzfi.Model.Post.Topic;
-import com.example.muzfi.Model.Review;
-import com.example.muzfi.Model.User;
+import com.example.muzfi.Model.Thread;
 import com.example.muzfi.Repository.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +34,16 @@ public class SearchServiceImpl implements SearchService {
 
     private final ReviewRepository reviewRepository;
 
+    private final CatalogRepository catalogRepository;
+
+    private final GroupRepository groupRepository;
+
+    private final PageRepository pageRepository;
+
+    private final ThreadRepository threadRepository;
+
     @Autowired
-    public SearchServiceImpl(UserRepository userRepository, TopicRepository topicRepository, CommunityRepository communityRepository, GearRepository gearRepository, ListingRepository listingRepository, PollRepository pollRepository, ReviewRepository reviewRepository) {
+    public SearchServiceImpl(UserRepository userRepository, TopicRepository topicRepository, CommunityRepository communityRepository, GearRepository gearRepository, ListingRepository listingRepository, PollRepository pollRepository, ReviewRepository reviewRepository, CatalogRepository catalogRepository, GroupRepository groupRepository, PageRepository pageRepository, ThreadRepository threadRepository) {
         this.userRepository = userRepository;
         this.topicRepository = topicRepository;
         this.communityRepository = communityRepository;
@@ -43,6 +51,10 @@ public class SearchServiceImpl implements SearchService {
         this.listingRepository = listingRepository;
         this.pollRepository = pollRepository;
         this.reviewRepository = reviewRepository;
+        this.catalogRepository = catalogRepository;
+        this.groupRepository = groupRepository;
+        this.pageRepository = pageRepository;
+        this.threadRepository = threadRepository;
     }
 
     @Override
@@ -268,9 +280,110 @@ public class SearchServiceImpl implements SearchService {
 
 
     //TODO: Search inside communities
+
     //TODO: Search catalogs
+
+    @Override
+    public Optional<List<SearchResultDto>> searchCatalogs(String query) {
+        List<Catalog> catalogTitleList = catalogRepository.findByTitleContainingIgnoreCase(query);
+
+        List<SearchResultDto> searchResults = new ArrayList<>();
+
+        if (!catalogTitleList.isEmpty()) {
+            for (Catalog catalog : catalogTitleList) {
+                SearchResultDto result = new SearchResultDto();
+                result.setId(catalog.getId());
+                result.setSearchedString(catalog.getTitle());
+                result.setSearchType(SearchType.CATALOG);
+
+                searchResults.add(result);
+            }
+        }
+
+        return Optional.of(searchResults);
+    }
+
+    @Override
+    public Optional<List<SearchResultDto>> searchGroups(String query) {
+        List<Group> groupTitleList = groupRepository.findByTitleContainingIgnoreCase(query);
+
+        List<SearchResultDto> searchResults = new ArrayList<>();
+
+        if (!groupTitleList.isEmpty()) {
+            for (Group group : groupTitleList) {
+                SearchResultDto result = new SearchResultDto();
+                result.setId(group.getId());
+                result.setSearchedString(group.getTitle());
+                result.setSearchType(SearchType.GROUP);
+
+                searchResults.add(result);
+            }
+        }
+
+        return Optional.of(searchResults);
+    }
+
+    @Override
+    public Optional<List<SearchResultDto>> searchPages(String query) {
+        List<Page> pageTitleList = pageRepository.findByTitleContainingIgnoreCase(query);
+
+        List<SearchResultDto> searchResults = new ArrayList<>();
+
+        if (!pageTitleList.isEmpty()) {
+            for (Page page : pageTitleList) {
+                SearchResultDto result = new SearchResultDto();
+                result.setId(page.getId());
+                result.setSearchedString(page.getTitle());
+                result.setSearchType(SearchType.PAGE);
+
+                searchResults.add(result);
+            }
+        }
+
+        return Optional.of(searchResults);
+    }
+
+    @Override
+    public Optional<List<SearchResultDto>> searchThreads(String query) {
+        List<Thread> threadList = threadRepository.findByTitleContainingIgnoreCase(query);
+
+        List<SearchResultDto> searchResults = new ArrayList<>();
+
+        if (!threadList.isEmpty()) {
+            for (Thread thread : threadList) {
+                SearchResultDto result = new SearchResultDto();
+                result.setId(thread.getId());
+                result.setSearchedString(thread.getTitle());
+                result.setSearchType(SearchType.THREAD);
+
+                searchResults.add(result);
+            }
+        }
+
+        return Optional.of(searchResults);
+    }
+
+    @Override
+    public Optional<List<SearchResultDto>> searchGearsByCategories(String query) {
+        List<Gear> gearList = gearRepository.findByCategoryContainingIgnoreCase(query);
+
+        List<SearchResultDto> searchResults = new ArrayList<>();
+
+        if (!gearList.isEmpty()) {
+            for (Gear gear : gearList) {
+                SearchResultDto result = new SearchResultDto();
+                result.setId(gear.getId());
+                result.setSearchedString(gear.getName());
+                result.setSearchType(SearchType.GEAR);
+
+                searchResults.add(result);
+            }
+        }
+
+        return Optional.of(searchResults);
+    }
     //TODO: Search threads
-    //TODO: Search groups
-    //TODO: Search pages
+
+
     //TODO: Search by gear categories
 }

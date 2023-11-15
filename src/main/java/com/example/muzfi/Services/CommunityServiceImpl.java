@@ -48,11 +48,11 @@ public class CommunityServiceImpl implements CommunityService {
                 new ArrayList<>(),
                 new ArrayList<>(),
                 communityDto.getRules(),
-                0,
-                0,
+
                 new ArrayList<>(),
                 communityDto.getCountry(),
-                communityDto.getCommunityImage()
+                communityDto.getCommunityImage(),
+                communityDto.getDescription()
         );
 
         community = communityRepository.save(community);

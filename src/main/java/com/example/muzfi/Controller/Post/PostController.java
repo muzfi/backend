@@ -46,6 +46,11 @@ public class PostController {
                 return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
             }
 
+            // Check if the user has reviewed the post before submitting
+            if (!postDto.isReviewed()) {
+                return new ResponseEntity<>("Please review the post before submitting.", HttpStatus.BAD_REQUEST);
+            }
+
             Optional<PostDetailsDto> createdPost = postService.createPost(postDto);
 
             if (createdPost.isPresent()) {
@@ -57,7 +62,6 @@ public class PostController {
             return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping
     public ResponseEntity<?> getAllPosts() {
         try {

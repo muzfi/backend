@@ -31,4 +31,5 @@ public class PostCreateDto {
     private LocalDateTime createdDateTime;
 
     private Boolean isDraft;
+    private boolean isReviewed;
 }

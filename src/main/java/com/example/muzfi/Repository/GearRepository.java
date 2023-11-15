@@ -16,4 +16,7 @@ public interface GearRepository extends MongoRepository<Gear, String> {
     List<Gear> findByNameContainingIgnoreCase(String query);
 
     Optional<Gear> findByName(String name);
+
+
+    List<Gear> findByCategoryContainingIgnoreCase(String query);
 }

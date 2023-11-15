@@ -24,4 +24,14 @@ public class MyBill {
     private Date billDate;
     private List<Product> product;
     private double amount;
+    private boolean  billingInfoReviewed;
+
+    public boolean isBillingInfoReviewed() {
+        // Implement the logic to check if billing information has been reviewed
+        return billingInfoReviewed;
+    }
+
+    public void setBillingInfoReviewed(boolean billingInfoReviewed) {
+        this.billingInfoReviewed = billingInfoReviewed;
+    }
 }

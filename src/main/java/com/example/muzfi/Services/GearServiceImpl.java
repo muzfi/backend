@@ -56,17 +56,15 @@ public class GearServiceImpl implements GearService{
 
     @Override
     public List<Gear> searchGears(String searchTerm, String category) {
-        // This is a basic example. In a real-world scenario,
-        // you'd make use of advanced query specifications or criteria.
         if (category != null && !category.isEmpty()) {
             return gearRepository.findByNameContainingAndCategory(searchTerm, category);
         } else {
-            return gearRepository.findByNameContaining(searchTerm);
+            return gearRepository.findByNameContainingIgnoreCase(searchTerm);
         }
     }
 
     @Override
     public void deleteGear(String gearId) {
-
+        gearRepository.deleteById(gearId);
     }
 }
