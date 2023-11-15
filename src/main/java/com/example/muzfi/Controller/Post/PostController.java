@@ -1,11 +1,13 @@
 package com.example.muzfi.Controller.Post;
 
 import com.example.muzfi.Dto.PostDto.LikedUserDto;
+import com.example.muzfi.Dto.PostDto.PostCreateDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Model.Post.Like;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.Post.LikeService;
 import com.example.muzfi.Services.Post.PostService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,30 @@ public class PostController {
         this.authService = authService;
         this.postService = postService;
         this.likeService = likeService;
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @PostMapping("/create-post")
+    public ResponseEntity<?> createPost(@Valid @RequestBody PostCreateDto postDto) {
+        try {
+            String loggedInUserId = postDto.getAuthorId();
+
+            boolean isLoggedInUser = authService.isLoggedInUser(loggedInUserId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<PostDetailsDto> createdPost = postService.createPost(postDto);
+
+            if (createdPost.isPresent()) {
+                return new ResponseEntity<>(createdPost.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Create post failed", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping
@@ -64,6 +90,7 @@ public class PostController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getPostsByUserId(@PathVariable("userId") String userId) {
+
         try {
             Optional<List<PostDetailsDto>> posts = postService.getPostsByUserId(userId);
 

@@ -2,14 +2,19 @@ package com.example.muzfi.Services;
 
 import com.example.muzfi.Model.Gear;
 import com.example.muzfi.Repository.GearRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
+@AllArgsConstructor
 public class GearServiceImpl implements GearService{
     private GearRepository gearRepository;
+
 
     @Override
     public Optional<List<Gear>> getAllGears() {
@@ -23,8 +28,26 @@ public class GearServiceImpl implements GearService{
 
     @Override
     public Gear createGear(Gear gear) {
-        return null;
+        // Add any validation or business logic before saving the gear
+
+
+        // Check if the gear with the same name already exists
+        Optional<Gear> existingGear = gearRepository.findByName(gear.getName());
+        if (existingGear.isPresent()) {
+            // You may want to throw an exception or handle this case differently based on your requirements
+            throw new IllegalArgumentException("Gear with the same name already exists");
+        }
+
+        // Additional validation or business logic can be added here based on your requirements
+
+        // Save the gear to the database
+        Gear savedGear = gearRepository.save(gear);
+
+        // You can perform any additional logic here after the gear is saved, such as triggering events or notifications
+
+        return savedGear;
     }
+
 
     @Override
     public Gear updateGear(String gearId, Gear gear) {

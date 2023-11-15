@@ -2,11 +2,14 @@ package com.example.muzfi.Controller.User;
 
 import com.example.muzfi.Dto.UserDto.SignupConfirmationRequest;
 import com.example.muzfi.Dto.UserDto.UserBasicDto;
+import com.example.muzfi.Dto.UserDto.UserSignupDto;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
 import com.example.muzfi.Services.User.UserService;
 import jakarta.mail.MessagingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
+
     private final UserService userService;
 
     private final AuthService authService;
@@ -31,16 +37,7 @@ public class UserController {
         this.emailConfirmationService = emailConfirmationService;
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> sendConfirmationEmail(@RequestBody SignupConfirmationRequest signupConfirmationRequest) {
-        try {
-            // Invoke the email service to send the confirmation email
-            emailConfirmationService.sendSignUpConfirmationEmail(signupConfirmationRequest.getEmail(), signupConfirmationRequest.getConfirmationToken());
-            return new ResponseEntity<>("Confirmation email sent successfully", HttpStatus.OK);
-        } catch (MessagingException e) {
-            return new ResponseEntity<>("Error sending confirmation email: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+
 
 
     @GetMapping

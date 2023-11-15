@@ -6,6 +6,7 @@ import com.example.muzfi.Dto.PostDto.ListingUpdateDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.Post.ListingService;
+import com.example.muzfi.Services.PushNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,13 @@ public class ListingController {
 
     private final ListingService listingService;
 
+    private final PushNotificationService pushNotificationService;
+
     @Autowired
-    public ListingController(AuthService authService, ListingService listingService) {
+    public ListingController(AuthService authService, ListingService listingService, PushNotificationService pushNotificationService) {
         this.authService = authService;
         this.listingService = listingService;
+        this.pushNotificationService = pushNotificationService;
     }
 
     @GetMapping
@@ -96,8 +100,9 @@ public class ListingController {
         }
     }
 
+
     @PreAuthorize("hasAuthority('Muzfi_Member')")
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createListing(@RequestBody ListingCreateDto listingDto) {
         try {
             String loggedInUserId = listingDto.getAuthorId();

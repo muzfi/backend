@@ -2,6 +2,7 @@ package com.example.muzfi.Services.Post;
 
 import com.example.muzfi.Dto.PostDto.ListingFeedDto;
 import com.example.muzfi.Dto.PostDto.PostAuthorDto;
+import com.example.muzfi.Dto.PostDto.PostCreateDto;
 import com.example.muzfi.Dto.PostDto.PostDetailsDto;
 import com.example.muzfi.Enums.PostType;
 import com.example.muzfi.Manager.ListingManager;
@@ -13,6 +14,7 @@ import com.example.muzfi.Model.Post.Topic;
 import com.example.muzfi.Repository.*;
 import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,6 +60,41 @@ public class PostServiceImpl implements PostService {
         this.offerService = offerService;
         this.postManager = postManager;
         this.listingManager = listingManager;
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @Override
+    public Optional<PostDetailsDto> createPost(PostCreateDto postDto) {
+        try {
+            // Validate postDto and extract necessary information
+            // For example, you may need to check if the provided data is valid
+
+            // You might also want to set some default values or perform additional logic here
+
+            // Create a new post
+            Post newPost = new Post();
+            newPost.setAuthorId(postDto.getAuthorId());
+            newPost.setIsDraft(postDto.getIsDraft());
+
+            // Save the post
+            Post createdPost = postRepository.save(newPost);
+
+            // Retrieve additional data based on post type
+            Object postTypeData = getPostTypeData(createdPost);
+
+            // Retrieve author information
+            Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(createdPost.getAuthorId());
+
+            if (postTypeData != null && authorOptional.isPresent()) {
+                PostAuthorDto author = authorOptional.get();
+                return Optional.of(postManager.getPostDetailsDto(createdPost, postTypeData, author));
+            } else {
+                return Optional.empty();
+            }
+        } catch (Exception ex) {
+            // Handle any exceptions and return an empty Optional or appropriate response
+            return Optional.empty();
+        }
     }
 
     //Retrieve all posts - not draft

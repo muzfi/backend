@@ -8,6 +8,7 @@ import com.example.muzfi.Model.Post.Listing;
 import com.example.muzfi.Model.Post.Post;
 import com.example.muzfi.Repository.ListingRepository;
 import com.example.muzfi.Repository.PostRepository;
+import com.example.muzfi.Services.ListingEventPublisher;
 import com.example.muzfi.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,13 +31,16 @@ public class ListingServiceImpl implements ListingService {
 
     private final ListingManager listingManager;
 
+    private final ListingEventPublisher listingEventPublisher;
+
     @Autowired
-    public ListingServiceImpl(PostRepository postRepository, ListingRepository listingRepository, UserService userService, PostManager postManager, ListingManager listingManager) {
+    public ListingServiceImpl(PostRepository postRepository, ListingRepository listingRepository, UserService userService, PostManager postManager, ListingManager listingManager, ListingEventPublisher listingEventPublisher) {
         this.postRepository = postRepository;
         this.listingRepository = listingRepository;
         this.userService = userService;
         this.postManager = postManager;
         this.listingManager = listingManager;
+        this.listingEventPublisher = listingEventPublisher;
     }
 
     //get listings - filtered draft listings
@@ -185,6 +189,9 @@ public class ListingServiceImpl implements ListingService {
         ListingDetailsDto listingDetailsDto = listingManager.getListingDetailsDto(listingUpdated);
         Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
         PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(postUpdated, listingDetailsDto, authorOptional.get());
+
+        //publish the listing created event
+        listingEventPublisher.publishListingCreatedEvent(listingUpdated.getId());
 
         return Optional.ofNullable(postDetailsDto);
     }

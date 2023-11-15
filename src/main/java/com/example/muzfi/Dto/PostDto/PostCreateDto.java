@@ -18,6 +18,8 @@ public class PostCreateDto {
 
     private String title;
 
+
+
     private String subTitle;
 
     private String description;

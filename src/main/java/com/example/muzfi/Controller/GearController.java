@@ -2,6 +2,7 @@ package com.example.muzfi.Controller;
 
 import com.example.muzfi.Model.Gear;
 import com.example.muzfi.Services.GearService;
+import com.example.muzfi.response.GearCreationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,15 +52,17 @@ public class GearController {
         }
     }
 
-    @PostMapping
+    @PostMapping("create")
     public ResponseEntity<?> createGear(@RequestBody Gear gear) {
         try {
             Gear createdGear = gearService.createGear(gear);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdGear);
+            String successMessage = "Congrats, On adding your gear";
+            return ResponseEntity.status(HttpStatus.CREATED).body(new GearCreationResponse(successMessage, createdGear));
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @PutMapping("/{gearId}")
     public ResponseEntity<?> updateGear(@PathVariable String gearId, @RequestBody Gear gear) {

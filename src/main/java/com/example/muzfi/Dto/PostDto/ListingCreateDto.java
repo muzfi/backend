@@ -19,6 +19,8 @@ public class ListingCreateDto extends PostCreateDto {
 
     private String brand;
 
+    private String email;
+
     private String model;
 
     private String year;

@@ -1,13 +1,21 @@
 package com.example.muzfi.Services;
 
+import com.example.muzfi.Dto.UserDto.LoginDto;
+import com.example.muzfi.Dto.UserDto.UserSignupDto;
 import com.example.muzfi.Enums.RoleEditAction;
 import com.example.muzfi.Enums.UserRole;
 import com.example.muzfi.Model.User;
+import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
 import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.Util.OktaRestClient;
+import jakarta.mail.MessagingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,11 +35,64 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserService userService;
 
+    private final EmailConfirmationService emailConfirmationService;
+
+
+
+
+
+    private final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
+
     @Autowired
-    public AuthServiceImpl(OktaRestClient oktaRestClient, UserService userService) {
+    public AuthServiceImpl(
+            OktaRestClient oktaRestClient,
+            UserService userService,
+            EmailConfirmationService emailConfirmationService
+            ) {
+
         this.oktaRestClient = oktaRestClient;
         this.userService = userService;
+        this.emailConfirmationService = emailConfirmationService;
+
+
     }
+
+    @Override
+    public User signUp(UserSignupDto userSignupDto) {
+        try {
+            // Perform user signup logic here
+            User newUser = new User();
+            newUser.setUserName(userSignupDto.getUsername());
+            newUser.setEmail(userSignupDto.getEmail());
+            newUser.setPassword(userSignupDto.getPassword());
+
+            // Save the user to the database
+            User savedUser = userService.createUser(newUser);
+
+            // Optionally, you can send a confirmation email here if needed
+            try {
+                emailConfirmationService.sendSignUpConfirmationEmail(savedUser.getEmail(), generateConfirmationToken());
+            } catch (MessagingException e) {
+                log.error("Error sending confirmation email", e);
+            }
+
+            return savedUser;
+        } catch (Exception e) {
+            // Log an error during signup
+            log.error("Error during signup", e);
+            // You might choose to throw an exception here if you want to propagate the error
+            // For simplicity, this example does not rethrow the exception
+            return null;
+        }
+    }
+
+    private String generateConfirmationToken() {
+        // Your logic to generate a confirmation token
+        // This is a placeholder; replace it with your actual implementation
+        return UUID.randomUUID().toString();
+    }
+
+
 
     // Check if received user id owned by logged-in user
     @Override
