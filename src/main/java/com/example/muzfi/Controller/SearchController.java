@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/search")
 public class SearchController {
@@ -35,7 +34,7 @@ public class SearchController {
                 return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -50,7 +49,7 @@ public class SearchController {
                 return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,7 +64,7 @@ public class SearchController {
                 return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -80,7 +79,7 @@ public class SearchController {
                 return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -95,7 +94,7 @@ public class SearchController {
                 return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -110,7 +109,7 @@ public class SearchController {
                 return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -125,7 +124,82 @@ public class SearchController {
                 return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/catalogs")
+    public ResponseEntity<?> searchCatalogs(@RequestParam("query") String query) {
+        try {
+            Optional<List<SearchResultDto>> searchResults = searchService.searchCatalogs(query);
+
+            if (searchResults.isPresent()) {
+                return new ResponseEntity<>(searchResults.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/threads")
+    public ResponseEntity<?> searchThreads(@RequestParam("query") String query) {
+        try {
+            Optional<List<SearchResultDto>> searchResults = searchService.searchThreads(query);
+
+            if (searchResults.isPresent()) {
+                return new ResponseEntity<>(searchResults.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/groups")
+    public ResponseEntity<?> searchGroups(@RequestParam("query") String query) {
+        try {
+            Optional<List<SearchResultDto>> searchResults = searchService.searchGroups(query);
+
+            if (searchResults.isPresent()) {
+                return new ResponseEntity<>(searchResults.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/pages")
+    public ResponseEntity<?> searchPages(@RequestParam("query") String query) {
+        try {
+            Optional<List<SearchResultDto>> searchResults = searchService.searchPages(query);
+
+            if (searchResults.isPresent()) {
+                return new ResponseEntity<>(searchResults.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/gears/categories")
+    public ResponseEntity<?> searchGearsByCategories(@RequestParam("query") String query) {
+        try {
+            Optional<List<SearchResultDto>> searchResults = searchService.searchGearsByCategories(query);
+
+            if (searchResults.isPresent()) {
+                return new ResponseEntity<>(searchResults.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No search results found", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -19,4 +19,13 @@ public interface SearchService {
     Optional<List<SearchResultDto>> searchPolls(String query);
 
     Optional<List<SearchResultDto>> searchReviews(String query);
+
+    Optional<List<SearchResultDto>> searchCatalogs(String query);
+
+    Optional<List<SearchResultDto>> searchGroups(String query);
+
+    Optional<List<SearchResultDto>> searchPages(String query);
+
+    Optional<List<SearchResultDto>> searchThreads(String query);
+    Optional<List<SearchResultDto>> searchGearsByCategories(String query);
 }

@@ -17,6 +17,7 @@ import java.util.List;
 public class Gear {
     @Id
     private String id;
+    private String ownerId;
     private String name;
     private Double price;
     private Boolean customGear;

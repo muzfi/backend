@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface GearRepository extends MongoRepository<Gear, String> {
@@ -13,4 +14,9 @@ public interface GearRepository extends MongoRepository<Gear, String> {
     List<Gear> findByNameContainingAndCategory(String name, String category);
 
     List<Gear> findByNameContainingIgnoreCase(String query);
+
+    Optional<Gear> findByName(String name);
+
+
+    List<Gear> findByCategoryContainingIgnoreCase(String query);
 }

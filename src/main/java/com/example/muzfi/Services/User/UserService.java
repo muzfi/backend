@@ -2,6 +2,7 @@ package com.example.muzfi.Services.User;
 
 import com.example.muzfi.Dto.PostDto.PostAuthorDto;
 import com.example.muzfi.Dto.UserDto.UserBasicDto;
+import com.example.muzfi.Dto.UserDto.UserSignupDto;
 import com.example.muzfi.Enums.UserRole;
 import com.example.muzfi.Model.User;
 

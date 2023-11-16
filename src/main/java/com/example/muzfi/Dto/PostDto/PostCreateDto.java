@@ -18,6 +18,8 @@ public class PostCreateDto {
 
     private String title;
 
+
+
     private String subTitle;
 
     private String description;
@@ -29,4 +31,5 @@ public class PostCreateDto {
     private LocalDateTime createdDateTime;
 
     private Boolean isDraft;
+    private boolean isReviewed;
 }

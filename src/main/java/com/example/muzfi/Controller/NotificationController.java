@@ -15,7 +15,7 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @GetMapping("/{userId}")
-    public List<Notification> getNotificationsForUser(@PathVariable Integer userId) {
+    public List<Notification> getNotificationsForUser(@PathVariable String userId) {
         return notificationService.getNotificationsForUser(userId);
     }
 

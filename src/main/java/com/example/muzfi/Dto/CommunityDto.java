@@ -34,4 +34,5 @@ public class CommunityDto {
     private List<String> moderators;
     private String country;
     private Binary communityImage;
+    private String description;
 }

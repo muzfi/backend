@@ -7,5 +7,5 @@ public enum SearchType {
     GEAR,
     LISTING,
     POLL,
-    REVIEW
+    CATALOG, GROUP, PAGE, THREAD, REVIEW
 }

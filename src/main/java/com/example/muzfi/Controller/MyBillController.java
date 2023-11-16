@@ -33,14 +33,20 @@ public class MyBillController {
     }
 
     @PostMapping
-    public ResponseEntity<MyBill> createMyBill(@RequestBody MyBill myBill){
-        try{
-            MyBill _myBill  = myBillService.createMyBill(myBill);
+    public ResponseEntity<?> createMyBill(@RequestBody MyBill myBill) {
+        try {
+            // Check if the user has reviewed billing information before submitting
+            if (!myBill.isBillingInfoReviewed()) {
+                return ResponseEntity.badRequest().body("Please review your billing information before submitting.");
+            }
+
+            MyBill _myBill = myBillService.createMyBill(myBill);
             return new ResponseEntity<>(_myBill, HttpStatus.CREATED);
-        }catch (Exception e){
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating billing record.");
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteMyBill(@PathVariable("id") String id){

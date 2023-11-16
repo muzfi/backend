@@ -38,8 +38,9 @@ public class Community {
     private List<String> moderators;
     private String country;
     private Binary communityImage;
+    private String description;
 
-    public Community(String name, String title, String creatorId, LocalDateTime createdDateTime, List<String> subscriberIds, List<String> postIds, String about, String sub, String type, String genre, boolean joinable, boolean creatable, List<String> reviews, List<String> similarCommunityIds, CommunityRule rules, int subscriberCount, int rankedSize, List<String> moderators, String country, Binary communityImage) {
+    public Community(String name, String title, String creatorId, LocalDateTime createdDateTime, List<String> subscriberIds, List<String> postIds, String about, String sub, String type, String genre, boolean joinable, boolean creatable, List<String> reviews, List<String> similarCommunityIds, CommunityRule rules, int subscriberCount, int rankedSize, List<String> moderators, String country, Binary communityImage, String description) {
         this.name = name;
         this.title = title;
         this.creatorId = creatorId;
@@ -60,5 +61,9 @@ public class Community {
         this.moderators = moderators;
         this.country = country;
         this.communityImage = communityImage;
+        this.description = description;
+    }
+
+    public <E> Community(String name, String title, String creatorId, LocalDateTime now, ArrayList<E> es, ArrayList<E> es1, String about, String sub, String type, String genre, boolean joinable, boolean creatable, ArrayList<E> es2, ArrayList<E> es3, CommunityRule rules, ArrayList<E> es4, String country, Binary communityImage, String description) {
     }
 }
