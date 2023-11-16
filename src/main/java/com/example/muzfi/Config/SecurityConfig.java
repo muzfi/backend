@@ -34,6 +34,7 @@ public class SecurityConfig {
 
                         //.requestMatchers(HttpMethod.PUT,"/api/community-rules/**").permitAll()
 
+                        .requestMatchers(HttpMethod.GET,"/api/insights/**").permitAll()
                         .anyRequest().authenticated()
                 ).build();
     }

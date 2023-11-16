@@ -2,9 +2,14 @@ package com.example.muzfi.Controller.User;
 
 import com.example.muzfi.Dto.UserDto.AdvanceProfileSettingsUpdateDto;
 import com.example.muzfi.Dto.UserDto.PrivacySafetySettingsUpdateDto;
+import com.example.muzfi.Dto.UserDto.UserProfileDto;
+import com.example.muzfi.Model.User;
 import com.example.muzfi.Model.UserSetting;
 import com.example.muzfi.Services.AuthService;
+import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.Services.User.UserSettingService;
+import com.plaid.client.model.Email;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +20,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/profile/settings")
+@RequiredArgsConstructor
 public class UserSettingController {
 
     private final UserSettingService userSettingService;
 
     private final AuthService authService;
 
-    @Autowired
-    public UserSettingController(UserSettingService userSettingService, AuthService authService) {
-        this.userSettingService = userSettingService;
-        this.authService = authService;
-    }
+    private final UserService userService;
+
 
     // update logged-in  user display language
     @PreAuthorize("hasAuthority('Muzfi_Member')")
@@ -155,5 +158,56 @@ public class UserSettingController {
         } catch (Exception ex) {
             return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    @PutMapping("/email/{userId}")
+    public ResponseEntity<?> updateLoggedInUserEmail(@PathVariable("userId") String userId, String emailUpdate) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(userId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You cannot update this user profile.", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<UserSetting> settingOptional = userSettingService.getUserSettingByUserId(userId);
+
+            if (settingOptional.isEmpty()) {
+                return new ResponseEntity<>("User profile setting not found", HttpStatus.NOT_FOUND);
+            }
+
+            UserSetting existingSetting = settingOptional.get();
+            existingSetting.setEmail(emailUpdate);
+
+            Optional<UserSetting> updatedSetting = userSettingService.updateUserSetting(existingSetting);
+
+            if (updatedSetting.isPresent()) {
+                // Update the corresponding fields in the User document
+                Optional<User> userOptional = userService.getUserById(userId);
+
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    user.setEmail(emailUpdate);
+                    // Update other fields as needed
+                    userService.updateUser(user);
+                }
+
+                return new ResponseEntity<>(convertToUserProfileDto(updatedSetting.get()), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User profile setting update failed", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private UserProfileDto convertToUserProfileDto(UserSetting userSetting) {
+        UserProfileDto userProfileDto = new UserProfileDto();
+        userProfileDto.setEmail(userSetting.getEmail());
+        userProfileDto.setGender(userSetting.getGender());
+        userProfileDto.setCountry(userSetting.getCountry());
+        userProfileDto.setState(userSetting.getState());
+        userProfileDto.setCity(userSetting.getCity());
+        return userProfileDto;
     }
 }
