@@ -1,5 +1,6 @@
 package com.example.muzfi.Model;
 
+import com.example.muzfi.Enums.UserGender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,5 +37,11 @@ public class UserSetting {
     private LocalDateTime createdDateTime;
 
     private LocalDateTime lastUpdatedDateTime;
+
+    private String email;
+    private UserGender gender;
+    private String country;
+    private String state;
+    private String city;
 
 }

@@ -34,4 +34,6 @@ public interface UserService {
     Optional<String> unBlockUser(String loggedInUserId, String unBlockUserId);
 
     Optional<PostAuthorDto> getPostAuthor(String authorId);
+
+    void updateUser(User user);
 }

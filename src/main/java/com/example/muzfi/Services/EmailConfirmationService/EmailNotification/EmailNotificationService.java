@@ -59,4 +59,12 @@ public class EmailNotificationService {
 
         emailSender.send(message);
     }
+
+    public void sendInvitationEmail(String email) {
+        String subject = "Invitation to Join Muzfi";
+        String message = "You have been invited to join Muzfi! Click the link below to create your account:\n\n"
+                + "https://example.com/registration?email=" + email;  //Change with absolute url
+
+        sendMessage(email, subject, message);
+    }
 }

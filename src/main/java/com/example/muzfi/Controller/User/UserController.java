@@ -5,6 +5,7 @@ import com.example.muzfi.Dto.UserDto.UserBasicDto;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
+import com.example.muzfi.Services.EmailConfirmationService.EmailNotification.EmailNotificationService;
 import com.example.muzfi.Services.User.UserService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,14 @@ public class UserController {
     private final AuthService authService;
     private final EmailConfirmationService emailConfirmationService;
 
+    private final EmailNotificationService emailNotificationService;
+
     @Autowired
-    public UserController(UserService userService, AuthService authService, EmailConfirmationService emailConfirmationService) {
+    public UserController(UserService userService, AuthService authService, EmailConfirmationService emailConfirmationService, EmailNotificationService emailNotificationService) {
         this.userService = userService;
         this.authService = authService;
         this.emailConfirmationService = emailConfirmationService;
+        this.emailNotificationService = emailNotificationService;
     }
 
     @PostMapping("/signup")
@@ -177,4 +181,22 @@ public class UserController {
         }
     }
 
+    @PostMapping("/invite")
+    @PreAuthorize("hasAuthority('Muzfi_Member')")
+    public ResponseEntity<String> inviteUser(@RequestBody User inviteUserRequest, @PathVariable("loggedInUserId") String loggedInUserId) {
+        try {
+            boolean isLoggedInUser = authService.isLoggedInUser(loggedInUserId);
+
+            if (!isLoggedInUser) {
+                return new ResponseEntity<>("Access denied: You are not eligible to perform this action.", HttpStatus.UNAUTHORIZED);
+            }
+
+            // Implement your logic to send an invitation to the specified email address
+            emailNotificationService.sendInvitationEmail(inviteUserRequest.getEmail());
+
+            return new ResponseEntity<>("Invitation sent successfully", HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
