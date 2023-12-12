@@ -19,6 +19,7 @@ public class OrderDetails {
     private String orderContactNumber;
     private String orderAlternateContactNumber;
     private String orderStatus;
+    private String shippingId; // Reference to ShippingDetails
     private String orderEmail;
     private double orderAmount;
 
@@ -27,7 +28,7 @@ public class OrderDetails {
     @DBRef
     private User user;
 
-    public OrderDetails(String orderFullName, String orderFullAddress, String orderContactNumber, String orderAlternateContactNumber, String orderPlaced, String orderEmail, double orderAmount, Product product, User user) {
+    public OrderDetails(String orderFullName, String orderFullAddress, String orderContactNumber, String orderAlternateContactNumber, String orderPlaced, String orderEmail, double orderAmount, Product product, User user, String shippingId) {
         this.OrderFullName = orderFullName;
         this.OrderFullAddress = orderFullAddress;
         this.orderContactNumber = orderContactNumber;

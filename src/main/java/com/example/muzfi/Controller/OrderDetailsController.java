@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderDetailsController {
-    private final OrderDetailService orderDetailService;
+    private final OrderDetailService OrderDetailService;
 
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestBody OrderInput orderInput) throws MessagingException {
-        orderDetailService.placeOrder(orderInput);
+        OrderDetailService.placeOrder(orderInput);
         return "Order Placed";
     }
 }

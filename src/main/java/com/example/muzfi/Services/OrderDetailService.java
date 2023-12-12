@@ -3,6 +3,7 @@ package com.example.muzfi.Services;
 import com.example.muzfi.Model.*;
 import com.example.muzfi.Repository.OrderDetailsRepository;
 import com.example.muzfi.Repository.ProductRepository;
+import com.example.muzfi.Repository.ShippingDetailsRepository;
 import com.example.muzfi.Repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -22,9 +23,9 @@ public class OrderDetailService {
     private static final String ORDER_PLACED = "Placed";
 
     private final OrderDetailsRepository orderDetailsRepository;
+    private final ShippingDetailsRepository shippingDetailsRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-
     private final JavaMailSender javaMailSender;
 
     public void placeOrder(OrderInput orderInput) throws MessagingException {
@@ -39,6 +40,12 @@ public class OrderDetailService {
             if (product != null) {
                 User user = userRepository.findById(currentUserName).orElse(null);
                 if (user != null) {
+                    // Create and save the shipping details
+                    ShippingDetails shippingDetails = new ShippingDetails(
+                            // Generate a unique shipping ID, set initial status, etc.
+                    );
+                    shippingDetails = shippingDetailsRepository.save(shippingDetails);
+
                     // Create and save the order details
                     OrderDetails orderDetails = new OrderDetails(
                             orderInput.getOrderFullName(),
@@ -49,7 +56,8 @@ public class OrderDetailService {
                             ORDER_PLACED,
                             product.getPrice() * o.getQuantity(),
                             product,
-                            user
+                            user,
+                            shippingDetails.getShippingId() // Link the shipping ID
                     );
                     orderDetailsRepository.save(orderDetails);
 
@@ -71,7 +79,7 @@ public class OrderDetailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(orderInput.getOrderEmail());
-        helper.setFrom("umrmoh200@gmail.com");
+        helper.setFrom("umrmoh200@gmail.com"); // Consider using a configurable sender
         helper.setSubject("Order Confirmation");
         helper.setText("Thank you for your order!\n\n" + getOrderInfo(orderInput));
 
