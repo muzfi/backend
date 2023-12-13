@@ -54,4 +54,11 @@ public class GearRoomServiceImpl implements GearRoomService {
     public void deleteGearRoom(String gearRoomId) {
         gearRoomRepository.deleteById(gearRoomId);
     }
+
+
+    @Override
+    public List<GearRoom> getLatestGearRooms() {
+        // Fetching the latest gear rooms ordered by creation date
+        return gearRoomRepository.findAllByOrderByCreatedDateDesc();
+    }
 }

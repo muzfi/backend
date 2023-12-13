@@ -77,6 +77,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getLatestProducts(int limit) {
+        // Assuming your Product model has a field like 'createdDate' or 'lastUpdatedDate'
+        // The repository method 'findTopNByOrderByCreatedDateDesc' is a placeholder
+        // Replace it with the actual query method based on your repository and field names
+        return productRepository.findTopNByOrderByCreatedDateDesc(limit);
+    }
+
+    @Override
     public void deleteProduct(String id) {
         productRepository.deleteById(id);
     }

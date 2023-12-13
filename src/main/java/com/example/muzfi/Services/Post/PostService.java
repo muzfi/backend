@@ -21,4 +21,7 @@ public interface PostService {
     Optional<PostDetailsDto> publishDraftPost(String postId);
 
     Optional<String> deletePost(String postId);
+
+    List<Object> getLatestPosts(int limit);
+
 }

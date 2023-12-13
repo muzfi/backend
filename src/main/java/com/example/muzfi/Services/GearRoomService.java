@@ -17,4 +17,7 @@ public interface GearRoomService {
     GearRoom updateGearRoom(String gearRoomId, GearRoom gearRoom);
 
     void deleteGearRoom(String gearRoomId);
+
+    List<GearRoom> getLatestGearRooms(); // This fetches the latest 10 gear rooms
+
 }

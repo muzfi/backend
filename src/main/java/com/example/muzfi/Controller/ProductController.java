@@ -62,4 +62,9 @@ public class ProductController {
         List<Product> products = productService.getProductsByPriceRange(minPrice, maxPrice);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/latest")
+    public ResponseEntity<List<Product>> getLatestProducts() {
+        return ResponseEntity.ok(productService.getLatestProducts(10));
+    }
 }

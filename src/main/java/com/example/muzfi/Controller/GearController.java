@@ -36,7 +36,15 @@ public class GearController {
             return new ResponseEntity<>("An unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/latest")
+    public ResponseEntity<?> getLatestGears() {
+        try {
+            List<Gear> latestGears = gearService.getLatestGears(10); // Fetch latest 10 gears
+            return ResponseEntity.ok(latestGears);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/{gearId}")
     public ResponseEntity<?> getGearById(@PathVariable String gearId) {
         try {
@@ -103,6 +111,8 @@ public class GearController {
             return new ResponseEntity<>("An unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     // You can continue to add other endpoints to handle specific requirements such as managing reviews, ratings, etc.
 }

@@ -23,5 +23,8 @@ public interface ProductService {
 
     Product saveProduct(Product product);
 
+    List<Product> getLatestProducts(int limit);
+
+
     void deleteProduct(String id);
 }

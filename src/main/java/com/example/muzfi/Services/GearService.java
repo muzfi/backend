@@ -16,6 +16,7 @@ public interface GearService {
 
     List<Gear> searchGears(String searchTerm, String category);
 
+    List<Gear> getLatestGears(int limit);
 
     void deleteGear(String gearId);
 }

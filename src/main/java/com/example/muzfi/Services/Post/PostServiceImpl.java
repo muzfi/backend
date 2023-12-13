@@ -18,8 +18,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -45,6 +47,7 @@ public class PostServiceImpl implements PostService {
     private final PostManager postManager;
 
     private final ListingManager listingManager;
+    private int limit;
 
 
     @Autowired
@@ -301,6 +304,30 @@ public class PostServiceImpl implements PostService {
 
         return Optional.empty();
     }
+
+
+
+    @Override
+    public List<Object> getLatestPosts(int limit) {
+        this.limit = limit;
+        List<Post> latestPosts = postRepository.findTopNByIsDraftFalseOrderByCreatedDateDesc(limit);
+        List<PostDetailsDto> postDetailsDtoList = new ArrayList<>();
+
+        for (Post post : latestPosts) {
+            Object postTypeData = getPostTypeData(post);
+            Optional<PostAuthorDto> authorOptional = userService.getPostAuthor(post.getAuthorId());
+
+            if (postTypeData != null && authorOptional.isPresent()) {
+                PostAuthorDto author = authorOptional.get();
+                PostDetailsDto postDetailsDto = postManager.getPostDetailsDto(post, postTypeData, author);
+                postDetailsDtoList.add(postDetailsDto);
+            }
+        }
+
+        return Collections.singletonList(postDetailsDtoList);
+    }
+
+
 
     //Retrieve data for different post types - listings, gears, polls, topics
     private Object getPostTypeData(Post post) {

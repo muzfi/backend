@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface GearRoomRepository extends MongoRepository<GearRoom, String> {
     List<GearRoom> findAllByUserId(Integer userId);
+
+    List<GearRoom> findAllByOrderByCreatedDateDesc();
+
 }

@@ -212,6 +212,16 @@ public class PostController {
         }
     }
 
+    @GetMapping("/latest")
+    public ResponseEntity<?> getLatestPosts() {
+        try {
+            List<Object> latestPosts = postService.getLatestPosts(10); // Get latest 10 posts
+            return ResponseEntity.ok(latestPosts);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("An unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PreAuthorize("hasAuthority('Muzfi_Member')")
     @DeleteMapping("/{postId}")
     public ResponseEntity<?> deletePostById(@PathVariable("postId") String postId, @RequestParam("userId") String userId) {
@@ -232,5 +242,7 @@ public class PostController {
         } catch (Exception ex) {
             return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+
     }
 }

@@ -64,6 +64,13 @@ public class GearServiceImpl implements GearService{
     }
 
     @Override
+    public List<Gear> getLatestGears(int limit) {
+        // Assuming Gear entity has a field like 'createdDate' or 'lastUpdatedDate'
+        // Replace 'findTopNByOrderByCreatedDateDesc' with the actual repository method
+        return gearRepository.findTopNByOrderByCreatedDateDesc(limit);
+    }
+
+    @Override
     public void deleteGear(String gearId) {
         gearRepository.deleteById(gearId);
     }

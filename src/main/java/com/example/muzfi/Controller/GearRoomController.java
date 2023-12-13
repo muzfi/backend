@@ -73,4 +73,13 @@ public class GearRoomController {
             return new ResponseEntity<>("An unknown error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/latest")
+    public ResponseEntity<List<GearRoom>> getLatestGearRooms() {
+        List<GearRoom> latestGearRooms = gearRoomService.getLatestGearRooms();
+        if (latestGearRooms.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(latestGearRooms);
+    }
 }

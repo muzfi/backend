@@ -13,4 +13,6 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByBrandId(String brandId);
     List<Product> findByCategory(String category);
     List<Product> findByPriceBetween(Double minPrice, Double maxPrice);
+
+    List<Product> findTopNByOrderByCreatedDateDesc(int limit);
 }
