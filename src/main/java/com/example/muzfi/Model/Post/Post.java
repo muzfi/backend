@@ -2,6 +2,7 @@ package com.example.muzfi.Model.Post;
 
 import com.example.muzfi.Enums.PostType;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -32,5 +33,8 @@ public class Post {
     private LocalDateTime createdDateTime;
 
     private LocalDateTime updatedDateTime;
+
+    @CreatedDate
+    private LocalDateTime createdDate;
 }
 

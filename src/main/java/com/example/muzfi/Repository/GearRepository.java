@@ -20,5 +20,5 @@ public interface GearRepository extends MongoRepository<Gear, String> {
 
     List<Gear> findByCategoryContainingIgnoreCase(String query);
 
-    List<Gear> findTopNByOrderByCreatedDateDesc(int limit);
+    List<Gear> findTopByOrderByCreatedDateDesc(int limit);
 }

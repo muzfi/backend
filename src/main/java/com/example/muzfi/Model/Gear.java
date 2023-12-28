@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -34,6 +36,9 @@ public class Gear {
     private Specs specs;
     private List<PriceTrend> priceTrends;
     private String category;
+    @CreatedDate
+    private LocalDateTime createdDate;
+
 }
 
 // You'll also need to define Review, Rating, Specs, PriceTrend classes.

@@ -2,8 +2,11 @@ package com.example.muzfi.Model;
 
 import com.example.muzfi.Enums.ProductCondition;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
 
 
 @NoArgsConstructor
@@ -24,5 +27,7 @@ public class Product {
     private String brandId;
     private String sellerEmail;
     private String status; // "active" for active listings
+    @CreatedDate
+    private LocalDateTime createdDate;
 
 }
