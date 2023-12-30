@@ -29,5 +29,4 @@ public class Product {
     private String status; // "active" for active listings
     @CreatedDate
     private LocalDateTime createdDate;
-
 }
