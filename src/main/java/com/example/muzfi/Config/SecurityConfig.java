@@ -20,21 +20,19 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/posts").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/comments/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/communities/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/marketplace/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/profile/{userId}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/search/**").permitAll()
-
-                        .requestMatchers(HttpMethod.POST,"/api/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/listings/**").permitAll()
-
-                        //.requestMatchers(HttpMethod.PUT,"/api/community-rules/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET,"/api/insights/**").permitAll()
-                        .anyRequest().authenticated()
-                ).build();
+                        .anyRequest().permitAll()    //It will temporary
+//                        .requestMatchers(HttpMethod.GET, "/api/posts").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/comments/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/communities/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/marketplace/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/profile/{userId}").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/search/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST,"/api/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/listings/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST,"/api/purchases/**").permitAll()
+//                        .anyRequest().authenticated()
+                )
+                 .build();
     }
     //TODO: Edit secure endpoints
 }
