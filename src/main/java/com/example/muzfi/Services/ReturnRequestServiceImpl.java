@@ -30,7 +30,7 @@ public class ReturnRequestServiceImpl implements ReturnRequestService {
         ReturnRequest returnRequest = returnRequestRepository.findById(String.valueOf(requestId))
                 .orElseThrow(() -> new RuntimeException("Return Request not found with id: " + requestId));
 
-        // Update fields
+        // Update
         returnRequest.setReason(returnRequestDTO.getReason());
         returnRequest.setBuyerMessage(returnRequestDTO.getMessage());
         // Assuming the status field is updated based on some business logic
