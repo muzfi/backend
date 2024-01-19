@@ -29,7 +29,7 @@ public class ReturnServiceImpl implements ReturnService{
         if (optionalRequest.isPresent()) {
             ReturnRequest request = optionalRequest.get();
             request.setTrackingNumber(trackingNumber);
-            request.setStatus(ReturnStatus.ITEM_SHIPPED);
+            request.setStatus(ReturnStatus.ITEM_SHIPPED.name());
             returnRequestRepository.save(request);
         }
     }
@@ -38,7 +38,7 @@ public class ReturnServiceImpl implements ReturnService{
         Optional<ReturnRequest> optionalRequest = returnRequestRepository.findById(requestId);
         if (optionalRequest.isPresent()) {
             ReturnRequest request = optionalRequest.get();
-            request.setStatus(ReturnStatus.REFUND_PROCESSING);
+            request.setStatus(ReturnStatus.REFUND_PROCESSING.name());
             returnRequestRepository.save(request);
         }
     }
@@ -57,7 +57,7 @@ public class ReturnServiceImpl implements ReturnService{
 
     public void openReturnRequest(ReturnRequest returnRequest) {
         // Set initial status for the return request
-        returnRequest.setStatus(ReturnStatus.REQUESTED);
+        returnRequest.setStatus(ReturnStatus.ITEM_SHIPPED.name());
 
         // Save the return request to the database
         returnRequestRepository.save(returnRequest);

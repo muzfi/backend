@@ -19,6 +19,12 @@ public class ReturnRequest {
     private String reason;
     private String status; // e.g., "Requested", "Accepted", "Declined"
     private String buyerMessage;
+
+    public void setResponse(ReturnResponse response) {
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+    }
     // other fields, getters, setters
 }
 
