@@ -15,6 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ReturnRequest {
     @Id
     private Long id;
+    private Long sellerId;
+    private Long buyerId;
     private Long productId;
     private String reason;
     private String status; // e.g., "Requested", "Accepted", "Declined"

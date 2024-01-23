@@ -14,9 +14,9 @@ import java.util.Set;
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
-    private final AuthService authService;
+    private  AuthService authService;
 
     @Autowired
     public UserProfileServiceImpl(UserRepository userRepository, AuthService authService) {
@@ -24,9 +24,13 @@ public class UserProfileServiceImpl implements UserProfileService {
         this.authService = authService;
     }
 
+    public UserProfileServiceImpl() {
+
+    }
+
     @Override
-    public Optional<UserProfileDto> getUserProfileByUserId(String userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public Optional<UserProfileDto> getUserProfileByUserId(Long userId) {
+        Optional<User> userOptional = userRepository.findById(String.valueOf(userId));
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -120,6 +124,11 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
     }
 
+
+    @Override
+    public Optional<UserProfileDto> getUserProfileByUserId(String id) {
+        return Optional.empty();
+    }
 
     @Override
     public Optional<UserProfileDto> updateUserProfile(User user) {

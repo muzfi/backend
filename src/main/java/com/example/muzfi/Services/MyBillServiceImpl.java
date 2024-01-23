@@ -24,6 +24,7 @@ public class MyBillServiceImpl implements MyBillService {
     }
 
     public MyBill createMyBill(MyBill myBill) {
+        NotificationServiceImpl notificationService = new NotificationServiceImpl();
         return myBillRepository.save(myBill);
     }
 

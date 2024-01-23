@@ -20,6 +20,7 @@ public class ReturnRequestServiceImpl implements ReturnRequestService {
         returnRequest.setBuyerMessage(returnRequestDTO.getMessage());
         returnRequest.setStatus("Requested"); // Initial status
 
+
         // Save to the database
         return returnRequestRepository.save(returnRequest);
     }

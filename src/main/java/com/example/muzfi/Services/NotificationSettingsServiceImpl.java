@@ -2,6 +2,7 @@ package com.example.muzfi.Services;
 
 import com.example.muzfi.Model.NotificationSettings;
 import com.example.muzfi.Repository.NotificationSettingsRepository;
+import com.example.muzfi.Services.EmailConfirmationService.EmailNotification.EmailNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,10 @@ public class NotificationSettingsServiceImpl implements NotificationSettingsServ
 
     @Override
     public NotificationSettings createNotificationSettings(NotificationSettings settings) {
+        EmailNotificationService emailNotificationService = new EmailNotificationService();
+        emailNotificationService.sendUncheckedNotificationsAlert(settings.getUserId(),1);
         return notificationSettingsRepository.save(settings);
+
     }
 
     @Override

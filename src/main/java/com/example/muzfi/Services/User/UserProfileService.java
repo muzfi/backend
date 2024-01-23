@@ -6,6 +6,8 @@ import com.example.muzfi.Model.User;
 import java.util.Optional;
 
 public interface UserProfileService {
+    Optional<UserProfileDto> getUserProfileByUserId(Long userId);
+
     Optional<UserProfileDto> getUserProfileByUserId(String id);
 
     Optional<UserProfileDto> updateUserProfile(User user);
