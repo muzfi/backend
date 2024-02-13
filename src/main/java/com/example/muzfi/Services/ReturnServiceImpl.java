@@ -70,9 +70,7 @@ public class ReturnServiceImpl implements ReturnService{
         Optional<UserProfileDto> seller = userProfileService.getUserProfileByUserId(returnRequest.getSellerId());
         Optional<UserProfileDto> buyer = userProfileService.getUserProfileByUserId(returnRequest.getSellerId());
         String sellerEmail = user.getEmail();
-        String buyernmae
-        emailNotificationService.sendReturnRequestReceivedAlert(sellerEmail,returnRequest.getProductId(),);
-        emailNotificationService.sendReturnRequestReceivedAlert();
+//        emailNotificationService.sendReturnRequestReceivedAlert(sellerEmail,returnRequest.getProductId());
 
         // Save the return request to the database
         returnRequestRepository.save(returnRequest);

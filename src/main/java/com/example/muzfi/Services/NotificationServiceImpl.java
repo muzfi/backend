@@ -93,4 +93,38 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setRead(false);
         return createNotification(notification);
     }
+
+    public Notification createPostCreationNotification(String userId) {
+        return createNotification(new Notification(userId, "You have successfully created a new post", false));
+    }
+
+    // Notification for a purchased listing
+    public Notification createListingPurchasedNotification(String userId) {
+        return createNotification(new Notification(userId, "Your listing has been purchased, time to ship", false));
+    }
+
+    // Notification to remind leaving feedback
+    public Notification createFeedbackReminderNotification(String userId) {
+        return createNotification(new Notification(userId, "Leave feedback of your last order (both seller and buyer)", false));
+    }
+
+    // Notification for a successful purchase
+    public Notification createPurchaseSuccessNotification(String userId) {
+        return createNotification(new Notification(userId, "Successfully purchased", false));
+    }
+
+    // Notification that an order has been shipped
+    public Notification createOrderShippedNotification(String userId) {
+        return createNotification(new Notification(userId, "Your order has been shipped", false));
+    }
+
+    // Notification that an order has been delivered
+    public Notification createOrderDeliveredNotification(String userId) {
+        return createNotification(new Notification(userId, "Your order has been delivered", false));
+    }
+
+    // Notification that an order has been canceled
+    public Notification createOrderCanceledNotification(String userId) {
+        return createNotification(new Notification(userId, "Your order has been canceled", false));
+    }
 }
