@@ -36,4 +36,18 @@ public interface NotificationService {
     Notification createOrderDeliveredNotification(String userId);
 
     Notification createListingPurchasedNotification(String userId);
+
+    Notification createUnreadMessagesNotification(String userId);
+
+    Notification createRefundSubmissionNotification(String userId);
+
+    Notification createRefundAcceptedNotification(String userId);
+
+    Notification createRefundDeclinedNotification(String userId);
+
+    Notification createOrderRefundedNotification(String userId);
+
+    Notification createCommunityCreatedNotification(String userId);
+
+    Notification createOrderNoteNotification(String userId);
 }

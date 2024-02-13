@@ -106,4 +106,50 @@ public class NotificationController {
     @PostMapping("/order-canceled/{userId}")
     public Notification createOrderCanceledNotification(@PathVariable String userId) {
         return notificationService.createOrderCanceledNotification(userId);
-    }}
+    }
+
+    // In NotificationController class
+
+    // Endpoint for creating a notification when a note/message is left regarding an order
+    @PostMapping("/order-note/{userId}")
+    public Notification createOrderNoteNotification(@PathVariable String userId) {
+        return notificationService.createOrderNoteNotification(userId);
+    }
+
+    // Endpoint for creating a notification when a refund submission is sent
+    @PostMapping("/refund-submission/{userId}")
+    public Notification createRefundSubmissionNotification(@PathVariable String userId) {
+        return notificationService.createRefundSubmissionNotification(userId);
+    }
+
+    // Endpoint for creating a notification when a refund is accepted
+    @PostMapping("/refund-accepted/{userId}")
+    public Notification createRefundAcceptedNotification(@PathVariable String userId) {
+        return notificationService.createRefundAcceptedNotification(userId);
+    }
+
+    // Endpoint for creating a notification when a refund is declined
+    @PostMapping("/refund-declined/{userId}")
+    public Notification createRefundDeclinedNotification(@PathVariable String userId) {
+        return notificationService.createRefundDeclinedNotification(userId);
+    }
+
+    // Endpoint for creating a notification when an order has been refunded
+    @PostMapping("/order-refunded/{userId}")
+    public Notification createOrderRefundedNotification(@PathVariable String userId) {
+        return notificationService.createOrderRefundedNotification(userId);
+    }
+
+    // Endpoint for creating a notification for unread messages
+    @PostMapping("/unread-messages/{userId}")
+    public Notification createUnreadMessagesNotification(@PathVariable String userId) {
+        return notificationService.createUnreadMessagesNotification(userId);
+    }
+
+    // Endpoint for creating a notification when a community is successfully created
+    @PostMapping("/community-created/{userId}")
+    public Notification createCommunityCreatedNotification(@PathVariable String userId) {
+        return notificationService.createCommunityCreatedNotification(userId);
+    }
+
+}

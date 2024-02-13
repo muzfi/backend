@@ -127,4 +127,73 @@ public class NotificationServiceImpl implements NotificationService {
     public Notification createOrderCanceledNotification(String userId) {
         return createNotification(new Notification(userId, "Your order has been canceled", false));
     }
+
+
+    // In NotificationServiceImpl class
+
+    // Notification for a note/message from buyer or seller regarding order
+    public Notification createOrderNoteNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Buyer or seller has left a note/message regarding order");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    // Notification for refund submission sent
+    public Notification createRefundSubmissionNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Your refund submission has been sent");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    // Notification for accepted refund
+    public Notification createRefundAcceptedNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Your refund has been accepted");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    // Notification for declined refund
+    public Notification createRefundDeclinedNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Your refund has been declined");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    // Notification for refunded order
+    public Notification createOrderRefundedNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Your order has been refunded");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    // Notification for unread messages
+    public Notification createUnreadMessagesNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("You have unread messages");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    // Notification for successful community creation
+    public Notification createCommunityCreatedNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Your community has been successfully created");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+
+
 }
