@@ -8,4 +8,18 @@ public interface NotificationService {
     List<Notification> getNotificationsForUser(String userId);
     Notification createNotification(Notification notification);
     void markNotificationAsRead(String notificationId);
+
+    Notification createCartItemNotification(String userId);
+
+    Notification createOfferDeclinedNotification(String userId);
+
+    Notification createWelcomeNotification(String userId);
+
+    Notification createListingAddedNotification(String userId);
+
+    Notification createRepliesNotification(String userId);
+
+    Notification createMessageReceivedNotification(String userId);
+
+    Notification createOfferReceivedNotification(String userId);
 }

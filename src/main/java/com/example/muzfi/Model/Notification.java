@@ -9,13 +9,63 @@ import java.time.LocalDateTime;
 public class Notification {
     @Id
     private String id;
-    private Integer userId; // user to whom the notification belongs
-    private String content; // content of the notification
-    private boolean isRead; // to check if notification is read or not
-    private LocalDateTime timestamp; // when the notification was generated
+    private String userId; // Updated to String to match your service implementation
+    private String content; // Renamed from 'message' to 'content' for consistency
+    private boolean isRead;
+    private LocalDateTime timestamp; // Timestamp of when the notification was generated
 
-    public void setRead(boolean read) {
-        this.isRead = true;
+    // Constructors
+    public Notification() {
     }
 
+    public Notification(String userId, String content, boolean isRead) {
+        this.userId = userId;
+        this.content = content;
+        this.isRead = isRead;
+        this.timestamp = LocalDateTime.now(); // Automatically set the timestamp when creating a new notification
+    }
+
+    // Getters and Setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    // Corrected to actually use the parameter 'read'
+    public void setRead(boolean read) {
+        this.isRead = read;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    // Additional methods can be added as needed
 }
