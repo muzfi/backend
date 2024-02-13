@@ -66,5 +66,44 @@ public class NotificationController {
         return notificationService.createCartItemNotification(userId);
     }
 
-    // Add other endpoints as needed
-}
+    // Create a new post notification
+    @PostMapping("/post-created/{userId}")
+    public Notification createPostCreationNotification(@PathVariable String userId) {
+        return notificationService.createPostCreationNotification(userId);
+    }
+
+    // Listing purchased notification
+    @PostMapping("/listing-purchased/{userId}")
+    public Notification createListingPurchasedNotification(@PathVariable String userId) {
+        return notificationService.createListingPurchasedNotification(userId);
+    }
+
+    // Leave feedback reminder notification
+    @PostMapping("/feedback-reminder/{userId}")
+    public Notification createFeedbackReminderNotification(@PathVariable String userId) {
+        return notificationService.createFeedbackReminderNotification(userId);
+    }
+
+    // Successful purchase notification
+    @PostMapping("/purchase-success/{userId}")
+    public Notification createPurchaseSuccessNotification(@PathVariable String userId) {
+        return notificationService.createPurchaseSuccessNotification(userId);
+    }
+
+    // Order shipped notification
+    @PostMapping("/order-shipped/{userId}")
+    public Notification createOrderShippedNotification(@PathVariable String userId) {
+        return notificationService.createOrderShippedNotification(userId);
+    }
+
+    // Order delivered notification
+    @PostMapping("/order-delivered/{userId}")
+    public Notification createOrderDeliveredNotification(@PathVariable String userId) {
+        return notificationService.createOrderDeliveredNotification(userId);
+    }
+
+    // Order canceled notification
+    @PostMapping("/order-canceled/{userId}")
+    public Notification createOrderCanceledNotification(@PathVariable String userId) {
+        return notificationService.createOrderCanceledNotification(userId);
+    }}

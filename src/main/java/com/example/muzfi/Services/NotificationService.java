@@ -22,4 +22,18 @@ public interface NotificationService {
     Notification createMessageReceivedNotification(String userId);
 
     Notification createOfferReceivedNotification(String userId);
+
+    Notification createOrderCanceledNotification(String userId);
+
+    Notification createPostCreationNotification(String userId);
+
+    Notification createFeedbackReminderNotification(String userId);
+
+    Notification createPurchaseSuccessNotification(String userId);
+
+    Notification createOrderShippedNotification(String userId);
+
+    Notification createOrderDeliveredNotification(String userId);
+
+    Notification createListingPurchasedNotification(String userId);
 }
