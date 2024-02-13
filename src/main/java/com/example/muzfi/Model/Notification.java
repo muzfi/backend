@@ -67,5 +67,8 @@ public class Notification {
         this.timestamp = timestamp;
     }
 
+    public void setMessage(String s) {
+    }
+
     // Additional methods can be added as needed
 }
