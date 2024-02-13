@@ -50,4 +50,18 @@ public interface NotificationService {
     Notification createCommunityCreatedNotification(String userId);
 
     Notification createOrderNoteNotification(String userId);
+
+    Notification createEarnPointsNotification(String userId);
+
+    Notification createCartItemUnavailableNotification(String userId);
+
+    Notification createPayoutSentNotification(String userId);
+
+    Notification createGetSubscriptionNotification(String userId);
+
+    Notification createUpdateProfileNotification(String userId);
+
+    Notification createInviteToCommunityNotification(String userId);
+
+    Notification createAddedToGearRoomNotification(String userId);
 }

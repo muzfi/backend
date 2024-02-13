@@ -194,6 +194,64 @@ public class NotificationServiceImpl implements NotificationService {
         return createNotification(notification);
     }
 
+    // In NotificationServiceImpl class
+
+    public Notification createAddedToGearRoomNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("You have successfully added to your gear room");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    public Notification createCartItemUnavailableNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Item in cart is unavailable");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    public Notification createEarnPointsNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Earn points by posting or listing items");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    public Notification createPayoutSentNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Payout has been sent");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    public Notification createGetSubscriptionNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Get Subscription for full access");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    public Notification createUpdateProfileNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("Update your profile details: location/background/DOB/payment/etc");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
+    public Notification createInviteToCommunityNotification(String userId) {
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setContent("You have received an invite to join a community");
+        notification.setRead(false);
+        return createNotification(notification);
+    }
+
 
 
 }

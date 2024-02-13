@@ -152,4 +152,39 @@ public class NotificationController {
         return notificationService.createCommunityCreatedNotification(userId);
     }
 
+    @PostMapping("/added-to-gear-room/{userId}")
+    public Notification createAddedToGearRoomNotification(@PathVariable String userId) {
+        return notificationService.createAddedToGearRoomNotification(userId);
+    }
+
+    @PostMapping("/cart-item-unavailable/{userId}")
+    public Notification createCartItemUnavailableNotification(@PathVariable String userId) {
+        return notificationService.createCartItemUnavailableNotification(userId);
+    }
+
+    @PostMapping("/earn-points/{userId}")
+    public Notification createEarnPointsNotification(@PathVariable String userId) {
+        return notificationService.createEarnPointsNotification(userId);
+    }
+
+    @PostMapping("/payout-sent/{userId}")
+    public Notification createPayoutSentNotification(@PathVariable String userId) {
+        return notificationService.createPayoutSentNotification(userId);
+    }
+
+    @PostMapping("/get-subscription/{userId}")
+    public Notification createGetSubscriptionNotification(@PathVariable String userId) {
+        return notificationService.createGetSubscriptionNotification(userId);
+    }
+
+    @PostMapping("/update-profile/{userId}")
+    public Notification createUpdateProfileNotification(@PathVariable String userId) {
+        return notificationService.createUpdateProfileNotification(userId);
+    }
+
+    @PostMapping("/community-invite/{userId}")
+    public Notification createInviteToCommunityNotification(@PathVariable String userId) {
+        return notificationService.createInviteToCommunityNotification(userId);
+    }
+
 }
