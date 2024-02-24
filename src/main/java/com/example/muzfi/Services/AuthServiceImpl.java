@@ -1,10 +1,12 @@
 package com.example.muzfi.Services;
 
 import com.example.muzfi.Dto.UserDto.LoginDto;
+import com.example.muzfi.Dto.UserDto.PasswordResetDto;
 import com.example.muzfi.Dto.UserDto.UserSignupDto;
 import com.example.muzfi.Enums.RoleEditAction;
 import com.example.muzfi.Enums.UserRole;
 import com.example.muzfi.Model.User;
+import com.example.muzfi.Repository.UserRepository;
 import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
 import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.Util.OktaRestClient;
@@ -224,6 +226,30 @@ public class AuthServiceImpl implements AuthService {
             updatedAuthToken.setDetails(auth.getDetails());
 
             SecurityContextHolder.getContext().setAuthentication(updatedAuthToken);
+        }
+    }
+
+
+    @Override
+    public void saveResetToken(String email, String token) {
+        Optional<User> user = Optional.of(UserRepository.findByEmail(email));
+        if (user != null) {
+            // Assuming ResetTokenService handles token storage and expiration
+            resetTokenService.createResetTokenForUser(user, token);
+        } else {
+            throw new RuntimeException("User not found with email: " + email); // Consider a more specific exception
+        }
+    }
+
+    @Override
+    public void resetPassword(PasswordResetDto passwordResetDto) {
+        // Assuming ResetTokenService can validate the token and find the associated user
+        User user = resetTokenService.validateResetToken(passwordResetDto.getToken());
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(passwordResetDto.getNewPassword()));
+            UserRepository.save(user);
+        } else {
+            throw new RuntimeException("Invalid or expired reset token."); // Consider a more specific exception
         }
     }
 }

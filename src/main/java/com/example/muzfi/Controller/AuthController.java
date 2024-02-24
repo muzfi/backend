@@ -2,11 +2,14 @@ package com.example.muzfi.Controller;
 
 import com.example.muzfi.Controller.User.UserController;
 import com.example.muzfi.Dto.UserDto.LoginDto;
+import com.example.muzfi.Dto.UserDto.PasswordResetDto;
 import com.example.muzfi.Dto.UserDto.UserSignupDto;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Services.AuthService;
 import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
+import com.example.muzfi.Services.EmailConfirmationService.EmailNotification.EmailService;
 import com.example.muzfi.Util.OktaRestClient;
+import com.example.muzfi.Util.TokenUtil;
 import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -175,6 +178,48 @@ public class AuthController {
 
         } catch (Exception ex) {
             return new ResponseEntity<>("an unknown error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @RestController
+    @RequestMapping("/api/auth")
+    public class ForgotPasswordController {
+
+        private static final Logger log = LoggerFactory.getLogger(ForgotPasswordController.class);
+        private final AuthService authService;
+        private final EmailService emailService;
+        private final TokenUtil tokenUtil;
+
+        @Autowired
+        public ForgotPasswordController(AuthService authService, EmailService emailService, TokenUtil tokenUtil) {
+            this.authService = authService;
+            this.emailService = emailService;
+            this.tokenUtil = tokenUtil;
+        }
+
+        @PostMapping("/forgot-password")
+        public ResponseEntity<String> forgotPassword(@RequestBody String email) {
+            try {
+                String token = tokenUtil.generateResetToken();
+                authService.saveResetToken(email, token);
+                emailService.sendPasswordResetEmail(email, token);
+                return new ResponseEntity<>("Password reset email sent.", HttpStatus.OK);
+            } catch (Exception e) {
+                log.error("Error during password reset email sending", e);
+                return new ResponseEntity<>("Error sending password reset email: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        @PostMapping("/reset-password")
+        public ResponseEntity<String> resetPassword(@RequestBody PasswordResetDto passwordResetDto) {
+            try {
+                authService.resetPassword(passwordResetDto);
+                return new ResponseEntity<>("Password has been reset successfully.", HttpStatus.OK);
+            } catch (Exception e) {
+                log.error("Error resetting password", e);
+                return new ResponseEntity<>("Error resetting password: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
         }
     }
 }

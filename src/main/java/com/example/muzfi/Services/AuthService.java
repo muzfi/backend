@@ -1,6 +1,7 @@
 package com.example.muzfi.Services;
 
 import com.example.muzfi.Dto.UserDto.LoginDto;
+import com.example.muzfi.Dto.UserDto.PasswordResetDto;
 import com.example.muzfi.Dto.UserDto.UserSignupDto;
 import com.example.muzfi.Model.User;
 
@@ -20,4 +21,7 @@ public interface AuthService {
     void userRoleToElite(String userOktaId);
 
     void userRoleRemoveElite(String userOktaId);
+
+    void saveResetToken(String email, String token);
+    void resetPassword(PasswordResetDto passwordResetDto);
 }

@@ -9,6 +9,11 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
+
+    static User findByEmail(String email) {
+        return new User();
+    }
+
     Optional<User> findUserByOktaId(String oktaId);
 
     @Override
