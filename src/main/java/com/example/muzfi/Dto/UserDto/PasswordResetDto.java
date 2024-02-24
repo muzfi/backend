@@ -1,5 +1,7 @@
 package com.example.muzfi.Dto.UserDto;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+
 public class PasswordResetDto {
     private String token;
     private String newPassword;
@@ -20,7 +22,7 @@ public class PasswordResetDto {
         this.token = token;
     }
 
-    public String getNewPassword() {
+    public ILoggingEvent getNewPassword() {
         return newPassword;
     }
 

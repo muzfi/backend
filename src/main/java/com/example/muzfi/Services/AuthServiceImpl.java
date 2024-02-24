@@ -1,5 +1,6 @@
 package com.example.muzfi.Services;
 
+import ch.qos.logback.classic.encoder.JsonEncoder;
 import com.example.muzfi.Dto.UserDto.LoginDto;
 import com.example.muzfi.Dto.UserDto.PasswordResetDto;
 import com.example.muzfi.Dto.UserDto.UserSignupDto;
@@ -44,6 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     private final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
+    private JsonEncoder passwordEncoder;
 
     @Autowired
     public AuthServiceImpl(
@@ -235,7 +237,7 @@ public class AuthServiceImpl implements AuthService {
         Optional<User> user = Optional.of(UserRepository.findByEmail(email));
         if (user != null) {
             // Assuming ResetTokenService handles token storage and expiration
-            resetTokenService.createResetTokenForUser(user, token);
+            ResetTokenService.createResetTokenForUser(user, token);
         } else {
             throw new RuntimeException("User not found with email: " + email); // Consider a more specific exception
         }
@@ -244,9 +246,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void resetPassword(PasswordResetDto passwordResetDto) {
         // Assuming ResetTokenService can validate the token and find the associated user
-        User user = resetTokenService.validateResetToken(passwordResetDto.getToken());
+        User user = ResetTokenService.validateResetToken(passwordResetDto.getToken());
         if (user != null) {
-            user.setPassword(passwordEncoder.encode(passwordResetDto.getNewPassword()));
+            user.setPassword(Arrays.toString(passwordEncoder.encode(passwordResetDto.getNewPassword())));
             UserRepository.save(user);
         } else {
             throw new RuntimeException("Invalid or expired reset token."); // Consider a more specific exception

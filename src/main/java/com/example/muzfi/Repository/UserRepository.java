@@ -14,6 +14,11 @@ public interface UserRepository extends MongoRepository<User, String> {
         return new User();
     }
 
+    default <S extends User> S save(S entity) {
+        return null;
+    }
+
+
     Optional<User> findUserByOktaId(String oktaId);
 
     @Override
