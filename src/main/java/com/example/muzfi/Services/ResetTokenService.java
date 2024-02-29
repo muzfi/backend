@@ -30,7 +30,7 @@ public class ResetTokenService {
         return ResetToken.save(resetToken);
     }
 
-    public static void createResetTokenForUser(Optional<User> user, String token) {
+    public static void createResetTokenForUser(Optional<Optional<User>> user, String token) {
 
     }
 

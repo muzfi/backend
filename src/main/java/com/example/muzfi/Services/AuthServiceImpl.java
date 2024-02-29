@@ -9,6 +9,7 @@ import com.example.muzfi.Enums.UserRole;
 import com.example.muzfi.Model.User;
 import com.example.muzfi.Repository.UserRepository;
 import com.example.muzfi.Services.EmailConfirmationService.EmailConfirmationService;
+import com.example.muzfi.Services.User.UserProfileService;
 import com.example.muzfi.Services.User.UserService;
 import com.example.muzfi.Util.OktaRestClient;
 import jakarta.mail.MessagingException;
@@ -234,7 +235,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void saveResetToken(String email, String token) {
-        Optional<User> user = Optional.of(UserRepository.findByEmail(email));
+        Optional<Optional<User>> user = Optional.of(UserRepository.findByEmail(email));
         if (user != null) {
             // Assuming ResetTokenService handles token storage and expiration
             ResetTokenService.createResetTokenForUser(user, token);
@@ -249,7 +250,7 @@ public class AuthServiceImpl implements AuthService {
         User user = ResetTokenService.validateResetToken(passwordResetDto.getToken());
         if (user != null) {
             user.setPassword(Arrays.toString(passwordEncoder.encode(passwordResetDto.getNewPassword())));
-            UserRepository.save(user);
+            User save = UserProfileService.Update (user);
         } else {
             throw new RuntimeException("Invalid or expired reset token."); // Consider a more specific exception
         }
