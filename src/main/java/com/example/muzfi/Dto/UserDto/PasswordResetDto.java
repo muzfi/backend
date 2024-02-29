@@ -23,7 +23,7 @@ public class PasswordResetDto {
     }
 
     public ILoggingEvent getNewPassword() {
-        return newPassword;
+        return null;
     }
 
     public void setNewPassword(String newPassword) {
